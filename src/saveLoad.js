@@ -1,4 +1,3 @@
-// Save and Load functionality for the game
 import { resources } from "./resources.js";
 import { armyCounts } from "./army.js";
 import { buildingStates } from "./town.js";
@@ -7,7 +6,6 @@ import { GameMeta } from "./config.js";
 
 const SAVE_KEY = "idleHeroSlayerSave";
 
-// Game state object structure
 export function createGameState() {
   return {
     version: GameMeta.version,
@@ -16,12 +14,10 @@ export function createGameState() {
     armyCounts: { ...armyCounts },
     buildingStates: { ...buildingStates },
     artifactStates: { ...artifactStates },
-    // Battle state will be reconstructed on load since enemies are level-based
-    killCount: 0 // This will be imported from battle.js when available
+    killCount: 0 
   };
 }
 
-// Load game state from localStorage
 export async function loadGame() {
   try {
     const saveData = localStorage.getItem(SAVE_KEY);
@@ -32,27 +28,19 @@ export async function loadGame() {
 
     const gameState = JSON.parse(saveData);
     
-    // Version check (for future compatibility)
     if (gameState.version !== GameMeta.version) {
       console.warn(`Save version mismatch: ${gameState.version} vs ${GameMeta.version}`);
-      // For now, we'll still load the save but this could be used for migration
     }
 
-    // Restore resources
     Object.assign(resources, gameState.resources);
 
-    // Restore army counts
     Object.assign(armyCounts, gameState.armyCounts);
 
-    // Restore building states
     Object.assign(buildingStates, gameState.buildingStates);
 
-    // Restore artifact states
     Object.assign(artifactStates, gameState.artifactStates);
 
-    // Restore battle state
     if (gameState.killCount !== undefined) {
-      // Import and set kill count
       const { setKillCount, startNewBattle } = await import("./battle.js");
       setKillCount(gameState.killCount);
       startNewBattle();
@@ -66,8 +54,6 @@ export async function loadGame() {
   }
 }
 
-
-// Auto-save functionality
 let autoSaveInterval = null;
 
 export function startAutoSave(intervalMs = 1000) {
@@ -77,7 +63,6 @@ export function startAutoSave(intervalMs = 1000) {
   
   autoSaveInterval = setInterval(async () => {
     try {
-      // Get kill count dynamically
       const { getKillCount } = await import("./battle.js");
       const gameState = createGameState();
       gameState.killCount = getKillCount();
@@ -100,12 +85,10 @@ export function stopAutoSave() {
   }
 }
 
-// Check if save data exists
 export function hasSaveData() {
   return localStorage.getItem(SAVE_KEY) !== null;
 }
 
-// Clear save data
 export function clearSave() {
   localStorage.removeItem(SAVE_KEY);
   console.log("Save data cleared");

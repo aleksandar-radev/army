@@ -1,9 +1,9 @@
 export const UnitTypes = {
-  Goblin: { baseHp: 3, baseDmg: 1, spawnBuildingKey: "goblinHut" },
-  Orc: { baseHp: 10, baseDmg: 3, spawnBuildingKey: "orcCamp" },
-  Troll: { baseHp: 25, baseDmg: 10, spawnBuildingKey: "trollDen" },
-  Ogre: { baseHp: 65, baseDmg: 25, spawnBuildingKey: "ogreTower" },
-  Dragon: { baseHp: 500, baseDmg: 150, spawnBuildingKey: "dragonRoost" },
+  Goblin: { baseHp: 3.0, baseDmg: 1.0, spawnBuildingKey: "goblinHut" },
+  Orc: { baseHp: 10.0, baseDmg: 3.0, spawnBuildingKey: "orcCamp" },
+  Troll: { baseHp: 25.0, baseDmg: 10.0, spawnBuildingKey: "trollDen" },
+  Ogre: { baseHp: 65.0, baseDmg: 25.0, spawnBuildingKey: "ogreTower" },
+  Dragon: { baseHp: 500.0, baseDmg: 150.0, spawnBuildingKey: "dragonRoost" },
 };
 
 export const BuildingConfig = {
@@ -49,7 +49,7 @@ export const EnemyConfig = {
 export const ArtifactConfig = {
   GoldenTouch: {
     baseCost: 10,
-    costGrowth: 1.5,
+    costGrowth: 1.3,
     effect: "goldPerSecFlat",
     effectValue: 1,
     maxTier: 1000,
@@ -69,7 +69,7 @@ export const ArtifactConfig = {
     maxTier: 1000,
   },
   GoblinPower: {
-    baseCost: 5,
+    baseCost: 10,
     costGrowth: 1.3,
     effect: "unitPower%",
     effectValue: 0.1,
@@ -77,7 +77,7 @@ export const ArtifactConfig = {
     maxTier: 1000,
   },
   OrcPower: {
-    baseCost: 10,
+    baseCost: 40,
     costGrowth: 1.3,
     effect: "unitPower%",
     effectValue: 0.1,
@@ -85,7 +85,7 @@ export const ArtifactConfig = {
     maxTier: 1000,
   },
   TrollPower: {
-    baseCost: 20,
+    baseCost: 100,
     costGrowth: 1.3,
     effect: "unitPower%",
     effectValue: 0.1,
@@ -93,7 +93,7 @@ export const ArtifactConfig = {
     maxTier: 1000,
   },
   OgrePower: {
-    baseCost: 50,
+    baseCost: 500,
     costGrowth: 1.3,
     effect: "unitPower%",
     effectValue: 0.1,
@@ -101,7 +101,7 @@ export const ArtifactConfig = {
     maxTier: 1000,
   },
   DragonPower: {
-    baseCost: 100,
+    baseCost: 4000,
     costGrowth: 1.3,
     effect: "unitPower%",
     effectValue: 0.1,
@@ -109,35 +109,35 @@ export const ArtifactConfig = {
     maxTier: 1000,
   },
   GoblinSummon: {
-    baseCost: 20,
+    baseCost: 5,
     costGrowth: 1.5,
     effect: "startingGoblinsFlat",
     effectValue: 1,
     maxTier: 1000,
   },
   OrcSummon: {
-    baseCost: 50,
+    baseCost: 20,
     costGrowth: 1.5,
     effect: "startingOrcsFlat",
     effectValue: 1,
     maxTier: 1000,
   },
   TrollSummon: {
-    baseCost: 200,
+    baseCost: 50,
     costGrowth: 1.5,
     effect: "startingTrollsFlat",
     effectValue: 1,
     maxTier: 1000,
   },
   OgreSummon: {
-    baseCost: 500,
+    baseCost: 200,
     costGrowth: 1.5,
     effect: "startingOgresFlat",
     effectValue: 1,
     maxTier: 1000,
   },
   DragonSummon: {
-    baseCost: 5000,
+    baseCost: 2000,
     costGrowth: 1.5,
     effect: "startingDragonsFlat",
     effectValue: 1,

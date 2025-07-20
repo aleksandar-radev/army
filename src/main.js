@@ -168,7 +168,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   <div class="unit-box">
     <div class="unit-title-row">
       <div class="unit-title">${icon} ${type}</div>
-      <div class="unit-subtitle">HP ${unitHp} | DMG ${unitDmg}</div>
+      <div class="unit-subtitle">HP ${unitHp.toFixed(
+        1
+      )} | DMG ${unitDmg.toFixed(1)}</div>
     </div>
     <div class="unit-info-row">
       <div class="info-label">👥 Count</div>
@@ -176,11 +178,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     </div>
     <div class="unit-info-row">
       <div class="info-label">❤️ Total HP</div>
-      <div class="info-value">${totalHp.toLocaleString()}</div>
+      <div class="info-value">${totalHp.toFixed(1)}</div>
     </div>
     <div class="unit-info-row">
       <div class="info-label">⚔️ Total DMG</div>
-      <div class="info-value">${totalDmg.toLocaleString()}</div>
+      <div class="info-value">${totalDmg.toFixed(1)}</div>
     </div>
   </div>
 `;
@@ -322,7 +324,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       ascendMsg.textContent = "🎉 Congratulations, you completed the game! 🎉";
       ascendMsg.style.display = "block";
       ascendBtn.disabled = true;
-      // Optionally: localStorage.clear(); // Uncomment to wipe progress
     } else {
       ascendMsg.textContent = "You need 1,000,000 hero souls to ascend!";
       ascendMsg.style.display = "block";
@@ -332,7 +333,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Disable button if not enough souls
   function updateAscendButton() {
     if (getHeroSoulsTotal() >= 1000000) {
       ascendBtn.style.display = "inline-block";
@@ -342,10 +342,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Initialize the UI and start the game
   updateSidebarStats();
   if (!gameLoaded) {
-    // Only start new battle if we didn't load a saved game
     startNewBattle();
   }
   renderBattleView();
