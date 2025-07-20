@@ -1,7 +1,7 @@
 # Save/Load System Implementation
 
 ## Overview
-I have successfully implemented a comprehensive save/load system for the Idle Hero Slayer game with the following features:
+I have successfully implemented a comprehensive save/load system for the Army Builder game with the following features:
 
 ## Features Implemented
 

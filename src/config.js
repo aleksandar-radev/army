@@ -152,6 +152,6 @@ export const TickConfig = {
 };
 
 export const GameMeta = {
-  version: "0.1.0",
-  name: "Idle Hero Slayer",
+  version: "1.0.0",
+  name: "Army Builder",
 };
