@@ -32,8 +32,9 @@ import {
 } from "./artifact.js";
 import { canPrestige, doPrestige } from "./prestige.js";
 import { TickConfig } from "./config.js";
+import { loadGame, startAutoSave, clearSave } from "./saveLoad.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("gold-label").textContent = "Gold:";
 
   document.getElementById("btn-tab-battle").textContent = "Battle";
@@ -50,9 +51,16 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("prestige-subtitle").textContent = "Prestige";
   document.getElementById("btn-prestige").textContent = "Prestige";
 
+  // Initialize default game state
   resources.gold = 100;
   addUnits("Goblin", 10);
   buildingStates["GoldMine"] = 1;
+
+  // Try to load saved game
+  const gameLoaded = await loadGame();
+  if (!gameLoaded) {
+    console.log("Starting new game with default values");
+  }
 
   const tabButtons = document.querySelectorAll("#nav-buttons .nav-btn");
   const tabViews = document.querySelectorAll(".tab-view");
@@ -119,6 +127,9 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTownView();
     renderArmyView();
   }, TickConfig.intervalMs);
+
+  // Start auto-save every second
+  startAutoSave(1000);
 
   function renderBattleView() {
     const enemyInfoDiv = document.getElementById("enemy-info");
@@ -294,12 +305,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   modalYes.addEventListener("click", () => {
-    localStorage.clear();
+    clearSave();
     location.reload();
   });
 
+  // Initialize the UI and start the game
   updateSidebarStats();
-  startNewBattle();
+  if (!gameLoaded) {
+    // Only start new battle if we didn't load a saved game
+    startNewBattle();
+  }
   renderBattleView();
 });
 

@@ -22,6 +22,10 @@ export function getKillCount() {
   return killCount;
 }
 
+export function setKillCount(count) {
+  killCount = count;
+}
+
 export function attack() {
   if (!currentEnemy) {
     startNewBattle();
