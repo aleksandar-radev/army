@@ -9,7 +9,7 @@ body, html {
   width: 100%;
   font-family: 'Press Start 2P', 'VT323', 'Courier New', monospace;
   background: url('./images/rpg_bg.png') repeat;
-  color: #2d1a00;
+  color: #2d1a01;
   overflow: hidden;
 }
 
