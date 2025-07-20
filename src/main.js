@@ -289,6 +289,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         updateSidebarStats();
       }
     };
+    updateAscendButton();
   }
 
   const resetBtn = document.getElementById("btn-reset");
@@ -308,6 +309,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearSave();
     location.reload();
   });
+
+  const ascendBtn = document.getElementById("btn-ascend");
+  const ascendMsg = document.getElementById("ascend-message");
+
+  function canAscend() {
+    return getHeroSoulsTotal() >= 1000000;
+  }
+
+  ascendBtn.addEventListener("click", () => {
+    if (canAscend()) {
+      ascendMsg.textContent = "🎉 Congratulations, you completed the game! 🎉";
+      ascendMsg.style.display = "block";
+      ascendBtn.disabled = true;
+      // Optionally: localStorage.clear(); // Uncomment to wipe progress
+    } else {
+      ascendMsg.textContent = "You need 1,000,000 hero souls to ascend!";
+      ascendMsg.style.display = "block";
+      setTimeout(() => {
+        ascendMsg.style.display = "none";
+      }, 2000);
+    }
+  });
+
+  // Disable button if not enough souls
+  function updateAscendButton() {
+    if (getHeroSoulsTotal() >= 1000000) {
+      ascendBtn.style.display = "inline-block";
+    } else {
+      ascendBtn.style.display = "none";
+      ascendMsg.style.display = "none";
+    }
+  }
 
   // Initialize the UI and start the game
   updateSidebarStats();
