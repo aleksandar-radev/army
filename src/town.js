@@ -37,7 +37,9 @@ export function tickTown() {
   if (goldMineLevel > 0) {
     const baseGoldPerSec =
       BuildingConfig["GoldMine"].goldPerSecond * goldMineLevel;
-    addGold(baseGoldPerSec);
+    const goldMineBonus = getArtifactEffectBonus("goldMine%");
+    const totalGoldPerSec = baseGoldPerSec * (1 + goldMineBonus);
+    addGold(totalGoldPerSec);
   }
 
   for (const key in BuildingConfig) {

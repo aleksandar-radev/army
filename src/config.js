@@ -40,22 +40,29 @@ export const BuildingConfig = {
 };
 
 export const EnemyConfig = {
-  baseHp: 10,
+  baseHp: 5,
   hpGrowth: 1.15,
-  baseDmg: 2,
+  baseDmg: 1,
   dmgGrowth: 1.15,
 };
 
 export const ArtifactConfig = {
-  HeroSoulBooster: {
+  GoldMineBoost: {
     baseCost: 10,
+    costGrowth: 1.1,
+    effect: "goldMine%",
+    effectValue: 0.1,
+    maxTier: 1000,
+  },
+  HeroSoulBooster: {
+    baseCost: 20,
     costGrowth: 1.5,
     effect: "heroSoulMultiplier",
     effectValue: 0.1,
     maxTier: 1000,
   },
   GoblinPower: {
-    baseCost: 10,
+    baseCost: 20,
     costGrowth: 1.15,
     effect: "unitPower%",
     effectValue: 0.1,

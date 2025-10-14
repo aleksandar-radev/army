@@ -332,7 +332,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const ascendMsg = document.getElementById("ascend-message");
 
   function canAscend() {
-    return getHeroSoulsTotal() >= 1000000;
+    return getHeroSoulsTotal() >= 10000000;
   }
 
   ascendBtn.addEventListener("click", () => {
@@ -350,7 +350,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   function updateAscendButton() {
-    if (getHeroSoulsTotal() >= 1000000) {
+    if (getHeroSoulsTotal() >= 10000000) {
       ascendBtn.style.display = "inline-block";
     } else {
       ascendBtn.style.display = "none";
