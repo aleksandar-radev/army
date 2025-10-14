@@ -37,7 +37,7 @@ export function attack() {
   if (combinedDmg >= enemy.getCurrentHp()) {
     enemy.takeDamage(combinedDmg);
     killCount += 1;
-    const soulsGained = getHeroSoulMultiplier();
+    const soulsGained = getHeroSoulMultiplier(enemy.getLevel());
     addHeroSoul(soulsGained);
 
     currentEnemy = null;
