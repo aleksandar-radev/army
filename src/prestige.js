@@ -4,7 +4,7 @@ import { resources } from "./resources.js";
 import { armyCounts } from "./army.js";
 
 export function canPrestige() {
-  const requiredKills = 1 + resources.prestigeCount;
+  const requiredKills = 1;
   return getKillCount() >= requiredKills;
 }
 

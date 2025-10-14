@@ -34,6 +34,88 @@ import { canPrestige, doPrestige } from "./prestige.js";
 import { TickConfig } from "./config.js";
 import { loadGame, startAutoSave, clearSave } from "./saveLoad.js";
 
+const ACHIEVEMENTS = [
+  // 20 for gold gather: 10,000 to 1,000,000,000
+  ...[
+    10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000, 5000000,
+    10000000, 25000000, 50000000, 100000000, 250000000, 500000000, 750000000,
+    850000000, 900000000, 950000000, 1000000000,
+  ].map((value, i) => ({
+    id: `gold_${i + 1}`,
+    name: `Gold Collector ${i + 1}`,
+    desc: `Gather ${value.toLocaleString()} gold.`,
+    type: "gold",
+    value,
+  })),
+
+  // Enemy summons, scaled by unit strength
+  // Enemy summons manually curated, clean numbers
+  ...[
+    {
+      name: "Goblin",
+      values: [
+        5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000,
+        5000000,
+      ],
+    },
+    {
+      name: "Orc",
+      values: [
+        2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000,
+        2500000,
+      ],
+    },
+    {
+      name: "Troll",
+      values: [
+        1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000,
+      ],
+    },
+    {
+      name: "Ogre",
+      values: [
+        500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000,
+      ],
+    },
+    {
+      name: "Dragon",
+      values: [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000],
+    },
+  ].flatMap((unit) =>
+    unit.values.map((value, i) => ({
+      id: `${unit.name.toLowerCase()}_${i + 1}`,
+      name: `${unit.name} Summoner ${i + 1}`,
+      desc: `Summon ${value.toLocaleString()} ${unit.name}s.`,
+      type: `summon_${unit.name}`,
+      value,
+    }))
+  ),
+
+  // 20 for soul gather: 10 to 1,000,000
+  ...[
+    10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000,
+    250000, 500000, 750000, 850000, 900000, 950000, 1000000,
+  ].map((value, i) => ({
+    id: `soul_${i + 1}`,
+    name: `Soul Gatherer ${i + 1}`,
+    desc: `Collect ${value.toLocaleString()} hero souls.`,
+    type: "soul",
+    value,
+  })),
+
+  // 20 for enemy slain: 10 to 1,000,000
+  ...[
+    10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000,
+    250000, 500000, 750000, 850000, 900000, 950000, 1000000,
+  ].map((value, i) => ({
+    id: `slain_${i + 1}`,
+    name: `Slayer ${i + 1}`,
+    desc: `Slay ${value.toLocaleString()} enemies.`,
+    type: "slain",
+    value,
+  })),
+];
+
 document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("gold-label").textContent = "Gold:";
 
@@ -73,6 +155,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       else if (tabName === "army") renderArmyView();
       else if (tabName === "town") renderTownView();
       else if (tabName === "prestige") renderPrestigeView();
+      else if (tabName === "achievements") renderAchievementsView();
     });
   });
 
@@ -296,7 +379,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const btn = document.getElementById("btn-prestige");
     btn.disabled = !canPrestige();
-    btn.textContent = `Prestige (Kills: ${currentKills}/${requiredKills})`;
 
     btn.onclick = () => {
       if (canPrestige()) {
@@ -308,6 +390,39 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     };
     updateAscendButton();
+  }
+
+  function renderAchievementsView() {
+    const list = document.getElementById("achievements-list");
+    list.innerHTML = "";
+    ACHIEVEMENTS.forEach((ach) => {
+      let progress = 0;
+      if (ach.type === "gold") progress = getGold();
+      else if (ach.type === "soul") progress = getHeroSoulsTotal();
+      else if (ach.type.startsWith("summon_"))
+        progress = getUnitCount(ach.type.split("_")[1]);
+      else if (ach.type === "slain") progress = getKillCount();
+
+      const unlocked = progress >= ach.value;
+      const percent = Math.min(100, (progress / ach.value) * 100);
+
+      const item = document.createElement("div");
+      item.className = "achievement-item";
+      item.style.opacity = unlocked ? "1" : "0.65";
+      item.innerHTML = `
+      <strong>${ach.name}</strong>
+      <span>${ach.desc}</span>
+      <span>Progress: ${Math.min(
+        progress,
+        ach.value
+      ).toLocaleString()} / ${ach.value.toLocaleString()}</span>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width:${percent}%;"></div>
+      </div>
+      ${unlocked ? "<span class='checkmark'>✓</span>" : ""}
+    `;
+      list.appendChild(item);
+    });
   }
 
   const resetBtn = document.getElementById("btn-reset");
@@ -332,7 +447,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const ascendMsg = document.getElementById("ascend-message");
 
   function canAscend() {
-    return getHeroSoulsTotal() >= 10000000;
+    return getHeroSoulsTotal() >= 1000000;
   }
 
   ascendBtn.addEventListener("click", () => {
@@ -350,7 +465,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   function updateAscendButton() {
-    if (getHeroSoulsTotal() >= 10000000) {
+    if (getHeroSoulsTotal() >= 1000000) {
       ascendBtn.style.display = "inline-block";
     } else {
       ascendBtn.style.display = "none";
