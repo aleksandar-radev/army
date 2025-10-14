@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const infoDiv = document.getElementById("prestige-info");
     infoDiv.textContent = `You have ${getHeroSoulsTotal().toFixed(1)} souls.`;
 
-    const requiredKills = resources.prestigeCount + 10;
+    const requiredKills = resources.prestigeCount + 1;
     const currentKills = getKillCount();
 
     const btn = document.getElementById("btn-prestige");

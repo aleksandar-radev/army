@@ -9,7 +9,7 @@ export const UnitTypes = {
 export const BuildingConfig = {
   GoldMine: {
     baseCost: 100,
-    costGrowth: 1.15,
+    costGrowth: 1.1,
     goldPerSecond: 1,
   },
   GoblinHut: {
