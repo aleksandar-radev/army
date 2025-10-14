@@ -10,6 +10,7 @@ export class EnemyHero {
     this.dmg = Math.floor(
       EnemyConfig.baseDmg * Math.pow(EnemyConfig.dmgGrowth, level - 1)
     );
+    this.goldReward = Math.floor(10 * Math.pow(level, 1.2));
   }
 
   isAlive() {
@@ -34,5 +35,9 @@ export class EnemyHero {
 
   getLevel() {
     return this.level;
+  }
+
+  getGoldReward() {
+    return this.goldReward;
   }
 }

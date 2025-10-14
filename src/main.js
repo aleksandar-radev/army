@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (result.killed) {
       battleLogDiv.textContent = `Enemy defeated! You gained ${result.storedSoulsGained.toFixed(
         1
-      )} hero souls.`;
+      )} hero souls and ${result.goldGained.toLocaleString()} gold.`;
 
       startNewBattle();
       const enemy = getCurrentEnemy();
