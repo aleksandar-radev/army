@@ -148,9 +148,9 @@ body, html {
 }
 
 .scrollable-list {
-  max-height: 600px;
+  max-height: 900px;
   overflow-y: auto;
-  margin-top: 8px;
+  margin-top: -8px;
   padding-right: 8px;
 }
 
