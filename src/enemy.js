@@ -1,4 +1,5 @@
 import { EnemyConfig } from "./config.js";
+import { getArtifactEffectBonus } from "./artifact.js";
 
 export class EnemyHero {
   constructor(level) {
@@ -10,7 +11,7 @@ export class EnemyHero {
     this.dmg = Math.floor(
       EnemyConfig.baseDmg * Math.pow(EnemyConfig.dmgGrowth, level - 1)
     );
-    this.goldReward = Math.floor(10 * Math.pow(level, 1.2));
+    this.baseGoldReward = Math.floor(5 * Math.pow(level, 1.05));
   }
 
   isAlive() {
@@ -38,6 +39,7 @@ export class EnemyHero {
   }
 
   getGoldReward() {
-    return this.goldReward;
+    const goldBonus = getArtifactEffectBonus("enemyGold%");
+    return Math.floor(this.baseGoldReward * (1 + goldBonus));
   }
 }

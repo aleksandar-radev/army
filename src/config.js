@@ -8,33 +8,33 @@ export const UnitTypes = {
 
 export const BuildingConfig = {
   GoldMine: {
-    baseCost: 87,
+    baseCost: 100,
     costGrowth: 1.15,
     goldPerSecond: 1,
   },
   GoblinHut: {
     baseCost: 50,
-    costGrowth: 1.15,
+    costGrowth: 1.35,
     spawnPerMinute: 2,
   },
   OrcCamp: {
     baseCost: 200,
-    costGrowth: 1.15,
+    costGrowth: 1.35,
     spawnPerMinute: 1,
   },
   TrollDen: {
     baseCost: 500,
-    costGrowth: 1.15,
+    costGrowth: 1.35,
     spawnPerMinute: 0.5,
   },
   OgreTower: {
     baseCost: 2000,
-    costGrowth: 1.15,
+    costGrowth: 1.35,
     spawnPerMinute: 0.2,
   },
   DragonRoost: {
     baseCost: 10000,
-    costGrowth: 1.15,
+    costGrowth: 1.35,
     spawnPerMinute: 0.1,
   },
 };
@@ -47,18 +47,11 @@ export const EnemyConfig = {
 };
 
 export const ArtifactConfig = {
-  GoldenTouch: {
+  GoldenBounty: {
     baseCost: 10,
-    costGrowth: 1.3,
-    effect: "goldPerSecFlat",
-    effectValue: 1,
-    maxTier: 1000,
-  },
-  StartingGoldBoost: {
-    baseCost: 10,
-    costGrowth: 1.5,
-    effect: "startingGoldFlat",
-    effectValue: 1000,
+    costGrowth: 1.2,
+    effect: "enemyGold%",
+    effectValue: 0.1,
     maxTier: 1000,
   },
   HeroSoulBooster: {
@@ -70,30 +63,30 @@ export const ArtifactConfig = {
   },
   GoblinPower: {
     baseCost: 10,
-    costGrowth: 1.3,
+    costGrowth: 1.15,
     effect: "unitPower%",
     effectValue: 0.1,
     appliesTo: "Goblin",
     maxTier: 1000,
   },
   OrcPower: {
-    baseCost: 40,
-    costGrowth: 1.3,
+    baseCost: 50,
+    costGrowth: 1.2,
     effect: "unitPower%",
     effectValue: 0.1,
     appliesTo: "Orc",
     maxTier: 1000,
   },
   TrollPower: {
-    baseCost: 100,
-    costGrowth: 1.3,
+    baseCost: 200,
+    costGrowth: 1.25,
     effect: "unitPower%",
     effectValue: 0.1,
     appliesTo: "Troll",
     maxTier: 1000,
   },
   OgrePower: {
-    baseCost: 500,
+    baseCost: 800,
     costGrowth: 1.3,
     effect: "unitPower%",
     effectValue: 0.1,
@@ -101,46 +94,11 @@ export const ArtifactConfig = {
     maxTier: 1000,
   },
   DragonPower: {
-    baseCost: 4000,
-    costGrowth: 1.3,
+    baseCost: 5000,
+    costGrowth: 1.35,
     effect: "unitPower%",
     effectValue: 0.1,
     appliesTo: "Dragon",
-    maxTier: 1000,
-  },
-  GoblinSummon: {
-    baseCost: 5,
-    costGrowth: 1.5,
-    effect: "startingGoblinsFlat",
-    effectValue: 1,
-    maxTier: 1000,
-  },
-  OrcSummon: {
-    baseCost: 20,
-    costGrowth: 1.5,
-    effect: "startingOrcsFlat",
-    effectValue: 1,
-    maxTier: 1000,
-  },
-  TrollSummon: {
-    baseCost: 50,
-    costGrowth: 1.5,
-    effect: "startingTrollsFlat",
-    effectValue: 1,
-    maxTier: 1000,
-  },
-  OgreSummon: {
-    baseCost: 200,
-    costGrowth: 1.5,
-    effect: "startingOgresFlat",
-    effectValue: 1,
-    maxTier: 1000,
-  },
-  DragonSummon: {
-    baseCost: 2000,
-    costGrowth: 1.5,
-    effect: "startingDragonsFlat",
-    effectValue: 1,
     maxTier: 1000,
   },
 };

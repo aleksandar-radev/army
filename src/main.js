@@ -51,12 +51,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("prestige-subtitle").textContent = "Prestige";
   document.getElementById("btn-prestige").textContent = "Prestige";
 
-  // Initialize default game state
-  resources.gold = 100;
-  addUnits("Goblin", 10);
-  buildingStates["GoldMine"] = 1;
+  resources.gold = 1000;
 
-  // Try to load saved game
   const gameLoaded = await loadGame();
   if (!gameLoaded) {
     console.log("Starting new game with default values");
@@ -139,7 +135,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderArmyView();
   }, TickConfig.intervalMs);
 
-  // Start auto-save every second
   startAutoSave(1000);
 
   function renderBattleView() {
@@ -295,8 +290,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const infoDiv = document.getElementById("prestige-info");
     infoDiv.textContent = `You have ${getHeroSoulsTotal().toFixed(1)} souls.`;
 
+    const requiredKills = resources.prestigeCount + 10;
+    const currentKills = getKillCount();
+
     const btn = document.getElementById("btn-prestige");
     btn.disabled = !canPrestige();
+    btn.textContent = `Prestige (Kills: ${currentKills}/${requiredKills})`;
+
     btn.onclick = () => {
       if (canPrestige()) {
         doPrestige();
