@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           .getMaxHp()
           .toFixed(1)} &nbsp; | &nbsp; DMG: ${enemy.getDmg().toFixed(1)}`;
       }
+      updateSidebarStats();
     } else {
       const { enemyHpAfterAttack, retaliation } = result;
       let logMsg = `You dealt damage. Enemy HP is now ${enemyHpAfterAttack.toFixed(
