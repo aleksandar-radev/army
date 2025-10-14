@@ -95,11 +95,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       startNewBattle();
       const enemy = getCurrentEnemy();
       if (enemy) {
-        enemyInfoDiv.innerHTML = `🧑‍🎤 <strong>Level ${enemy.getLevel()}</strong> &nbsp; | &nbsp; HP: ${enemy.getCurrentHp()} / ${enemy.getMaxHp()} &nbsp; | &nbsp; DMG: ${enemy.getDmg()}`;
+        enemyInfoDiv.innerHTML = `🧑‍🎤 <strong>Level ${enemy.getLevel()}</strong> &nbsp; | &nbsp; HP: ${enemy
+          .getCurrentHp()
+          .toFixed(1)} / ${enemy
+          .getMaxHp()
+          .toFixed(1)} &nbsp; | &nbsp; DMG: ${enemy.getDmg().toFixed(1)}`;
       }
     } else {
       const { enemyHpAfterAttack, retaliation } = result;
-      let logMsg = `You dealt damage. Enemy HP is now ${enemyHpAfterAttack}.\n`;
+      let logMsg = `You dealt damage. Enemy HP is now ${enemyHpAfterAttack.toFixed(
+        1
+      )}.\n`;
       if (retaliation.type) {
         if (retaliation.unitsLost > 0) {
           logMsg += `Enemy retaliated and killed ${retaliation.unitsLost} ${
@@ -114,7 +120,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       battleLogDiv.textContent = logMsg;
       const enemy = getCurrentEnemy();
       if (enemy) {
-        enemyInfoDiv.innerHTML = `🧑‍🎤 <strong>Level ${enemy.getLevel()}</strong> &nbsp; | &nbsp; HP: ${enemy.getCurrentHp()} / ${enemy.getMaxHp()} &nbsp; | &nbsp; DMG: ${enemy.getDmg()}`;
+        enemyInfoDiv.innerHTML = `🧑‍🎤 <strong>Level ${enemy.getLevel()}</strong> &nbsp; | &nbsp; HP: ${enemy
+          .getCurrentHp()
+          .toFixed(1)} / ${enemy
+          .getMaxHp()
+          .toFixed(1)} &nbsp; | &nbsp; DMG: ${enemy.getDmg().toFixed(1)}`;
       }
     }
 
@@ -135,7 +145,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const enemyInfoDiv = document.getElementById("enemy-info");
     const enemy = getCurrentEnemy();
     if (enemy) {
-      enemyInfoDiv.innerHTML = `🧑‍🎤 <strong>Level ${enemy.getLevel()}</strong> &nbsp; | &nbsp; HP: ${enemy.getCurrentHp()} / ${enemy.getMaxHp()} &nbsp; | &nbsp; DMG: ${enemy.getDmg()}`;
+      enemyInfoDiv.innerHTML = `🧑‍🎤 <strong>Level ${enemy.getLevel()}</strong> &nbsp; | &nbsp; HP: ${enemy
+        .getCurrentHp()
+        .toFixed(1)} / ${enemy
+        .getMaxHp()
+        .toFixed(1)} &nbsp; | &nbsp; DMG: ${enemy.getDmg().toFixed(1)}`;
     }
     document.getElementById("battle-log").textContent = "";
   }
