@@ -11,7 +11,6 @@ export class EnemyHero {
     this.dmg = Math.floor(
       EnemyConfig.baseDmg * Math.pow(EnemyConfig.dmgGrowth, level - 1)
     );
-    this.baseGoldReward = Math.floor(5 * Math.pow(level, 1.05));
   }
 
   isAlive() {
@@ -36,10 +35,5 @@ export class EnemyHero {
 
   getLevel() {
     return this.level;
-  }
-
-  getGoldReward() {
-    const goldBonus = getArtifactEffectBonus("enemyGold%");
-    return Math.floor(this.baseGoldReward * (1 + goldBonus));
   }
 }

@@ -8,28 +8,28 @@ export const UnitTypes = {
 
 export const BuildingConfig = {
   GoldMine: {
-    baseCost: 100,
+    baseCost: 91,
     costGrowth: 1.1,
     goldPerSecond: 1,
   },
   GoblinHut: {
     baseCost: 50,
-    costGrowth: 1.35,
+    costGrowth: 1.15,
     spawnPerMinute: 2,
   },
   OrcCamp: {
     baseCost: 200,
-    costGrowth: 1.35,
+    costGrowth: 1.2,
     spawnPerMinute: 1,
   },
   TrollDen: {
     baseCost: 500,
-    costGrowth: 1.35,
+    costGrowth: 1.25,
     spawnPerMinute: 0.5,
   },
   OgreTower: {
     baseCost: 2000,
-    costGrowth: 1.35,
+    costGrowth: 1.3,
     spawnPerMinute: 0.2,
   },
   DragonRoost: {
@@ -47,13 +47,6 @@ export const EnemyConfig = {
 };
 
 export const ArtifactConfig = {
-  GoldenBounty: {
-    baseCost: 10,
-    costGrowth: 1.2,
-    effect: "enemyGold%",
-    effectValue: 0.1,
-    maxTier: 1000,
-  },
   HeroSoulBooster: {
     baseCost: 10,
     costGrowth: 1.5,

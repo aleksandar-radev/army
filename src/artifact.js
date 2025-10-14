@@ -6,8 +6,9 @@ for (const key in ArtifactConfig) {
   artifactStates[key] = 0;
 }
 
-export function getHeroSoulMultiplier() {
-  return 1 + getArtifactEffectBonus("heroSoulMultiplier");
+export function getHeroSoulMultiplier(enemyLevel = 1) {
+  const boosterTier = artifactStates["HeroSoulBooster"] || 0;
+  return 1 + boosterTier * 0.1 * enemyLevel;
 }
 
 export function getArtifactTier(artifactKey) {

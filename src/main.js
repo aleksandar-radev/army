@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("btn-prestige").textContent = "Prestige";
 
   resources.gold = 1000;
+  buildingStates["GoldMine"] = 1;
 
   const gameLoaded = await loadGame();
   if (!gameLoaded) {
@@ -86,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (result.killed) {
       battleLogDiv.textContent = `Enemy defeated! You gained ${result.storedSoulsGained.toFixed(
         1
-      )} hero souls and ${result.goldGained.toLocaleString()} gold.`;
+      )} hero souls`;
 
       startNewBattle();
       const enemy = getCurrentEnemy();

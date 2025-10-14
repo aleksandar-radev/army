@@ -1,7 +1,7 @@
 import { getCombinedDmg, getUnitCount, removeUnits } from "./army.js";
 import { getUnitEffectiveHp } from "./unitHelpers.js";
 import { EnemyHero } from "./enemy.js";
-import { addHeroSoul, addGold } from "./resources.js";
+import { addHeroSoul } from "./resources.js";
 import { UnitTypes } from "./config.js";
 import { getHeroSoulMultiplier } from "./artifact.js";
 
@@ -40,15 +40,11 @@ export function attack() {
     const soulsGained = getHeroSoulMultiplier();
     addHeroSoul(soulsGained);
 
-    const goldGained = enemy.getGoldReward();
-    addGold(goldGained);
-
     currentEnemy = null;
     return {
       killed: true,
       newEnemyLevel: killCount + 1,
       storedSoulsGained: soulsGained,
-      goldGained,
     };
   }
 
