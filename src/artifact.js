@@ -72,7 +72,8 @@ export function getAchievementBonus() {
     else if (ach.type === "slain") progress = resources.lifetimeEnemiesSlain;
     else if (ach.type === "herolevel")
       progress = resources.highestEnemyLevel || 1;
+    else if (ach.type === "prestige") progress = resources.prestigeCount || 0;
     if (progress >= ach.value) unlocked++;
   }
-  return Math.min(unlocked * 0.01, 1.2); // 1.2 = 120%
+  return Math.min(unlocked * 0.01, ACHIEVEMENTS.length * 0.01);
 }

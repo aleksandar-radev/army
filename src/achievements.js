@@ -81,4 +81,12 @@ export const ACHIEVEMENTS = [
     type: "herolevel",
     value,
   })),
+
+  ...[10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000].map((value, i) => ({
+    id: `prestige_${i + 1}`,
+    name: `Prestige Master ${i + 1}`,
+    desc: `Prestige ${value.toLocaleString()} times.`,
+    type: "prestige",
+    value,
+  })),
 ];
