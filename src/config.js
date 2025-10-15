@@ -42,7 +42,7 @@ export const BuildingConfig = {
 export const EnemyConfig = {
   baseHp: 5,
   hpGrowth: 1.07,
-  baseDmg: 1,
+  baseDmg: 0.5,
   dmgGrowth: 1.05,
 };
 
