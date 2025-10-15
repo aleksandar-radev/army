@@ -3,10 +3,21 @@ export const resources = {
   heroSoulsStored: 0,
   heroSoulsTotal: 0,
   prestigeCount: 0,
+  lifetimeGold: 0,
+  lifetimeSouls: 0,
+  lifetimeEnemiesSlain: 0,
+  lifetimeSummoned: {
+    Goblin: 0,
+    Orc: 0,
+    Troll: 0,
+    Ogre: 0,
+    Dragon: 0,
+  },
 };
 
 export function addGold(amount) {
   resources.gold += amount;
+  resources.lifetimeGold += amount;
 }
 
 export function spendGold(amount) {
@@ -19,6 +30,7 @@ export function spendGold(amount) {
 
 export function addHeroSoul(count = 1) {
   resources.heroSoulsStored += count;
+  resources.lifetimeSouls += count;
 }
 
 export function convertHeroSoulsToTotal() {

@@ -1,5 +1,6 @@
 import { UnitTypes } from "./config.js";
 import { getUnitEffectiveHp, getUnitEffectiveDmg } from "./unitHelpers.js";
+import { resources } from "./resources.js";
 
 export const armyCounts = {};
 for (const type in UnitTypes) {
@@ -7,7 +8,10 @@ for (const type in UnitTypes) {
 }
 
 export function addUnits(type, amount = 1) {
-  armyCounts[type] += amount;
+  armyCounts[type] = (armyCounts[type] || 0) + amount;
+  if (resources.lifetimeSummoned[type] !== undefined) {
+    resources.lifetimeSummoned[type] += amount;
+  }
 }
 
 export function removeUnits(type, amount = 1) {

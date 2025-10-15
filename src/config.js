@@ -86,7 +86,7 @@ export const ArtifactConfig = {
     maxTier: 1000,
   },
   OgrePower: {
-    baseCost: 800,
+    baseCost: 400,
     costGrowth: 1.3,
     effect: "unitPower%",
     effectValue: 0.1,
@@ -94,12 +94,47 @@ export const ArtifactConfig = {
     maxTier: 1000,
   },
   DragonPower: {
-    baseCost: 5000,
+    baseCost: 2000,
     costGrowth: 1.35,
     effect: "unitPower%",
     effectValue: 0.1,
     appliesTo: "Dragon",
     maxTier: 1000,
+  },
+  hutBoost: {
+    baseCost: 40,
+    costGrowth: 1.2,
+    effect: "buildingSummon%",
+    effectValue: 0.1,
+    maxTier: 1,
+  },
+  CampBoost: {
+    baseCost: 100,
+    costGrowth: 1.25,
+    effect: "buildingSummon%",
+    effectValue: 0.1,
+    maxTier: 1,
+  },
+  DenBoost: {
+    baseCost: 400,
+    costGrowth: 1.3,
+    effect: "buildingSummon%",
+    effectValue: 0.1,
+    maxTier: 1,
+  },
+  TowerBoost: {
+    baseCost: 800,
+    costGrowth: 1.35,
+    effect: "buildingSummon%",
+    effectValue: 0.1,
+    maxTier: 1,
+  },
+  RoostBoost: {
+    baseCost: 4000,
+    costGrowth: 1.4,
+    effect: "buildingSummon%",
+    effectValue: 0.1,
+    maxTier: 1,
   },
 };
 

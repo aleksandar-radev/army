@@ -14,7 +14,7 @@ export function createGameState() {
     armyCounts: { ...armyCounts },
     buildingStates: { ...buildingStates },
     artifactStates: { ...artifactStates },
-    killCount: 0 
+    killCount: 0,
   };
 }
 
@@ -27,9 +27,11 @@ export async function loadGame() {
     }
 
     const gameState = JSON.parse(saveData);
-    
+
     if (gameState.version !== GameMeta.version) {
-      console.warn(`Save version mismatch: ${gameState.version} vs ${GameMeta.version}`);
+      console.warn(
+        `Save version mismatch: ${gameState.version} vs ${GameMeta.version}`
+      );
     }
 
     Object.assign(resources, gameState.resources);
@@ -60,20 +62,20 @@ export function startAutoSave(intervalMs = 1000) {
   if (autoSaveInterval) {
     clearInterval(autoSaveInterval);
   }
-  
+
   autoSaveInterval = setInterval(async () => {
     try {
       const { getKillCount } = await import("./battle.js");
       const gameState = createGameState();
       gameState.killCount = getKillCount();
-      
+
       const saveData = JSON.stringify(gameState);
       localStorage.setItem(SAVE_KEY, saveData);
     } catch (error) {
       console.error("Auto-save failed:", error);
     }
   }, intervalMs);
-  
+
   console.log(`Auto-save started with ${intervalMs}ms interval`);
 }
 

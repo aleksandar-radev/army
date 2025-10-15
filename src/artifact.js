@@ -1,5 +1,7 @@
 import { ArtifactConfig } from "./config.js";
 import { spendHeroSouls } from "./resources.js";
+import { ACHIEVEMENTS } from "./achievements.js";
+import { resources } from "./resources.js";
 
 export const artifactStates = {};
 for (const key in ArtifactConfig) {
@@ -57,4 +59,20 @@ export function getArtifactEffectBonus(effectType, unitType = null) {
     total += tier * cfg.effectValue;
   }
   return total;
+}
+
+export function getAchievementBonus() {
+  let unlocked = 0;
+  for (const ach of ACHIEVEMENTS) {
+    let progress = 0;
+    if (ach.type === "gold") progress = resources.lifetimeGold;
+    else if (ach.type === "soul") progress = resources.lifetimeSouls;
+    else if (ach.type.startsWith("summon_"))
+      progress = resources.lifetimeSummoned[ach.type.split("_")[1]] || 0;
+    else if (ach.type === "slain") progress = resources.lifetimeEnemiesSlain;
+    else if (ach.type === "herolevel")
+      progress = resources.highestEnemyLevel || 1;
+    if (progress >= ach.value) unlocked++;
+  }
+  return Math.min(unlocked * 0.01, 1.2); // 1.2 = 120%
 }

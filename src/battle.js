@@ -1,7 +1,7 @@
 import { getCombinedDmg, getUnitCount, removeUnits } from "./army.js";
 import { getUnitEffectiveHp } from "./unitHelpers.js";
 import { EnemyHero } from "./enemy.js";
-import { addHeroSoul } from "./resources.js";
+import { addHeroSoul, resources } from "./resources.js";
 import { UnitTypes } from "./config.js";
 import { getHeroSoulMultiplier } from "./artifact.js";
 
@@ -11,6 +11,9 @@ let killCount = 0;
 export function startNewBattle() {
   const nextLevel = killCount + 1;
   currentEnemy = new EnemyHero(nextLevel);
+  if (!resources.highestEnemyLevel || nextLevel > resources.highestEnemyLevel) {
+    resources.highestEnemyLevel = nextLevel;
+  }
   return currentEnemy;
 }
 
@@ -37,6 +40,7 @@ export function attack() {
   if (combinedDmg >= enemy.getCurrentHp()) {
     enemy.takeDamage(combinedDmg);
     killCount += 1;
+    resources.lifetimeEnemiesSlain += 1;
     const soulsGained = getHeroSoulMultiplier(enemy.getLevel());
     addHeroSoul(soulsGained);
 

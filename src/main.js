@@ -33,88 +33,7 @@ import {
 import { canPrestige, doPrestige } from "./prestige.js";
 import { TickConfig } from "./config.js";
 import { loadGame, startAutoSave, clearSave } from "./saveLoad.js";
-
-const ACHIEVEMENTS = [
-  // 20 for gold gather: 10,000 to 1,000,000,000
-  ...[
-    10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000, 5000000,
-    10000000, 25000000, 50000000, 100000000, 250000000, 500000000, 750000000,
-    850000000, 900000000, 950000000, 1000000000,
-  ].map((value, i) => ({
-    id: `gold_${i + 1}`,
-    name: `Gold Collector ${i + 1}`,
-    desc: `Gather ${value.toLocaleString()} gold.`,
-    type: "gold",
-    value,
-  })),
-
-  // Enemy summons, scaled by unit strength
-  // Enemy summons manually curated, clean numbers
-  ...[
-    {
-      name: "Goblin",
-      values: [
-        5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000,
-        5000000,
-      ],
-    },
-    {
-      name: "Orc",
-      values: [
-        2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000,
-        2500000,
-      ],
-    },
-    {
-      name: "Troll",
-      values: [
-        1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000,
-      ],
-    },
-    {
-      name: "Ogre",
-      values: [
-        500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000,
-      ],
-    },
-    {
-      name: "Dragon",
-      values: [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000],
-    },
-  ].flatMap((unit) =>
-    unit.values.map((value, i) => ({
-      id: `${unit.name.toLowerCase()}_${i + 1}`,
-      name: `${unit.name} Summoner ${i + 1}`,
-      desc: `Summon ${value.toLocaleString()} ${unit.name}s.`,
-      type: `summon_${unit.name}`,
-      value,
-    }))
-  ),
-
-  // 20 for soul gather: 10 to 1,000,000
-  ...[
-    10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000,
-    250000, 500000, 750000, 850000, 900000, 950000, 1000000,
-  ].map((value, i) => ({
-    id: `soul_${i + 1}`,
-    name: `Soul Gatherer ${i + 1}`,
-    desc: `Collect ${value.toLocaleString()} hero souls.`,
-    type: "soul",
-    value,
-  })),
-
-  // 20 for enemy slain: 10 to 1,000,000
-  ...[
-    10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000,
-    250000, 500000, 750000, 850000, 900000, 950000, 1000000,
-  ].map((value, i) => ({
-    id: `slain_${i + 1}`,
-    name: `Slayer ${i + 1}`,
-    desc: `Slay ${value.toLocaleString()} enemies.`,
-    type: "slain",
-    value,
-  })),
-];
+import { ACHIEVEMENTS } from "./achievements.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("gold-label").textContent = "Gold:";
@@ -335,19 +254,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const name = document.createElement("span");
       const artifactIcons = {
-        GoldenTouch: "🪙",
-        StartingGoldBoost: "💰",
+        GoldMineBoost: "⛏️",
         HeroSoulBooster: "🔥",
         GoblinPower: "👺",
         OrcPower: "🪓",
         TrollPower: "🧌",
         OgrePower: "🏯",
         DragonPower: "🐉",
-        GoblinSummon: "👺",
-        OrcSummon: "🪓",
-        TrollSummon: "🧌",
-        OgreSummon: "🏯",
-        DragonSummon: "🐉",
+        hutBoost: "🏚️",
+        CampBoost: "⛺",
+        DenBoost: "🏠",
+        TowerBoost: "🗼",
+        RoostBoost: "🦅",
       };
 
       const icon = artifactIcons[key] || "🔮";
@@ -395,15 +313,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   function renderAchievementsView() {
     const list = document.getElementById("achievements-list");
     list.innerHTML = "";
+
+    let unlockedCount = 0;
     ACHIEVEMENTS.forEach((ach) => {
       let progress = 0;
-      if (ach.type === "gold") progress = getGold();
-      else if (ach.type === "soul") progress = getHeroSoulsTotal();
+      if (ach.type === "gold")
+        progress = Math.floor(resources.lifetimeGold); // <-- changed
+      else if (ach.type === "soul") progress = resources.lifetimeSouls;
       else if (ach.type.startsWith("summon_"))
-        progress = getUnitCount(ach.type.split("_")[1]);
-      else if (ach.type === "slain") progress = getKillCount();
+        progress = resources.lifetimeSummoned[ach.type.split("_")[1]] || 0;
+      else if (ach.type === "slain") progress = resources.lifetimeEnemiesSlain;
+      else if (ach.type === "herolevel")
+        progress = resources.highestEnemyLevel || 1;
 
       const unlocked = progress >= ach.value;
+      if (unlocked) unlockedCount++;
+
       const percent = Math.min(100, (progress / ach.value) * 100);
 
       const item = document.createElement("div");
@@ -412,9 +337,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       item.innerHTML = `
       <strong>${ach.name}</strong>
       <span>${ach.desc}</span>
-      <span>Progress: ${Math.min(
-        progress,
-        ach.value
+      <span>Progress: ${Math.floor(
+        Math.min(progress, ach.value)
       ).toLocaleString()} / ${ach.value.toLocaleString()}</span>
       <div class="progress-bar-bg">
         <div class="progress-bar-fill" style="width:${percent}%;"></div>
@@ -423,6 +347,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
       list.appendChild(item);
     });
+
+    const totalDiv = document.createElement("div");
+    totalDiv.style.fontWeight = "bold";
+    totalDiv.style.fontSize = "18px";
+    totalDiv.style.marginBottom = "16px";
+    totalDiv.textContent = `Achievements: ${unlockedCount} / ${ACHIEVEMENTS.length}`;
+    list.prepend(totalDiv);
   }
 
   const resetBtn = document.getElementById("btn-reset");
@@ -484,7 +415,8 @@ function updateSidebarStats() {
   const gold = getGold();
   const storedSouls = getHeroSoulsStored();
   document.getElementById("gold-label").textContent = `Gold:`;
-  document.getElementById("gold-display").textContent = gold.toLocaleString();
+  document.getElementById("gold-display").textContent =
+    Math.floor(gold).toLocaleString();
   document.getElementById(
     "hero-souls-display"
   ).innerHTML = `after prestige:<br>${storedSouls.toFixed(1)} souls`;
