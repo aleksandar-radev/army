@@ -8,42 +8,42 @@ export const UnitTypes = {
 
 export const BuildingConfig = {
   GoldMine: {
-    baseCost: 91,
-    costGrowth: 1.1,
+    baseCost: 49,
+    costGrowth: 1.05,
     goldPerSecond: 1,
   },
   GoblinHut: {
     baseCost: 50,
-    costGrowth: 1.15,
+    costGrowth: 1.05,
     spawnPerMinute: 2,
   },
   OrcCamp: {
     baseCost: 200,
-    costGrowth: 1.2,
+    costGrowth: 1.05,
     spawnPerMinute: 1,
   },
   TrollDen: {
     baseCost: 500,
-    costGrowth: 1.25,
+    costGrowth: 1.05,
     spawnPerMinute: 0.5,
   },
   OgreTower: {
     baseCost: 2000,
-    costGrowth: 1.3,
+    costGrowth: 1.05,
     spawnPerMinute: 0.2,
   },
   DragonRoost: {
     baseCost: 10000,
-    costGrowth: 1.35,
+    costGrowth: 1.05,
     spawnPerMinute: 0.1,
   },
 };
 
 export const EnemyConfig = {
-  baseHp: 10,
-  hpGrowth: 1.15,
-  baseDmg: 2,
-  dmgGrowth: 1.15,
+  baseHp: 5,
+  hpGrowth: 1.07,
+  baseDmg: 1,
+  dmgGrowth: 1.05,
 };
 
 export const ArtifactConfig = {
@@ -56,14 +56,14 @@ export const ArtifactConfig = {
   },
   HeroSoulBooster: {
     baseCost: 20,
-    costGrowth: 1.5,
+    costGrowth: 1.4,
     effect: "heroSoulMultiplier",
     effectValue: 0.1,
     maxTier: 1000,
   },
   GoblinPower: {
     baseCost: 20,
-    costGrowth: 1.15,
+    costGrowth: 1.2,
     effect: "unitPower%",
     effectValue: 0.1,
     appliesTo: "Goblin",
@@ -79,7 +79,7 @@ export const ArtifactConfig = {
   },
   TrollPower: {
     baseCost: 200,
-    costGrowth: 1.25,
+    costGrowth: 1.2,
     effect: "unitPower%",
     effectValue: 0.1,
     appliesTo: "Troll",
@@ -87,7 +87,7 @@ export const ArtifactConfig = {
   },
   OgrePower: {
     baseCost: 400,
-    costGrowth: 1.3,
+    costGrowth: 1.2,
     effect: "unitPower%",
     effectValue: 0.1,
     appliesTo: "Ogre",
@@ -95,7 +95,7 @@ export const ArtifactConfig = {
   },
   DragonPower: {
     baseCost: 2000,
-    costGrowth: 1.35,
+    costGrowth: 1.2,
     effect: "unitPower%",
     effectValue: 0.1,
     appliesTo: "Dragon",
@@ -110,28 +110,28 @@ export const ArtifactConfig = {
   },
   CampBoost: {
     baseCost: 100,
-    costGrowth: 1.25,
+    costGrowth: 1.2,
     effect: "buildingSummon%",
     effectValue: 0.1,
     maxTier: 1000,
   },
   DenBoost: {
     baseCost: 400,
-    costGrowth: 1.3,
+    costGrowth: 1.2,
     effect: "buildingSummon%",
     effectValue: 0.1,
     maxTier: 1000,
   },
   TowerBoost: {
     baseCost: 800,
-    costGrowth: 1.35,
+    costGrowth: 1.2,
     effect: "buildingSummon%",
     effectValue: 0.1,
     maxTier: 1000,
   },
   RoostBoost: {
     baseCost: 4000,
-    costGrowth: 1.4,
+    costGrowth: 1.2,
     effect: "buildingSummon%",
     effectValue: 0.1,
     maxTier: 1000,

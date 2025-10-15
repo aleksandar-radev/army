@@ -5,11 +5,13 @@ export class EnemyHero {
   constructor(level) {
     this.level = level;
     this.maxHp = Math.floor(
-      EnemyConfig.baseHp * Math.pow(EnemyConfig.hpGrowth, level - 1)
+      EnemyConfig.baseHp * Math.pow(EnemyConfig.hpGrowth, level - 1) +
+        EnemyConfig.baseHp * level
     );
     this.currentHp = this.maxHp;
     this.dmg = Math.floor(
-      EnemyConfig.baseDmg * Math.pow(EnemyConfig.dmgGrowth, level - 1)
+      EnemyConfig.baseDmg * Math.pow(EnemyConfig.dmgGrowth, level - 1) +
+        EnemyConfig.baseDmg * level
     );
   }
 

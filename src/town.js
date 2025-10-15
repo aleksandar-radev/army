@@ -14,7 +14,10 @@ for (const key in BuildingConfig) {
 export function getUpgradeCost(buildingKey) {
   const cfg = BuildingConfig[buildingKey];
   const currentLevel = buildingStates[buildingKey];
-  return Math.floor(cfg.baseCost * Math.pow(cfg.costGrowth, currentLevel));
+  return Math.floor(
+    cfg.baseCost * Math.pow(cfg.costGrowth, currentLevel) +
+      cfg.baseCost * currentLevel
+  );
 }
 
 export function upgradeBuilding(buildingKey) {
