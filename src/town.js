@@ -1,7 +1,10 @@
 import { BuildingConfig } from "./config.js";
 import { spendGold, addGold } from "./resources.js";
 import { addUnits } from "./army.js";
-import { getArtifactEffectBonus, getAchievementBonus } from "./artifact.js";
+import {
+  getArtifactEffectBonus,
+  getAchievementGoldPerSecond,
+} from "./artifact.js";
 
 export const buildingStates = {};
 for (const key in BuildingConfig) {
@@ -38,10 +41,13 @@ export function tickTown() {
     const baseGoldPerSec =
       BuildingConfig["GoldMine"].goldPerSecond * goldMineLevel;
     const goldMineBonus = getArtifactEffectBonus("goldMine%");
-    const achievementBonus = getAchievementBonus();
-    const totalGoldPerSec =
-      baseGoldPerSec * (1 + goldMineBonus + achievementBonus);
+    const totalGoldPerSec = baseGoldPerSec * (1 + goldMineBonus);
     addGold(totalGoldPerSec);
+  }
+
+  const achievementGold = getAchievementGoldPerSecond();
+  if (achievementGold > 0) {
+    addGold(achievementGold);
   }
 
   const summonBonus = getArtifactEffectBonus("buildingSummon%");

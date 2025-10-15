@@ -61,7 +61,7 @@ export function getArtifactEffectBonus(effectType, unitType = null) {
   return total;
 }
 
-export function getAchievementBonus() {
+export function getAchievementGoldPerSecond() {
   let unlocked = 0;
   for (const ach of ACHIEVEMENTS) {
     let progress = 0;
@@ -75,5 +75,5 @@ export function getAchievementBonus() {
     else if (ach.type === "prestige") progress = resources.prestigeCount || 0;
     if (progress >= ach.value) unlocked++;
   }
-  return Math.min(unlocked * 0.01, ACHIEVEMENTS.length * 0.01);
+  return unlocked;
 }
