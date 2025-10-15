@@ -81,7 +81,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.querySelector('#nav-buttons .nav-btn[data-tab="battle"]').click();
 
   const attackBtn = document.getElementById("attack-button");
-  attackBtn.addEventListener("click", () => {
+  let attackInterval = null;
+
+  function handleAttack() {
     const result = attack();
     const enemyInfoDiv = document.getElementById("enemy-info");
     const battleLogDiv = document.getElementById("battle-log");
@@ -130,6 +132,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     renderPrestigeView();
     renderArmyView();
+  }
+
+  attackBtn.addEventListener("mousedown", () => {
+    handleAttack();
+    attackInterval = setInterval(handleAttack, 100);
+  });
+  attackBtn.addEventListener("mouseup", () => {
+    clearInterval(attackInterval);
+  });
+  attackBtn.addEventListener("mouseleave", () => {
+    clearInterval(attackInterval);
+  });
+  attackBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    handleAttack();
+    attackInterval = setInterval(handleAttack, 100);
+  });
+  attackBtn.addEventListener("touchend", () => {
+    clearInterval(attackInterval);
+  });
+  attackBtn.addEventListener("touchcancel", () => {
+    clearInterval(attackInterval);
   });
 
   setInterval(() => {
@@ -317,14 +341,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     let unlockedCount = 0;
     ACHIEVEMENTS.forEach((ach) => {
       let progress = 0;
-      if (ach.type === "gold")
-        progress = Math.floor(resources.lifetimeGold); // <-- changed
+      if (ach.type === "gold") progress = Math.floor(resources.lifetimeGold);
       else if (ach.type === "soul") progress = resources.lifetimeSouls;
       else if (ach.type.startsWith("summon_"))
         progress = resources.lifetimeSummoned[ach.type.split("_")[1]] || 0;
       else if (ach.type === "slain") progress = resources.lifetimeEnemiesSlain;
       else if (ach.type === "herolevel")
         progress = resources.highestEnemyLevel || 1;
+      else if (ach.type === "prestige") progress = resources.prestigeCount || 0;
 
       const unlocked = progress >= ach.value;
       if (unlocked) unlockedCount++;
