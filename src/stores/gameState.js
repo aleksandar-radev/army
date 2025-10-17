@@ -2,7 +2,7 @@ import { reactive } from 'vue';
 import { setKillCount, startNewBattle } from '@/game/battle.js';
 import { artifactStates } from '@/game/artifact.js';
 import { armyCounts } from '@/game/army.js';
-import { buildingStates } from '@/game/town.js';
+import { buildingStates, buildingSpawnProgress, resetSpawnProgress } from '@/game/town.js';
 import { resources } from '@/game/resources.js';
 
 const defaultSummoned = () => ({
@@ -31,12 +31,15 @@ export const resourceState = reactive(cloneResourceState());
 export const armyState = reactive(cloneDictionary(armyCounts));
 export const buildingState = reactive(cloneDictionary(buildingStates));
 export const artifactState = reactive(cloneDictionary(artifactStates));
+const cloneSpawnProgressState = () => ({ ...buildingSpawnProgress });
+export const spawnProgressState = reactive(cloneSpawnProgressState());
 
 export const syncGameState = () => {
   Object.assign(resourceState, cloneResourceState());
   Object.assign(armyState, cloneDictionary(armyCounts));
   Object.assign(buildingState, cloneDictionary(buildingStates));
   Object.assign(artifactState, cloneDictionary(artifactStates));
+  Object.assign(spawnProgressState, cloneSpawnProgressState());
 };
 
 export const resetEngineState = () => {
@@ -62,6 +65,8 @@ export const resetEngineState = () => {
   Object.keys(artifactStates).forEach((key) => {
     artifactStates[key] = 0;
   });
+
+  resetSpawnProgress();
 
   setKillCount(0);
   const enemy = startNewBattle();

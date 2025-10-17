@@ -11,6 +11,8 @@ for (const key in BuildingConfig) {
   buildingStates[key] = 0;
 }
 
+export const buildingSpawnProgress = {};
+
 export function getUpgradeCost(buildingKey) {
   const cfg = BuildingConfig[buildingKey];
   const currentLevel = buildingStates[buildingKey];
@@ -35,6 +37,14 @@ const spawnRemainders = {};
 for (const key in BuildingConfig) {
   if (BuildingConfig[key].spawnPerMinute) {
     spawnRemainders[key] = 0;
+    buildingSpawnProgress[key] = 0;
+  }
+}
+
+export function resetSpawnProgress() {
+  for (const key in spawnRemainders) {
+    spawnRemainders[key] = 0;
+    buildingSpawnProgress[key] = 0;
   }
 }
 
@@ -60,7 +70,11 @@ export function tickTown() {
     if (!cfg.spawnPerMinute) continue;
 
     const level = buildingStates[key];
-    if (level <= 0) continue;
+    if (level <= 0) {
+      spawnRemainders[key] = 0;
+      buildingSpawnProgress[key] = 0;
+      continue;
+    }
 
     const perSecondRate = (cfg.spawnPerMinute / 60) * level * (1 + summonBonus);
     spawnRemainders[key] += perSecondRate;
@@ -76,5 +90,7 @@ export function tickTown() {
       addUnits(unitType, toSpawn);
       spawnRemainders[key] -= toSpawn;
     }
+
+    buildingSpawnProgress[key] = Math.min(1, spawnRemainders[key]);
   }
 }

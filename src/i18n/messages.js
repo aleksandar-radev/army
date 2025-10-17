@@ -77,6 +77,12 @@ export const messages = {
           detailInactive: 'Upgrade to begin summoning {unitPlural}.',
         },
       },
+      spawnProgress: {
+        label: 'Summoning progress',
+        nextIn: 'Next {unit} in {time}',
+        ready: '{unit} ready!',
+        inactive: 'Summoning inactive',
+      },
     },
     prestige: {
       title: 'Prestige & Relics',
@@ -314,6 +320,12 @@ export const messages = {
           detailInactive: 'Mejora para comenzar a invocar {unitPlural}.',
         },
       },
+      spawnProgress: {
+        label: 'Progreso de invocación',
+        nextIn: 'Próximo {unit} en {time}',
+        ready: '¡{unit} listo!',
+        inactive: 'Invocación inactiva',
+      },
     },
     prestige: {
       title: 'Prestigio y Reliquias',
@@ -550,6 +562,12 @@ export const messages = {
           detailActive: '当前每分钟 {current}{unitPlural}。',
           detailInactive: '升级即可开始召唤{unitPlural}。',
         },
+      },
+      spawnProgress: {
+        label: '召唤进度',
+        nextIn: '{unit}将在 {time} 后到来',
+        ready: '{unit} 已就绪！',
+        inactive: '召唤未激活',
       },
     },
     prestige: {

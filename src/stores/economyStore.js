@@ -1,13 +1,20 @@
 import { computed } from 'vue';
 import { defineStore } from 'pinia';
 import { ACHIEVEMENTS } from '@/game/achievements.js';
-import { artifactState, armyState, buildingState, resourceState, syncGameState } from '@/stores/gameState.js';
+import {
+  artifactState,
+  armyState,
+  buildingState,
+  resourceState,
+  spawnProgressState,
+  syncGameState,
+} from '@/stores/gameState.js';
 import { getArtifactUpgradeCost, getAllArtifactKeys, upgradeArtifact } from '@/game/artifact.js';
 import { ArtifactConfig, BuildingConfig, UnitTypes } from '@/game/config.js';
 import { getHeroSoulsTotal, getGold } from '@/game/resources.js';
 import { getUpgradeCost, upgradeBuilding } from '@/game/town.js';
 import { getUnitEffectiveDmg, getUnitEffectiveHp } from '@/game/unitHelpers.js';
-import { formatFloat, formatNumber } from '@/utils/formatters.js';
+import { formatDuration, formatFloat, formatNumber } from '@/utils/formatters.js';
 import { useI18nStore } from '@/stores/i18nStore.js';
 import {
   buildingIconSources,
@@ -197,12 +204,60 @@ export const useEconomyStore = defineStore('economy', () => {
       .filter(Boolean),
   );
 
+  const summonBonus = computed(() => {
+    let total = 0;
+    for (const key in ArtifactConfig) {
+      const cfg = ArtifactConfig[key];
+      if (cfg.effect !== 'buildingSummon%') continue;
+      const tier = relicState[key] || 0;
+      if (tier <= 0) continue;
+      total += tier * cfg.effectValue;
+    }
+    return total;
+  });
+
   const townBuildings = computed(() => {
     const gold = resourcesView.gold ?? getGold();
 
     return Object.keys(buildings).map((key) => {
       const level = buildings[key] || 0;
       const cost = getUpgradeCost(key);
+      const config = BuildingConfig[key];
+
+      let spawn = null;
+      if (config?.spawnPerMinute) {
+        const unitKey = removeBuildingSuffix(key);
+        const unitName = getUnitLabel(unitKey);
+        const progressFraction = Math.min(1, spawnProgressState[key] || 0);
+        const summonMultiplier = 1 + (summonBonus.value || 0);
+        const perSecondRate =
+          level > 0 ? (config.spawnPerMinute / 60) * level * summonMultiplier : 0;
+        const secondsRemaining =
+          perSecondRate > 0 ? Math.max(0, (1 - progressFraction) / perSecondRate) : null;
+
+        let statusKey = 'town.spawnProgress.nextIn';
+        const statusParams = { unit: unitName };
+
+        if (secondsRemaining === null) {
+          statusKey = 'town.spawnProgress.inactive';
+        } else if (secondsRemaining <= 0.05 || progressFraction >= 0.999) {
+          statusKey = 'town.spawnProgress.ready';
+        } else {
+          statusParams.time = formatDuration(secondsRemaining);
+        }
+
+        const statusText = t(statusKey, statusParams);
+
+        spawn = {
+          label: t('town.spawnProgress.label', { unit: unitName }),
+          progress: progressFraction,
+          progressPercent: Math.round(progressFraction * 100),
+          secondsRemaining,
+          statusText,
+          ariaLabel: statusText,
+        };
+      }
+
       return {
         key,
         name: getBuildingName(key),
@@ -211,6 +266,7 @@ export const useEconomyStore = defineStore('economy', () => {
         cost,
         canAfford: gold >= cost,
         description: buildDescription(key, level),
+        spawn,
       };
     });
   });

@@ -73,6 +73,35 @@
               </div>
             </div>
           </div>
+          <div
+            v-if="building.spawn"
+            class="building__progress"
+          >
+            <div class="building__progress-top">
+              <span class="building__progress-label">
+                {{ building.spawn.label }}
+              </span>
+              <span class="building__progress-percent">
+                {{ building.spawn.progressPercent }}%
+              </span>
+            </div>
+            <div
+              class="building__progress-bar"
+              role="progressbar"
+              :aria-label="building.spawn.ariaLabel"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              :aria-valuenow="building.spawn.progressPercent"
+            >
+              <div
+                class="building__progress-fill"
+                :style="{ width: `${building.spawn.progressPercent}%` }"
+              />
+            </div>
+            <p class="building__progress-status">
+              {{ building.spawn.statusText }}
+            </p>
+          </div>
           <button
             class="upgrade"
             type="button"
@@ -201,6 +230,40 @@ const upgrade = (key) => {
   margin: 0;
   line-height: 1.4;
   overflow-wrap: anywhere;
+}
+
+.building__progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.building__progress-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.building__progress-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(30, 41, 59, 0.8);
+  overflow: hidden;
+}
+
+.building__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(34, 197, 94, 0.9), rgba(59, 130, 246, 0.9));
+  transition: width 0.3s ease;
+}
+
+.building__progress-status {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(226, 232, 240, 0.95);
 }
 
 .tooltip {
