@@ -4,9 +4,11 @@ import { defineStore } from 'pinia';
 export const useUiStore = defineStore('ui', () => {
   const activeTab = ref('battle');
   const resetModalOpen = ref(false);
+  const mobileMenuOpen = ref(false);
 
   const setActiveTab = (tab) => {
     activeTab.value = tab;
+    mobileMenuOpen.value = false;
   };
 
   const openResetModal = () => {
@@ -17,11 +19,22 @@ export const useUiStore = defineStore('ui', () => {
     resetModalOpen.value = false;
   };
 
+  const toggleMobileMenu = () => {
+    mobileMenuOpen.value = !mobileMenuOpen.value;
+  };
+
+  const closeMobileMenu = () => {
+    mobileMenuOpen.value = false;
+  };
+
   return {
     activeTab,
     resetModalOpen,
+    mobileMenuOpen,
     setActiveTab,
     openResetModal,
     closeResetModal,
+    toggleMobileMenu,
+    closeMobileMenu,
   };
 });

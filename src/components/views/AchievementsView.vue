@@ -1,5 +1,5 @@
 <template>
-  <section class="card">
+  <section class="card achievements-view">
     <header class="card__header">
       <h2 class="card__title">
         {{ t('achievements.title') }}
@@ -9,43 +9,70 @@
       </p>
     </header>
 
-    <div class="grid">
-      <article
-        v-for="achievement in achievementsSummary.list"
-        :key="achievement.id"
-        class="achievement"
+    <div
+      class="tabs"
+      role="tablist"
+    >
+      <button
+        v-for="tab in groupedAchievements"
+        :key="tab.key"
+        class="tabs__button"
+        :class="{ 'tabs__button--active': tab.key === activeTab }"
+        type="button"
+        role="tab"
+        :aria-selected="tab.key === activeTab"
+        @click="activeTab = tab.key"
       >
-        <header class="achievement__header">
-          <h3 class="achievement__title">
-            {{ achievement.name }}
-          </h3>
-          <span
-            class="achievement__status"
-            :class="{ 'achievement__status--complete': achievement.unlocked }"
+        {{ tab.label }}
+      </button>
+    </div>
+
+    <div
+      v-if="currentGroup"
+      class="achievements-panel"
+      role="tabpanel"
+      :aria-live="currentGroup ? 'polite' : 'off'"
+    >
+      <div class="achievements-scroll">
+        <div class="grid">
+          <article
+            v-for="achievement in currentGroup.achievements"
+            :key="achievement.id"
+            class="achievement"
           >
-            {{ achievement.unlocked ? t('achievements.status.unlocked') : t('achievements.status.locked') }}
-          </span>
-        </header>
-        <p class="achievement__description">
-          {{ achievement.description }}
-        </p>
-        <div class="progress">
-          <div
-            class="progress__bar"
-            :style="{ width: `${achievement.percent}%` }"
-          />
+            <header class="achievement__header">
+              <h3 class="achievement__title">
+                {{ achievement.name }}
+              </h3>
+              <span
+                class="achievement__status"
+                :class="{ 'achievement__status--complete': achievement.unlocked }"
+              >
+                {{ achievement.unlocked ? t('achievements.status.unlocked') : t('achievements.status.locked') }}
+              </span>
+            </header>
+            <p class="achievement__description">
+              {{ achievement.description }}
+            </p>
+            <div class="progress">
+              <div
+                class="progress__bar"
+                :style="{ width: `${achievement.percent}%` }"
+              />
+            </div>
+            <footer class="achievement__footer">
+              <span>{{ formatNumber(achievement.progress) }} / {{ formatNumber(achievement.value) }}</span>
+              <span>{{ formatFloat(achievement.percent, 1) }}%</span>
+            </footer>
+          </article>
         </div>
-        <footer class="achievement__footer">
-          <span>{{ formatNumber(achievement.progress) }} / {{ formatNumber(achievement.value) }}</span>
-          <span>{{ formatFloat(achievement.percent, 1) }}%</span>
-        </footer>
-      </article>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useEconomyStore } from '@/stores/economyStore.js';
 import { formatFloat, formatNumber } from '@/utils/formatters.js';
@@ -64,13 +91,68 @@ const summarySubtitle = computed(() =>
     total: formatNumber(achievementsSummary.value.total),
   }),
 );
+
+const groupedAchievements = computed(() => {
+  const { list } = achievementsSummary.value;
+  const groups = [
+    {
+      key: 'economy',
+      label: t('achievements.tabs.economy'),
+      achievements: list.filter((achievement) => achievement.type === 'gold' || achievement.type === 'soul'),
+    },
+    {
+      key: 'combat',
+      label: t('achievements.tabs.combat'),
+      achievements: list.filter((achievement) => achievement.type === 'slain' || achievement.type === 'herolevel'),
+    },
+    {
+      key: 'prestige',
+      label: t('achievements.tabs.prestige'),
+      achievements: list.filter((achievement) => achievement.type === 'prestige'),
+    },
+  ].filter((group) => group.achievements.length > 0);
+
+  const processedUnits = new Set();
+  list.forEach((achievement) => {
+    if (!achievement.type.startsWith('summon_')) return;
+    const unitKey = achievement.type.split('_')[1];
+    if (processedUnits.has(unitKey)) return;
+    const unitLabel = t('achievements.tabs.summoning', {
+      unit: t(`units.${unitKey}.plural`),
+    });
+    groups.push({
+      key: `summon_${unitKey}`,
+      label: unitLabel,
+      achievements: list.filter((item) => item.type === achievement.type),
+    });
+    processedUnits.add(unitKey);
+  });
+
+  return groups;
+});
+
+const activeTab = ref(groupedAchievements.value[0]?.key ?? '');
+
+watch(groupedAchievements, (groups) => {
+  if (!groups.length) {
+    activeTab.value = '';
+    return;
+  }
+  if (!groups.some((group) => group.key === activeTab.value)) {
+    activeTab.value = groups[0].key;
+  }
+}, { immediate: true });
+
+const currentGroup = computed(() => groupedAchievements.value.find((group) => group.key === activeTab.value));
 </script>
 
 <style scoped>
-.card {
+.achievements-view {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  flex: 1;
+  min-height: 0;
 }
 
 .card__header {
@@ -88,6 +170,41 @@ const summarySubtitle = computed(() =>
 .card__subtitle {
   margin: 0;
   color: rgba(148, 163, 184, 0.8);
+}
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tabs__button {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  background: rgba(15, 23, 42, 0.5);
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tabs__button--active {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+}
+
+.achievements-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.achievements-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .grid {

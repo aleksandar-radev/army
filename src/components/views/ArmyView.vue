@@ -1,5 +1,5 @@
 <template>
-  <section class="card">
+  <section class="card army-view">
     <header class="card__header">
       <h2 class="card__title">
         {{ t('army.title') }}
@@ -9,56 +9,58 @@
       </p>
     </header>
 
-    <div
-      v-if="armyCards.length"
-      class="grid"
-    >
-      <article
-        v-for="card in armyCards"
-        :key="card.type"
-        class="unit-card"
+    <div class="army-scroll">
+      <div
+        v-if="armyCards.length"
+        class="grid"
       >
-        <header class="unit-card__header">
-          <span class="unit-card__icon">{{ card.icon }}</span>
-          <div class="unit-card__heading">
-            <h3 class="unit-card__title">
-              {{ card.name }}
-            </h3>
-            <span
-              class="unit-card__count"
-              :aria-label="`${t('army.stats.totalUnits')}: ${formatNumber(card.count)}`"
-            >
-              <span class="unit-card__count-label">{{ t('army.stats.totalUnits') }}</span>
-              <span class="unit-card__count-value">{{ formatNumber(card.count) }}</span>
-            </span>
-          </div>
-        </header>
-        <dl class="unit-card__stats">
-          <div>
-            <dt>{{ t('army.stats.healthPerUnit') }}</dt>
-            <dd>{{ formatFloat(card.perHp) }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('army.stats.damagePerUnit') }}</dt>
-            <dd>{{ formatFloat(card.perDmg) }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('army.stats.totalHealth') }}</dt>
-            <dd>{{ formatNumber(card.totalHp) }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('army.stats.totalDamage') }}</dt>
-            <dd>{{ formatNumber(card.totalDmg) }}</dd>
-          </div>
-        </dl>
-      </article>
+        <article
+          v-for="card in armyCards"
+          :key="card.type"
+          class="unit-card"
+        >
+          <header class="unit-card__header">
+            <span class="unit-card__icon">{{ card.icon }}</span>
+            <div class="unit-card__heading">
+              <h3 class="unit-card__title">
+                {{ card.name }}
+              </h3>
+              <span
+                class="unit-card__count"
+                :aria-label="`${t('army.stats.totalUnits')}: ${formatNumber(card.count)}`"
+              >
+                <span class="unit-card__count-label">{{ t('army.stats.totalUnits') }}</span>
+                <span class="unit-card__count-value">{{ formatNumber(card.count) }}</span>
+              </span>
+            </div>
+          </header>
+          <dl class="unit-card__stats">
+            <div>
+              <dt>{{ t('army.stats.healthPerUnit') }}</dt>
+              <dd>{{ formatFloat(card.perHp) }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('army.stats.damagePerUnit') }}</dt>
+              <dd>{{ formatFloat(card.perDmg) }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('army.stats.totalHealth') }}</dt>
+              <dd>{{ formatNumber(card.totalHp) }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('army.stats.totalDamage') }}</dt>
+              <dd>{{ formatNumber(card.totalDmg) }}</dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+      <p
+        v-else
+        class="empty"
+      >
+        {{ t('army.empty') }}
+      </p>
     </div>
-    <p
-      v-else
-      class="empty"
-    >
-      {{ t('army.empty') }}
-    </p>
   </section>
 </template>
 
@@ -79,6 +81,20 @@ const t = i18n.t;
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.army-view {
+  flex: 1;
+  min-height: 0;
+}
+
+.army-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
 }
 
 .card__header {

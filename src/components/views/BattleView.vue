@@ -1,87 +1,89 @@
 <template>
-  <section class="card">
-    <header class="card__header">
-      <div>
-        <p class="card__eyebrow">
-          {{ t('battle.currentEnemy') }}
-        </p>
-        <h2 class="card__title">
-          {{ enemyLevelLabel }}
-        </h2>
-      </div>
-      <div class="stats">
-        <div class="stat">
-          <p class="stat__label">
-            {{ t('battle.stats.health') }}
+  <div class="battle-view">
+    <section class="card battle-card">
+      <header class="card__header">
+        <div>
+          <p class="card__eyebrow">
+            {{ t('battle.currentEnemy') }}
           </p>
-          <p class="stat__value">
-            {{ formatFloat(enemyDetails?.currentHp) }} / {{ formatFloat(enemyDetails?.maxHp) }}
-          </p>
+          <h2 class="card__title">
+            {{ enemyLevelLabel }}
+          </h2>
         </div>
-        <div class="stat">
-          <p class="stat__label">
-            {{ t('battle.stats.damage') }}
-          </p>
-          <p class="stat__value">
-            {{ formatFloat(enemyDetails?.dmg) }}
-          </p>
+        <div class="stats">
+          <div class="stat">
+            <p class="stat__label">
+              {{ t('battle.stats.health') }}
+            </p>
+            <p class="stat__value">
+              {{ formatFloat(enemyDetails?.currentHp) }} / {{ formatFloat(enemyDetails?.maxHp) }}
+            </p>
+          </div>
+          <div class="stat">
+            <p class="stat__label">
+              {{ t('battle.stats.damage') }}
+            </p>
+            <p class="stat__value">
+              {{ formatFloat(enemyDetails?.dmg) }}
+            </p>
+          </div>
+          <div class="stat">
+            <p class="stat__label">
+              {{ t('battle.stats.kills') }}
+            </p>
+            <p class="stat__value">
+              {{ formatNumber(killCount) }}
+            </p>
+          </div>
         </div>
-        <div class="stat">
-          <p class="stat__label">
-            {{ t('battle.stats.kills') }}
-          </p>
-          <p class="stat__value">
-            {{ formatNumber(killCount) }}
-          </p>
-        </div>
-      </div>
-    </header>
+      </header>
 
-    <div class="card__body">
-      <div class="controls">
+      <div class="card__body">
+        <div class="controls">
+          <button
+            class="attack-button"
+            type="button"
+            :class="{ 'attack-button--active': isAttacking }"
+            :disabled="isAttacking"
+            @click="beginAttack"
+          >
+            {{ t('battle.attackButton') }}
+          </button>
+          <button
+            class="stop-button"
+            type="button"
+            :disabled="!isAttacking"
+            @click="stopAttack"
+          >
+            {{ t('battle.stopButton') }}
+          </button>
+        </div>
+      </div>
+    </section>
+    <section class="log-card">
+      <div class="log-card__header">
+        <h3 class="log-card__title">
+          {{ t('battle.logTitle') }}
+        </h3>
         <button
-          class="attack-button"
+          class="log-card__clear"
           type="button"
-          :class="{ 'attack-button--active': isAttacking }"
-          :disabled="isAttacking"
-          @click="beginAttack"
+          @click="clearBattleLog"
         >
-          {{ t('battle.attackButton') }}
-        </button>
-        <button
-          class="stop-button"
-          type="button"
-          :disabled="!isAttacking"
-          @click="stopAttack"
-        >
-          {{ t('battle.stopButton') }}
+          {{ t('battle.logClearButton') }}
         </button>
       </div>
-    </div>
-  </section>
-  <section class="log-card">
-    <div class="log-card__header">
-      <h3 class="log-card__title">
-        {{ t('battle.logTitle') }}
-      </h3>
-      <button
-        class="log-card__clear"
-        type="button"
-        @click="clearBattleLog"
-      >
-        {{ t('battle.logClearButton') }}
-      </button>
-    </div>
-    <ul class="log-list">
-      <li
-        v-for="(entry, index) in battleLog"
-        :key="index"
-        class="log-list__entry"
-      >
-        <pre>{{ entry }}</pre>
-      </li>
-    </ul>
-  </section>
+      <ul class="log-list">
+        <li
+          v-for="(entry, index) in battleLog"
+          :key="index"
+          class="log-list__entry"
+        >
+          <pre>{{ entry }}</pre>
+        </li>
+      </ul>
+    </section>
+  </div>
 </template>
 
 <script setup>
@@ -138,6 +140,14 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.battle-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -256,7 +266,6 @@ onBeforeUnmount(() => {
 }
 
 .log-card {
-  margin-top: 24px;
   background: rgba(15, 23, 42, 0.55);
   border-radius: 18px;
   padding: 20px;
@@ -264,6 +273,8 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  flex: 1;
+  min-height: 0;
 }
 
 .log-card__header {
@@ -311,6 +322,10 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .log-list__entry pre {

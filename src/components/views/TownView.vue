@@ -1,5 +1,5 @@
 <template>
-  <section class="card">
+  <section class="card town-view">
     <header class="card__header">
       <h2 class="card__title">
         {{ t('town.title') }}
@@ -9,66 +9,71 @@
       </p>
     </header>
 
-    <div class="grid">
-      <article
-        v-for="building in townBuildings"
-        :key="building.key"
-        class="building"
+    <div class="town-scroll">
+      <div
+        v-if="townBuildings.length"
+        class="grid"
       >
-        <div class="building__header">
-          <span class="building__icon">{{ building.icon }}</span>
-          <div>
-            <h3 class="building__title">
-              {{ building.name }}
-            </h3>
-            <p class="building__level">
-              {{ t('town.level', { value: formatNumber(building.level) }) }}
-            </p>
-          </div>
-        </div>
-        <div
-          v-if="building.description.summary || building.description.detail"
-          class="building__description"
+        <article
+          v-for="building in townBuildings"
+          :key="building.key"
+          class="building"
         >
-          <p
-            v-if="building.description.summary"
-            :id="`${building.key}-summary`"
-            class="building__summary"
-          >
-            {{ building.description.summary }}
-          </p>
-          <div
-            v-if="building.description.detail"
-            class="tooltip"
-          >
-            <button
-              class="tooltip__trigger"
-              type="button"
-              :aria-describedby="`${building.key}-details`"
-              :aria-label="t('town.tooltipMoreDetails', { name: building.name })"
-            >
-              ℹ️
-            </button>
-            <div
-              :id="`${building.key}-details`"
-              class="tooltip__bubble"
-              role="tooltip"
-            >
-              {{ building.description.detail }}
+          <div class="building__header">
+            <span class="building__icon">{{ building.icon }}</span>
+            <div>
+              <h3 class="building__title">
+                {{ building.name }}
+              </h3>
+              <p class="building__level">
+                {{ t('town.level', { value: formatNumber(building.level) }) }}
+              </p>
             </div>
           </div>
-        </div>
-        <button
-          class="upgrade"
-          type="button"
-          :disabled="!building.canAfford"
-          :aria-label="t('town.upgradeAria', { name: building.name, cost: formatNumber(building.cost) })"
-          :aria-describedby="building.description.summary ? `${building.key}-summary` : null"
-          @click="upgrade(building.key)"
-        >
-          {{ t('town.upgradeButton', { cost: formatNumber(building.cost) }) }}
-        </button>
-      </article>
+          <div
+            v-if="building.description.summary || building.description.detail"
+            class="building__description"
+          >
+            <p
+              v-if="building.description.summary"
+              :id="`${building.key}-summary`"
+              class="building__summary"
+            >
+              {{ building.description.summary }}
+            </p>
+            <div
+              v-if="building.description.detail"
+              class="tooltip"
+            >
+              <button
+                class="tooltip__trigger"
+                type="button"
+                :aria-describedby="`${building.key}-details`"
+                :aria-label="t('town.tooltipMoreDetails', { name: building.name })"
+              >
+                ℹ️
+              </button>
+              <div
+                :id="`${building.key}-details`"
+                class="tooltip__bubble"
+                role="tooltip"
+              >
+                {{ building.description.detail }}
+              </div>
+            </div>
+          </div>
+          <button
+            class="upgrade"
+            type="button"
+            :disabled="!building.canAfford"
+            :aria-label="t('town.upgradeAria', { name: building.name, cost: formatNumber(building.cost) })"
+            :aria-describedby="building.description.summary ? `${building.key}-summary` : null"
+            @click="upgrade(building.key)"
+          >
+            {{ t('town.upgradeButton', { cost: formatNumber(building.cost) }) }}
+          </button>
+        </article>
+      </div>
     </div>
   </section>
 </template>
@@ -94,6 +99,20 @@ const upgrade = (key) => {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.town-view {
+  flex: 1;
+  min-height: 0;
+}
+
+.town-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
 }
 
 .card__header {

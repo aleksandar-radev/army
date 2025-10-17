@@ -1,5 +1,5 @@
 <template>
-  <section class="card">
+  <section class="card prestige-view">
     <header class="card__header">
       <h2 class="card__title">
         {{ t('prestige.title') }}
@@ -9,86 +9,88 @@
       </p>
     </header>
 
-    <div class="prestige">
-      <div class="prestige__summary">
-        <div class="summary-row">
-          <span>{{ t('prestige.summary.storedSouls') }}</span>
-          <strong>{{ formatNumber(resourceSummary.heroSoulsStored) }}</strong>
-        </div>
-        <div class="summary-row">
-          <span>{{ t('prestige.summary.totalSouls') }}</span>
-          <strong>{{ formatNumber(resourceSummary.heroSoulsTotal) }}</strong>
-        </div>
-        <div class="summary-row">
-          <span>{{ t('prestige.summary.prestigeCount') }}</span>
-          <strong>{{ formatNumber(resourceSummary.prestigeCount) }}</strong>
-        </div>
-        <div class="summary-row">
-          <span>{{ t('prestige.summary.killsThisRun') }}</span>
-          <strong>{{ formatNumber(prestigeInfo.currentKills) }}</strong>
-        </div>
-        <div class="summary-row">
-          <span>{{ t('prestige.summary.killsRequired') }}</span>
-          <strong>{{ formatNumber(prestigeInfo.requiredKills) }}</strong>
-        </div>
-        <div class="actions">
-          <button
-            type="button"
-            class="prestige-btn"
-            :disabled="!canPrestigeNow"
-            @click="performPrestige"
-          >
-            {{ t('prestige.actions.prestigeNow') }}
-          </button>
-          <button
-            v-if="ascendVisible"
-            type="button"
-            class="ascend-btn"
-            :disabled="ascendDisabled"
-            @click="ascend"
-          >
-            {{ t('prestige.actions.ascend') }}
-          </button>
-        </div>
-        <p
-          v-if="ascendMessage"
-          class="ascend-message"
-        >
-          {{ ascendMessage }}
-        </p>
-      </div>
-
-      <div class="relics">
-        <h3 class="relics__title">
-          {{ t('prestige.relicsTitle') }}
-        </h3>
-        <div class="relics__grid">
-          <article
-            v-for="relic in relics"
-            :key="relic.key"
-            class="relic"
-          >
-            <header class="relic__header">
-              <span class="relic__icon">{{ relic.icon }}</span>
-              <h4 class="relic__title">
-                {{ relic.name }}
-              </h4>
-            </header>
-            <p class="relic__tier">
-              {{ t('prestige.tier', { value: formatNumber(relic.tier) }) }}
-            </p>
+    <div class="prestige-scroll">
+      <div class="prestige">
+        <div class="prestige__summary">
+          <div class="summary-row">
+            <span>{{ t('prestige.summary.storedSouls') }}</span>
+            <strong>{{ formatNumber(resourceSummary.heroSoulsStored) }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>{{ t('prestige.summary.totalSouls') }}</span>
+            <strong>{{ formatNumber(resourceSummary.heroSoulsTotal) }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>{{ t('prestige.summary.prestigeCount') }}</span>
+            <strong>{{ formatNumber(resourceSummary.prestigeCount) }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>{{ t('prestige.summary.killsThisRun') }}</span>
+            <strong>{{ formatNumber(prestigeInfo.currentKills) }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>{{ t('prestige.summary.killsRequired') }}</span>
+            <strong>{{ formatNumber(prestigeInfo.requiredKills) }}</strong>
+          </div>
+          <div class="actions">
             <button
-              class="relic__upgrade"
               type="button"
-              :disabled="relic.maxed || !relic.affordable"
-              @click="upgradeRelic(relic.key)"
+              class="prestige-btn"
+              :disabled="!canPrestigeNow"
+              @click="performPrestige"
             >
-              {{ relic.maxed
-                ? t('prestige.relicUpgrade.maxed')
-                : t('prestige.relicUpgrade.cost', { cost: formatNumber(relic.cost) })
-              }}
+              {{ t('prestige.actions.prestigeNow') }}
             </button>
-          </article>
+            <button
+              v-if="ascendVisible"
+              type="button"
+              class="ascend-btn"
+              :disabled="ascendDisabled"
+              @click="ascend"
+            >
+              {{ t('prestige.actions.ascend') }}
+            </button>
+          </div>
+          <p
+            v-if="ascendMessage"
+            class="ascend-message"
+          >
+            {{ ascendMessage }}
+          </p>
+        </div>
+
+        <div class="relics">
+          <h3 class="relics__title">
+            {{ t('prestige.relicsTitle') }}
+          </h3>
+          <div class="relics__grid">
+            <article
+              v-for="relic in relics"
+              :key="relic.key"
+              class="relic"
+            >
+              <header class="relic__header">
+                <span class="relic__icon">{{ relic.icon }}</span>
+                <h4 class="relic__title">
+                  {{ relic.name }}
+                </h4>
+              </header>
+              <p class="relic__tier">
+                {{ t('prestige.tier', { value: formatNumber(relic.tier) }) }}
+              </p>
+              <button
+                class="relic__upgrade"
+                type="button"
+                :disabled="relic.maxed || !relic.affordable"
+                @click="upgradeRelic(relic.key)"
+              >
+                {{ relic.maxed
+                  ? t('prestige.relicUpgrade.maxed')
+                  : t('prestige.relicUpgrade.cost', { cost: formatNumber(relic.cost) })
+                }}
+              </button>
+            </article>
+          </div>
         </div>
       </div>
     </div>
@@ -131,6 +133,20 @@ const ascend = () => {
   gap: 24px;
 }
 
+.prestige-view {
+  flex: 1;
+  min-height: 0;
+}
+
+.prestige-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
 .card__header {
   display: flex;
   flex-direction: column;
@@ -150,9 +166,10 @@ const ascend = () => {
 
 .prestige {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
   gap: 28px;
   align-items: start;
+  width: 100%;
 }
 
 .prestige__summary {

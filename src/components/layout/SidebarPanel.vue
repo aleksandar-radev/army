@@ -100,8 +100,10 @@ const openResetModal = ui.openResetModal;
   padding: 28px;
   display: flex;
   flex-direction: column;
-  gap: 4x;
+  gap: 4px;
   box-shadow: 0 24px 60px rgba(15, 23, 42, 0.4);
+  height: 100%;
+  overflow-y: auto;
 }
 
 .panel__header {

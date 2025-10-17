@@ -9,18 +9,25 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  min-height: 100vh;
+  height: 100%;
   background: radial-gradient(circle at top, rgba(15, 23, 42, 0.8), #020617 65%);
   display: flex;
   justify-content: center;
   align-items: stretch;
+  overflow: hidden;
 }
 
 #app {
   flex: 1;
   display: flex;
+  min-height: 0;
 }
 
 button {

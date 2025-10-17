@@ -109,6 +109,12 @@ export const messages = {
         unlocked: 'Unlocked',
         locked: 'Locked',
       },
+      tabs: {
+        economy: 'Economy',
+        combat: 'Combat Mastery',
+        prestige: 'Prestige',
+        summoning: '{unit} Summons',
+      },
       goldCollector: {
         name: 'Gold Collector {rank}',
         desc: 'Gather {amount} gold.',
@@ -289,6 +295,12 @@ export const messages = {
         unlocked: 'Desbloqueado',
         locked: 'Bloqueado',
       },
+      tabs: {
+        economy: 'Economía',
+        combat: 'Dominio de combate',
+        prestige: 'Prestigio',
+        summoning: 'Invocaciones de {unit}',
+      },
       goldCollector: {
         name: 'Coleccionista de Oro {rank}',
         desc: 'Reúne {amount} de oro.',
@@ -468,6 +480,12 @@ export const messages = {
       status: {
         unlocked: '已解锁',
         locked: '未解锁',
+      },
+      tabs: {
+        economy: '经济',
+        combat: '战斗精通',
+        prestige: '声望',
+        summoning: '{unit} 召唤',
       },
       goldCollector: {
         name: '黄金收藏家 {rank}',
