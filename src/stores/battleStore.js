@@ -99,6 +99,34 @@ export const useBattleStore = defineStore('battle', () => {
     if (entry.type === 'defeat') {
       const levelLabel = entry.enemyLevel ? formatNumber(entry.enemyLevel) : '-';
       const before = formatFloat(entry.enemyHpBefore, 1);
+      const retaliationLines = [];
+
+      if (entry.retaliation) {
+        const retaliation = entry.retaliation;
+        if (retaliation.kind === 'killed') {
+          const unitLabel = retaliation.count === 1
+            ? t(`units.${retaliation.unit}.name`)
+            : t(`units.${retaliation.unit}.plural`);
+          retaliationLines.push(
+            t('battle.log.retaliationKilled', {
+              damage: formatFloat(retaliation.damage, 1),
+              count: formatNumber(retaliation.count),
+              unit: unitLabel,
+            }),
+          );
+        } else if (retaliation.kind === 'noLoss') {
+          const unitLabel = t(`units.${retaliation.unit}.plural`);
+          retaliationLines.push(
+            t('battle.log.retaliationNoLoss', {
+              damage: formatFloat(retaliation.damage, 1),
+              unit: unitLabel,
+            }),
+          );
+        } else {
+          retaliationLines.push(t('battle.log.noRetaliation'));
+        }
+      }
+
       const lines = [
         t('battle.log.heroAttack', {
           level: levelLabel,
@@ -106,11 +134,13 @@ export const useBattleStore = defineStore('battle', () => {
           before,
           after: formatFloat(entry.enemyHpAfter ?? 0, 1),
         }),
+        ...retaliationLines,
         t('battle.log.heroVictory', {
           level: levelLabel,
           souls: formatFloat(entry.souls, 1),
         }),
       ];
+
       return lines.join('\n');
     }
 
@@ -209,6 +239,7 @@ export const useBattleStore = defineStore('battle', () => {
     const result = attack();
 
     if (result.killed) {
+      const retaliationState = createRetaliationState(result.retaliation);
       setLogEntry({
         type: 'defeat',
         souls: result.storedSoulsGained,
@@ -216,6 +247,7 @@ export const useBattleStore = defineStore('battle', () => {
         enemyHpBefore: result.enemyHpBeforeAttack,
         enemyHpAfter: result.enemyHpAfterAttack,
         enemyLevel: current?.level ?? null,
+        retaliation: retaliationState,
       });
       const nextEnemy = startNewBattle();
       setEnemy(nextEnemy);
