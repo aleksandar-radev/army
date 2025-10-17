@@ -4,9 +4,6 @@
       <h1 class="title">
         {{ t('sidebar.title') }}
       </h1>
-      <p class="subtitle">
-        {{ t('sidebar.subtitle') }}
-      </p>
     </header>
 
     <section class="summary">
@@ -118,12 +115,6 @@ const openResetModal = ui.openResetModal;
   font-size: 1.75rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-}
-
-.subtitle {
-  margin: 0;
-  color: rgba(226, 232, 240, 0.7);
-  font-size: 0.95rem;
 }
 
 .summary {
