@@ -101,6 +101,56 @@ export const messages = {
         maxed: 'Maxed',
         cost: 'Upgrade • {cost} souls',
       },
+      relicDescriptions: {
+        GoldMineBoost: {
+          summary: 'Boosts {buildingName} gold production by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% gold from the mine.',
+        },
+        HeroSoulBooster: {
+          summary: 'Awards +{value} hero souls per tier whenever you prestige.',
+          detail: 'Current bonus: +{current} hero souls on prestige.',
+        },
+        GoblinPower: {
+          summary: 'Increases {unitName} power by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% to {unitName} damage and health.',
+        },
+        OrcPower: {
+          summary: 'Increases {unitName} power by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% to {unitName} damage and health.',
+        },
+        TrollPower: {
+          summary: 'Increases {unitName} power by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% to {unitName} damage and health.',
+        },
+        OgrePower: {
+          summary: 'Increases {unitName} power by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% to {unitName} damage and health.',
+        },
+        DragonPower: {
+          summary: 'Increases {unitName} power by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% to {unitName} damage and health.',
+        },
+        hutBoost: {
+          summary: 'Improves {buildingName} summon speed by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% faster summons.',
+        },
+        CampBoost: {
+          summary: 'Improves {buildingName} summon speed by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% faster summons.',
+        },
+        DenBoost: {
+          summary: 'Improves {buildingName} summon speed by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% faster summons.',
+        },
+        TowerBoost: {
+          summary: 'Improves {buildingName} summon speed by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% faster summons.',
+        },
+        RoostBoost: {
+          summary: 'Improves {buildingName} summon speed by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% faster summons.',
+        },
+      },
     },
     achievements: {
       title: 'Achievements',
@@ -287,6 +337,56 @@ export const messages = {
         maxed: 'Al máximo',
         cost: 'Mejorar • {cost} almas',
       },
+      relicDescriptions: {
+        GoldMineBoost: {
+          summary: 'Aumenta la producción de oro de {buildingName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% de oro adicional.',
+        },
+        HeroSoulBooster: {
+          summary: 'Otorga +{value} almas de héroe por nivel cada vez que prestigias.',
+          detail: 'Bonificación actual: +{current} almas de héroe al prestigiar.',
+        },
+        GoblinPower: {
+          summary: 'Incrementa el poder de {unitName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% al daño y la salud de {unitName}.',
+        },
+        OrcPower: {
+          summary: 'Incrementa el poder de {unitName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% al daño y la salud de {unitName}.',
+        },
+        TrollPower: {
+          summary: 'Incrementa el poder de {unitName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% al daño y la salud de {unitName}.',
+        },
+        OgrePower: {
+          summary: 'Incrementa el poder de {unitName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% al daño y la salud de {unitName}.',
+        },
+        DragonPower: {
+          summary: 'Incrementa el poder de {unitName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% al daño y la salud de {unitName}.',
+        },
+        hutBoost: {
+          summary: 'Mejora la velocidad de invocación de {buildingName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% invocaciones más rápidas.',
+        },
+        CampBoost: {
+          summary: 'Mejora la velocidad de invocación de {buildingName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% invocaciones más rápidas.',
+        },
+        DenBoost: {
+          summary: 'Mejora la velocidad de invocación de {buildingName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% invocaciones más rápidas.',
+        },
+        TowerBoost: {
+          summary: 'Mejora la velocidad de invocación de {buildingName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% invocaciones más rápidas.',
+        },
+        RoostBoost: {
+          summary: 'Mejora la velocidad de invocación de {buildingName} en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% invocaciones más rápidas.',
+        },
+      },
     },
     achievements: {
       title: 'Logros',
@@ -472,6 +572,56 @@ export const messages = {
       relicUpgrade: {
         maxed: '已满级',
         cost: '升级 • {cost} 英灵',
+      },
+      relicDescriptions: {
+        GoldMineBoost: {
+          summary: '{buildingName}的金币产量每级提升 +{value}%。',
+          detail: '当前加成：金币产量 +{current}%。',
+        },
+        HeroSoulBooster: {
+          summary: '每级在转生时额外获得 +{value} 点英灵。',
+          detail: '当前加成：转生额外 +{current} 点英灵。',
+        },
+        GoblinPower: {
+          summary: '使{unitName}的战斗力每级提升 +{value}%。',
+          detail: '当前加成：{unitName}的伤害与生命值 +{current}%。',
+        },
+        OrcPower: {
+          summary: '使{unitName}的战斗力每级提升 +{value}%。',
+          detail: '当前加成：{unitName}的伤害与生命值 +{current}%。',
+        },
+        TrollPower: {
+          summary: '使{unitName}的战斗力每级提升 +{value}%。',
+          detail: '当前加成：{unitName}的伤害与生命值 +{current}%。',
+        },
+        OgrePower: {
+          summary: '使{unitName}的战斗力每级提升 +{value}%。',
+          detail: '当前加成：{unitName}的伤害与生命值 +{current}%。',
+        },
+        DragonPower: {
+          summary: '使{unitName}的战斗力每级提升 +{value}%。',
+          detail: '当前加成：{unitName}的伤害与生命值 +{current}%。',
+        },
+        hutBoost: {
+          summary: '使{buildingName}的召唤速度每级提升 +{value}%。',
+          detail: '当前加成：召唤速度 +{current}%。',
+        },
+        CampBoost: {
+          summary: '使{buildingName}的召唤速度每级提升 +{value}%。',
+          detail: '当前加成：召唤速度 +{current}%。',
+        },
+        DenBoost: {
+          summary: '使{buildingName}的召唤速度每级提升 +{value}%。',
+          detail: '当前加成：召唤速度 +{current}%。',
+        },
+        TowerBoost: {
+          summary: '使{buildingName}的召唤速度每级提升 +{value}%。',
+          detail: '当前加成：召唤速度 +{current}%。',
+        },
+        RoostBoost: {
+          summary: '使{buildingName}的召唤速度每级提升 +{value}%。',
+          detail: '当前加成：召唤速度 +{current}%。',
+        },
       },
     },
     achievements: {

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { ACHIEVEMENTS } from '@/game/achievements.js';
 import { artifactState, armyState, buildingState, resourceState, syncGameState } from '@/stores/gameState.js';
 import { getArtifactUpgradeCost, getAllArtifactKeys, upgradeArtifact } from '@/game/artifact.js';
-import { BuildingConfig, UnitTypes } from '@/game/config.js';
+import { ArtifactConfig, BuildingConfig, UnitTypes } from '@/game/config.js';
 import { getHeroSoulsTotal, getGold } from '@/game/resources.js';
 import { getUpgradeCost, upgradeBuilding } from '@/game/town.js';
 import { getUnitEffectiveDmg, getUnitEffectiveHp } from '@/game/unitHelpers.js';
@@ -40,6 +40,15 @@ const relicIcons = {
   DenBoost: '🏠',
   TowerBoost: '🗼',
   RoostBoost: '🦅',
+};
+
+const relicBuildingTargets = {
+  hutBoost: 'GoblinHut',
+  CampBoost: 'OrcCamp',
+  DenBoost: 'TrollDen',
+  TowerBoost: 'OgreTower',
+  RoostBoost: 'DragonRoost',
+  GoldMineBoost: 'GoldMine',
 };
 
 const humanizeKey = (key) =>
@@ -89,6 +98,60 @@ export const useEconomyStore = defineStore('economy', () => {
       return humanizeKey(key);
     }
     return translated;
+  };
+
+  const getEffectPrecision = (value) => {
+    const absValue = Math.abs(value);
+    if (absValue === 0) return 0;
+    if (absValue >= 10) return 0;
+    if (absValue >= 1) return 1;
+    return 1;
+  };
+
+  const getArtifactDescription = (key, tier) => {
+    const config = ArtifactConfig[key];
+    if (!config) return { summary: '', detail: '' };
+
+    const translationBase = `prestige.relicDescriptions.${key}`;
+    const perTierBaseValue = config.effectValue;
+    const isPercentEffect = typeof config.effect === 'string' && config.effect.endsWith('%');
+
+    const perTierValue = isPercentEffect ? perTierBaseValue * 100 : perTierBaseValue;
+    const currentValue = perTierValue * tier;
+
+    const formatEffectValue = (value) =>
+      Number.isInteger(value)
+        ? formatNumber(value)
+        : formatFloat(value, getEffectPrecision(value));
+
+    const params = {
+      summary: {
+        value: formatEffectValue(perTierValue),
+      },
+      detail: {
+        current: formatEffectValue(currentValue),
+      },
+    };
+
+    if (config.appliesTo) {
+      const unitName = getUnitLabel(config.appliesTo);
+      params.summary.unitName = unitName;
+      params.detail.unitName = unitName;
+    }
+
+    if (relicBuildingTargets[key]) {
+      const buildingName = getBuildingName(relicBuildingTargets[key]);
+      params.summary.buildingName = buildingName;
+      params.detail.buildingName = buildingName;
+    }
+
+    const summaryTranslation = t(`${translationBase}.summary`, params.summary);
+    const detailTranslation = t(`${translationBase}.detail`, params.detail);
+
+    return {
+      summary: summaryTranslation === `${translationBase}.summary` ? '' : summaryTranslation,
+      detail: detailTranslation === `${translationBase}.detail` ? '' : detailTranslation,
+    };
   };
 
   const buildDescription = (key, level) => {
@@ -178,6 +241,7 @@ export const useEconomyStore = defineStore('economy', () => {
     getAllArtifactKeys().map((key) => {
       const tier = relicState[key] || 0;
       const cost = getArtifactUpgradeCost(key);
+      const description = getArtifactDescription(key, tier);
       return {
         key,
         name: getArtifactName(key),
@@ -186,6 +250,7 @@ export const useEconomyStore = defineStore('economy', () => {
         cost,
         maxed: !Number.isFinite(cost),
         affordable: Number.isFinite(cost) && getHeroSoulsTotal() >= cost,
+        description,
       };
     }),
   );

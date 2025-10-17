@@ -78,6 +78,18 @@
               <p class="relic__tier">
                 {{ t('prestige.tier', { value: formatNumber(relic.tier) }) }}
               </p>
+              <p
+                v-if="relic.description.summary"
+                class="relic__summary"
+              >
+                {{ relic.description.summary }}
+              </p>
+              <p
+                v-if="relic.description.detail"
+                class="relic__detail"
+              >
+                {{ relic.description.detail }}
+              </p>
               <button
                 class="relic__upgrade"
                 type="button"
@@ -172,6 +184,12 @@ const ascend = () => {
   width: 100%;
 }
 
+@media (max-width: 960px) {
+  .prestige {
+    grid-template-columns: 1fr;
+  }
+}
+
 .prestige__summary {
   background: rgba(15, 23, 42, 0.65);
   border-radius: 20px;
@@ -180,6 +198,7 @@ const ascend = () => {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
 }
 
 .summary-row {
@@ -291,6 +310,18 @@ const ascend = () => {
   color: rgba(148, 163, 184, 0.85);
 }
 
+.relic__summary {
+  margin: 0;
+  color: rgba(226, 232, 240, 0.85);
+  font-size: 0.95rem;
+}
+
+.relic__detail {
+  margin: 0;
+  color: rgba(148, 163, 184, 0.85);
+  font-size: 0.9rem;
+}
+
 .relic__upgrade {
   padding: 12px 14px;
   border-radius: 12px;
@@ -310,11 +341,5 @@ const ascend = () => {
 .relic__upgrade:not(:disabled):hover {
   transform: translateY(-1px);
   background: rgba(59, 130, 246, 0.45);
-}
-
-@media (max-width: 1000px) {
-  .prestige {
-    grid-template-columns: 1fr;
-  }
 }
 </style>
