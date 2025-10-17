@@ -41,6 +41,8 @@ export function attack() {
 
   enemy.takeDamage(combinedDmg);
 
+  const retaliation = _enemyRetaliate(enemy.getDmg());
+
   if (!enemy.isAlive()) {
     killCount += 1;
     resources.lifetimeEnemiesSlain += 1;
@@ -55,11 +57,9 @@ export function attack() {
       enemyHpBeforeAttack,
       enemyHpAfterAttack: 0,
       heroDamage: heroDamageDealt,
-      retaliation: { type: null, unitsLost: 0, damageDealt: 0 },
+      retaliation,
     };
   }
-
-  const retaliation = _enemyRetaliate(enemy.getDmg());
 
   return {
     killed: false,
