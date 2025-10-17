@@ -25,6 +25,7 @@ export const messages = {
     },
     battle: {
       currentEnemy: 'Current Enemy',
+      yourArmy: 'Your Army',
       stats: {
         health: 'Health',
         damage: 'Damage',
@@ -261,6 +262,7 @@ export const messages = {
     },
     battle: {
       currentEnemy: 'Enemigo actual',
+      yourArmy: 'Tu ejército',
       stats: {
         health: 'Salud',
         damage: 'Daño',
@@ -497,6 +499,7 @@ export const messages = {
     },
     battle: {
       currentEnemy: '当前敌人',
+      yourArmy: '你的军队',
       stats: {
         health: '生命值',
         damage: '伤害',

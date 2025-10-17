@@ -2,65 +2,82 @@
   <div class="battle-view">
     <section class="card battle-card">
       <header class="card__header">
-        <div>
-          <p class="card__eyebrow">
-            {{ t('battle.currentEnemy') }}
-          </p>
-          <h2 class="card__title">
-            {{ enemyLevelLabel }}
-          </h2>
-        </div>
-        <div class="stats">
-          <div class="stat">
-            <p class="stat__label">
-              {{ t('battle.stats.health') }}
-            </p>
-            <p class="stat__value">
-              {{ formatFloat(enemyDetails?.currentHp) }} / {{ formatFloat(enemyDetails?.maxHp) }}
-            </p>
+        <div class="card__header-top">
+          <div class="controls">
+            <button
+              class="attack-button"
+              type="button"
+              :class="{ 'attack-button--active': isAttacking }"
+              :disabled="isAttacking"
+              @click="beginAttack"
+            >
+              {{ t('battle.attackButton') }}
+            </button>
+            <button
+              class="stop-button"
+              type="button"
+              :disabled="!isAttacking"
+              @click="stopAttack"
+            >
+              {{ t('battle.stopButton') }}
+            </button>
           </div>
-          <div class="stat">
-            <p class="stat__label">
-              {{ t('battle.stats.damage') }}
-            </p>
-            <p class="stat__value">
-              {{ formatFloat(enemyDetails?.dmg) }}
-            </p>
-          </div>
-          <div class="stat">
-            <p class="stat__label">
-              {{ t('battle.stats.kills') }}
-            </p>
-            <p class="stat__value">
-              {{ formatNumber(killCount) }}
-            </p>
+          <div class="enemy-summary">
+            <span class="enemy-summary__label">
+              {{ t('battle.currentEnemy') }}
+            </span>
+            <span class="enemy-summary__level">
+              {{ enemyLevelLabel }}
+            </span>
+            <span class="enemy-summary__stat">
+              <span class="enemy-summary__stat-label">
+                {{ t('battle.stats.health') }}:
+              </span>
+              <span class="enemy-summary__stat-value">
+                {{ formatFloat(enemyDetails?.currentHp) }} / {{ formatFloat(enemyDetails?.maxHp) }}
+              </span>
+            </span>
+            <span class="enemy-summary__stat">
+              <span class="enemy-summary__stat-label">
+                {{ t('battle.stats.damage') }}:
+              </span>
+              <span class="enemy-summary__stat-value">
+                {{ formatFloat(enemyDetails?.dmg) }}
+              </span>
+            </span>
+            <span class="enemy-summary__stat">
+              <span class="enemy-summary__stat-label">
+                {{ t('battle.stats.kills') }}:
+              </span>
+              <span class="enemy-summary__stat-value">
+                {{ formatNumber(killCount) }}
+              </span>
+            </span>
           </div>
         </div>
       </header>
-
-      <div class="card__body">
-        <div class="controls">
-          <button
-            class="attack-button"
-            type="button"
-            :class="{ 'attack-button--active': isAttacking }"
-            :disabled="isAttacking"
-            @click="beginAttack"
-          >
-            {{ t('battle.attackButton') }}
-          </button>
-          <button
-            class="stop-button"
-            type="button"
-            :disabled="!isAttacking"
-            @click="stopAttack"
-          >
-            {{ t('battle.stopButton') }}
-          </button>
-        </div>
-      </div>
     </section>
     <section class="log-card">
+      <div class="army-summary">
+        <span class="army-summary__label">
+          {{ t('battle.yourArmy') }}
+        </span>
+        <div
+          v-for="unit in armySummary"
+          :key="unit.type"
+          class="army-summary__item"
+        >
+          <span
+            class="army-summary__icon"
+            :aria-label="unit.name"
+          >
+            {{ unit.icon }}
+          </span>
+          <span class="army-summary__count">
+            {{ formatNumber(unit.count) }}
+          </span>
+        </div>
+      </div>
       <div class="log-card__header">
         <h3 class="log-card__title">
           {{ t('battle.logTitle') }}
@@ -92,6 +109,8 @@ import { storeToRefs } from 'pinia';
 import { useBattleStore } from '@/stores/battleStore.js';
 import { useI18nStore } from '@/stores/i18nStore.js';
 import { formatFloat, formatNumber } from '@/utils/formatters.js';
+import { UnitTypes } from '@/game/config.js';
+import { armyState } from '@/stores/gameState.js';
 
 const battle = useBattleStore();
 const i18n = useI18nStore();
@@ -100,6 +119,23 @@ const { currentEnemy, killCount, battleLog } = storeToRefs(battle);
 const { clearBattleLog } = battle;
 
 const enemyDetails = computed(() => currentEnemy.value);
+const unitIcons = {
+  Goblin: '👺',
+  Orc: '🪓',
+  Troll: '🧌',
+  Ogre: '🏯',
+  Dragon: '🐉',
+};
+
+const armySummary = computed(() =>
+  Object.keys(UnitTypes).map((type) => ({
+    type,
+    name: t(`units.${type}.plural`),
+    icon: unitIcons[type] || '🛡️',
+    count: armyState[type] || 0,
+  })),
+);
+
 const enemyLevelLabel = computed(() => {
   const level = enemyDetails.value?.level;
   if (!level) {
@@ -156,55 +192,59 @@ onBeforeUnmount(() => {
 
 .card__header {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 24px;
 }
 
-.card__eyebrow {
-  margin: 0;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  color: rgba(148, 163, 184, 0.7);
-}
-
-.card__title {
-  margin: 8px 0 0;
-  font-size: 2rem;
-  font-weight: 700;
-}
-
-.stats {
+.card__header-top {
   display: flex;
-  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-.stat {
-  background: rgba(15, 23, 42, 0.6);
-  padding: 14px 16px;
-  border-radius: 16px;
-  min-width: 120px;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+.enemy-summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  text-align: right;
 }
 
-.stat__label {
-  margin: 0;
-  font-size: 0.75rem;
-  color: rgba(148, 163, 184, 0.8);
-  text-transform: uppercase;
+.enemy-summary__label {
+  font-size: 0.85rem;
   letter-spacing: 0.08em;
-}
-
-.stat__value {
-  margin: 8px 0 0;
-  font-size: 1.2rem;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.75);
   font-weight: 600;
 }
 
-.card__body {
+.enemy-summary__level {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.enemy-summary__stat {
   display: flex;
-  justify-content: flex-start;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 0.95rem;
+}
+
+.enemy-summary__stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.75);
+  font-weight: 600;
+}
+
+.enemy-summary__stat-value {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: rgba(226, 232, 240, 0.92);
 }
 
 .controls {
@@ -340,8 +380,41 @@ onBeforeUnmount(() => {
   color: rgba(226, 232, 240, 0.9);
 }
 
+.army-summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  margin-bottom: 12px;
+}
+
+.army-summary__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(148, 163, 184, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.army-summary__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.army-summary__icon {
+  font-size: 1.4rem;
+}
+
+.army-summary__count {
+  font-size: 1.1rem;
+}
+
 @media (max-width: 900px) {
-  .card__body {
+  .card__header-top {
     justify-content: center;
   }
 }
