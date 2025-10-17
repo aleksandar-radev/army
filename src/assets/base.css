@@ -1,0 +1,28 @@
+:root {
+  color-scheme: dark;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, rgba(15, 23, 42, 0.8), #020617 65%);
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+#app {
+  flex: 1;
+  display: flex;
+}
+
+button {
+  font-family: inherit;
+}
