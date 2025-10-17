@@ -5,7 +5,7 @@ import { doPrestige } from '@/game/prestige.js';
 import { clearSave, loadGame, startAutoSave, stopAutoSave } from '@/game/saveLoad.js';
 import { getCurrentEnemy, startNewBattle } from '@/game/battle.js';
 import { tickTown } from '@/game/town.js';
-import { resetEngineState, resourceState } from '@/stores/gameState.js';
+import { resetEngineState } from '@/stores/gameState.js';
 import { useBattleStore } from '@/stores/battleStore.js';
 import { useEconomyStore } from '@/stores/economyStore.js';
 import { useUiStore } from '@/stores/uiStore.js';
@@ -31,17 +31,7 @@ export const useProgressionStore = defineStore('progression', () => {
     () => ascendDisabled.value || (economy.resourcesView.heroSoulsTotal || 0) >= ASCEND_TARGET,
   );
 
-  const canPrestigeNow = computed(() => {
-    const requiredKills = (resourceState.prestigeCount || 0) + 1;
-    const currentKills = battle.killCount.value;
-
-    return currentKills >= requiredKills;
-  });
-
-  const prestigeInfo = computed(() => ({
-    requiredKills: (resourceState.prestigeCount || 0) + 1,
-    currentKills: battle.killCount.value,
-  }));
+  const canPrestigeNow = computed(() => true);
 
   const ascendMessage = computed(() =>
     ascendMessageKey.value ? t(ascendMessageKey.value, ascendMessageParams.value) : '',
@@ -135,7 +125,6 @@ export const useProgressionStore = defineStore('progression', () => {
     ascendDisabled,
     ascendVisible,
     canPrestigeNow,
-    prestigeInfo,
     performPrestige,
     resetGame,
     ascend,

@@ -91,8 +91,6 @@ export const messages = {
         storedSouls: 'Stored Souls',
         totalSouls: 'Total Souls',
         prestigeCount: 'Prestige Count',
-        killsThisRun: 'Kills this run',
-        killsRequired: 'Kills required',
       },
       actions: {
         prestigeNow: 'Prestige Now',
@@ -340,8 +338,6 @@ export const messages = {
         storedSouls: 'Almas almacenadas',
         totalSouls: 'Almas totales',
         prestigeCount: 'Contador de prestigio',
-        killsThisRun: 'Bajas en esta partida',
-        killsRequired: 'Bajas requeridas',
       },
       actions: {
         prestigeNow: 'Prestigiar ahora',
@@ -589,8 +585,6 @@ export const messages = {
         storedSouls: '储存的英灵',
         totalSouls: '总英灵',
         prestigeCount: '转生次数',
-        killsThisRun: '本轮击杀',
-        killsRequired: '所需击杀',
       },
       actions: {
         prestigeNow: '立即转生',

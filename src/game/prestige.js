@@ -1,11 +1,10 @@
 import { convertHeroSoulsToTotal } from "./resources.js";
-import { resetBattle, getKillCount } from "./battle.js";
+import { resetBattle } from "./battle.js";
 import { resources } from "./resources.js";
 import { armyCounts } from "./army.js";
 
 export function canPrestige() {
-  const requiredKills = (resources.prestigeCount || 0) + 1;
-  return getKillCount() >= requiredKills;
+  return true;
 }
 
 export function doPrestige() {

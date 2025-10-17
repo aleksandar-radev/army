@@ -24,14 +24,6 @@
             <span>{{ t('prestige.summary.prestigeCount') }}</span>
             <strong>{{ formatNumber(resourceSummary.prestigeCount) }}</strong>
           </div>
-          <div class="summary-row">
-            <span>{{ t('prestige.summary.killsThisRun') }}</span>
-            <strong>{{ formatNumber(prestigeInfo.currentKills) }}</strong>
-          </div>
-          <div class="summary-row">
-            <span>{{ t('prestige.summary.killsRequired') }}</span>
-            <strong>{{ formatNumber(prestigeInfo.requiredKills) }}</strong>
-          </div>
           <div class="actions">
             <button
               type="button"
@@ -144,8 +136,7 @@ const t = i18n.t;
 const CELEBRATION_ICON_SRC = uiIconSources.celebration;
 
 const { resourceSummary, relics } = storeToRefs(economy);
-const { prestigeInfo, canPrestigeNow, ascendMessage, ascendVisible, ascendDisabled } =
-  storeToRefs(progression);
+const { canPrestigeNow, ascendMessage, ascendVisible, ascendDisabled } = storeToRefs(progression);
 
 const performPrestige = () => {
   progression.performPrestige();
