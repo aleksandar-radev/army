@@ -41,15 +41,6 @@
       </button>
     </nav>
 
-    <footer class="footer">
-      <button
-        class="reset-button"
-        type="button"
-        @click="openResetModal"
-      >
-        {{ t('sidebar.reset') }}
-      </button>
-    </footer>
   </aside>
 </template>
 
@@ -104,7 +95,6 @@ const summaryItems = computed(() => [
 ]);
 
 const setActiveTab = ui.setActiveTab;
-const openResetModal = ui.openResetModal;
 </script>
 
 <style scoped>
@@ -198,29 +188,5 @@ const openResetModal = ui.openResetModal;
   font-size: 1.4rem;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-}
-
-.footer {
-  margin-top: auto;
-  display: flex;
-}
-
-.reset-button {
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(190, 24, 93, 0.9));
-  color: #fff;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.reset-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 30px rgba(239, 68, 68, 0.35);
 }
 </style>

@@ -34,6 +34,24 @@
           </option>
         </select>
       </div>
+
+      <div class="field field--reset">
+        <div class="field__text">
+          <p class="field__label">
+            {{ t('options.resetLabel') }}
+          </p>
+          <p class="field__description">
+            {{ t('options.resetDescription') }}
+          </p>
+        </div>
+        <button
+          class="field__button"
+          type="button"
+          @click="openResetModal"
+        >
+          {{ t('options.resetButton') }}
+        </button>
+      </div>
     </div>
   </section>
 </template>
@@ -42,8 +60,10 @@
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18nStore } from '@/stores/i18nStore.js';
+import { useUiStore } from '@/stores/uiStore.js';
 
 const i18n = useI18nStore();
+const ui = useUiStore();
 const { locale } = storeToRefs(i18n);
 const t = i18n.t;
 
@@ -60,6 +80,8 @@ const selectedLocale = computed({
     i18n.setLocale(value);
   },
 });
+
+const openResetModal = ui.openResetModal;
 </script>
 
 <style scoped>
@@ -102,6 +124,16 @@ const selectedLocale = computed({
   gap: 12px;
 }
 
+.field--reset {
+  gap: 16px;
+}
+
+.field__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .field__label {
   font-size: 0.95rem;
   font-weight: 600;
@@ -128,5 +160,23 @@ const selectedLocale = computed({
   outline: none;
   border-color: rgba(59, 130, 246, 0.6);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+}
+
+.field__button {
+  align-self: flex-start;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(190, 24, 93, 0.9));
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field__button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(239, 68, 68, 0.35);
 }
 </style>

@@ -208,6 +208,9 @@ export const messages = {
       subtitle: 'Customize your experience.',
       languageLabel: 'Language',
       languageDescription: 'Choose the language used throughout the game.',
+      resetLabel: 'Reset Progress',
+      resetDescription: 'Resetting will clear your current progress. This cannot be undone.',
+      resetButton: 'Reset Game',
     },
     units: {
       Goblin: { name: 'Goblin', plural: 'Goblins' },
@@ -451,6 +454,9 @@ export const messages = {
       subtitle: 'Personaliza tu experiencia.',
       languageLabel: 'Idioma',
       languageDescription: 'Elige el idioma que se usa en todo el juego.',
+      resetLabel: 'Restablecer progreso',
+      resetDescription: 'Restablecer borrará tu progreso actual. Esta acción no se puede deshacer.',
+      resetButton: 'Restablecer juego',
     },
     units: {
       Goblin: { name: 'Duende', plural: 'Duendes' },
@@ -694,6 +700,9 @@ export const messages = {
       subtitle: '自定义你的游戏体验。',
       languageLabel: '语言',
       languageDescription: '选择游戏中使用的语言。',
+      resetLabel: '重置进度',
+      resetDescription: '重置将清除你当前的进度，此操作无法撤销。',
+      resetButton: '重置游戏',
     },
     units: {
       Goblin: { name: '地精', plural: '地精' },
