@@ -2,8 +2,8 @@ export const messages = {
   en: {
     locales: {
       en: 'English',
-      es: 'Spanish',
-      zh: 'Chinese',
+      es: 'Español',
+      zh: '中文（简体）',
     },
     sidebar: {
       title: 'Idle Army Builder',
@@ -179,9 +179,9 @@ export const messages = {
   },
   es: {
     locales: {
-      en: 'Inglés',
+      en: 'English',
       es: 'Español',
-      zh: 'Chino',
+      zh: '中文（简体）',
     },
     sidebar: {
       title: 'Constructor de Ejército Inactivo',
@@ -357,8 +357,8 @@ export const messages = {
   },
   zh: {
     locales: {
-      en: '英语',
-      es: '西班牙语',
+      en: 'English',
+      es: 'Español',
       zh: '中文（简体）',
     },
     sidebar: {
