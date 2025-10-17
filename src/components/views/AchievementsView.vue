@@ -204,6 +204,7 @@ const currentGroup = computed(() => groupedAchievements.value.find((group) => gr
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-right: 4px;
 }
 
@@ -211,6 +212,8 @@ const currentGroup = computed(() => groupedAchievements.value.find((group) => gr
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
+  width: 100%;
+  min-width: 0;
 }
 
 .achievement {

@@ -110,6 +110,7 @@ const upgrade = (key) => {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-right: 4px;
   display: flex;
   flex-direction: column;
@@ -134,8 +135,10 @@ const upgrade = (key) => {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   gap: 20px;
+  width: 100%;
+  min-width: 0;
 }
 
 .building {
@@ -177,8 +180,10 @@ const upgrade = (key) => {
 
 .building__summary {
   flex: 1;
+  min-width: 0;
   margin: 0;
   line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .tooltip {
@@ -209,8 +214,8 @@ const upgrade = (key) => {
 
 .tooltip__bubble {
   position: absolute;
-  inset: auto auto 100% 50%;
-  transform: translate(-50%, -8px);
+  inset: auto 0 100% auto;
+  transform: translateY(-8px);
   min-width: 220px;
   max-width: 260px;
   padding: 12px 14px;
@@ -228,8 +233,7 @@ const upgrade = (key) => {
   content: '';
   position: absolute;
   top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 14px;
   border-width: 6px;
   border-style: solid;
   border-color: rgba(15, 23, 42, 0.96) transparent transparent transparent;
@@ -239,7 +243,7 @@ const upgrade = (key) => {
 .tooltip__trigger:focus-visible + .tooltip__bubble,
 .tooltip__trigger:hover + .tooltip__bubble {
   opacity: 1;
-  transform: translate(-50%, -14px);
+  transform: translateY(-14px);
 }
 
 .upgrade {

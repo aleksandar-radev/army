@@ -104,6 +104,7 @@ const openResetModal = ui.openResetModal;
   box-shadow: 0 24px 60px rgba(15, 23, 42, 0.4);
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .panel__header {
@@ -123,6 +124,8 @@ const openResetModal = ui.openResetModal;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 16px;
+  width: 100%;
+  min-width: 0;
 }
 
 .summary__item {

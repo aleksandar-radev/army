@@ -92,6 +92,7 @@ const t = i18n.t;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-right: 4px;
   display: flex;
   flex-direction: column;
@@ -118,6 +119,8 @@ const t = i18n.t;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
+  width: 100%;
+  min-width: 0;
 }
 
 .unit-card {
