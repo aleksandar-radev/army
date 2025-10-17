@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, onMounted } from 'vue';
+import { onBeforeUnmount, onMounted, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import SidebarPanel from '@/components/layout/SidebarPanel.vue';
 import BattleView from '@/components/views/BattleView.vue';
@@ -24,6 +24,7 @@ import AchievementsView from '@/components/views/AchievementsView.vue';
 import ResetModal from '@/components/modals/ResetModal.vue';
 import { useProgressionStore } from '@/stores/progressionStore.js';
 import { useUiStore } from '@/stores/uiStore.js';
+import { trackEvent } from '@/utils/analytics.js';
 
 const progression = useProgressionStore();
 const ui = useUiStore();
@@ -31,10 +32,22 @@ const { activeTab, resetModalOpen } = storeToRefs(ui);
 
 onMounted(() => {
   progression.initialize();
+  trackEvent('game_loaded');
+  trackEvent('tab_view', { tab: activeTab.value });
 });
 
 onBeforeUnmount(() => {
   progression.dispose();
+});
+
+watch(activeTab, (newTab, oldTab) => {
+  if (newTab === oldTab) return;
+  trackEvent('tab_view', { tab: newTab });
+});
+
+watch(resetModalOpen, (isOpen) => {
+  if (!isOpen) return;
+  trackEvent('modal_open', { modal: 'reset' });
 });
 </script>
 
