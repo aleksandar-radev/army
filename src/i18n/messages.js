@@ -7,7 +7,6 @@ export const messages = {
     },
     sidebar: {
       title: 'Idle Army Builder',
-      subtitle: 'Commanders Dashboard',
       reset: 'Reset Progress',
       summary: {
         gold: 'Gold',
@@ -188,7 +187,6 @@ export const messages = {
     },
     sidebar: {
       title: 'Constructor de Ejército Inactivo',
-      subtitle: 'Panel del Comandante',
       reset: 'Restablecer progreso',
       summary: {
         gold: 'Oro',
@@ -369,7 +367,6 @@ export const messages = {
     },
     sidebar: {
       title: '放置军团建造者',
-      subtitle: '指挥官控制台',
       reset: '重置进度',
       summary: {
         gold: '金币',
