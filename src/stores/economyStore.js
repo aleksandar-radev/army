@@ -221,8 +221,10 @@ export const useEconomyStore = defineStore('economy', () => {
       .filter(Boolean),
   );
 
-  const townBuildings = computed(() =>
-    Object.keys(buildings).map((key) => {
+  const townBuildings = computed(() => {
+    const gold = resourcesView.gold ?? getGold();
+
+    return Object.keys(buildings).map((key) => {
       const level = buildings[key] || 0;
       const cost = getUpgradeCost(key);
       return {
@@ -231,11 +233,11 @@ export const useEconomyStore = defineStore('economy', () => {
         icon: buildingIcons[key] || '🏗️',
         level,
         cost,
-        canAfford: getGold() >= cost,
+        canAfford: gold >= cost,
         description: buildDescription(key, level),
       };
-    }),
-  );
+    });
+  });
 
   const relics = computed(() =>
     getAllArtifactKeys().map((key) => {
