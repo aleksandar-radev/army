@@ -38,7 +38,7 @@ export const messages = {
       log: {
         instructions: 'Press Attack to engage the enemy. Use Stop to pause the assault.',
         heroAttack: 'Your army struck Enemy Level {level} for {damage} damage. Enemy HP: {before} → {after}.',
-        heroVictory: 'Enemy Level {level} defeated! You gained {souls} hero souls.',
+        heroVictory: 'Enemy Level {level} defeated! You gained {souls} hero souls and {gold} gold.',
         retaliationKilled: 'The enemy retaliated for {damage} damage and killed {count} {unit}.',
         retaliationNoLoss: 'The enemy retaliated for {damage} damage but your {unit} held the line.',
         noRetaliation: 'The enemy could not retaliate.',
@@ -284,7 +284,7 @@ export const messages = {
       log: {
         instructions: 'Presiona Atacar para enfrentarte al enemigo. Usa Detener para pausar el asalto.',
         heroAttack: 'Tu ejército golpeó al enemigo de nivel {level} e infligió {damage} de daño. Salud del enemigo: {before} → {after}.',
-        heroVictory: '¡Enemigo de nivel {level} derrotado! Ganaste {souls} almas de héroe.',
+        heroVictory: '¡Enemigo de nivel {level} derrotado! Ganaste {souls} almas de héroe y {gold} de oro.',
         retaliationKilled: 'El enemigo contraatacó e infligió {damage} de daño y mató a {count} {unit}.',
         retaliationNoLoss: 'El enemigo contraatacó e infligió {damage} de daño, pero tus {unit} resistieron.',
         noRetaliation: 'El enemigo no pudo contraatacar.',
@@ -530,7 +530,7 @@ export const messages = {
       log: {
         instructions: '点击“攻击”来与敌人战斗。使用“停止”以暂停进攻。',
         heroAttack: '你的军队攻击了{level}级敌人，造成 {damage} 点伤害。敌人生命值：{before} → {after}。',
-        heroVictory: '{level}级敌人被击败！你获得 {souls} 点英灵。',
+        heroVictory: '{level}级敌人被击败！你获得 {souls} 点英灵和 {gold} 点金币。',
         retaliationKilled: '敌人反击造成 {damage} 点伤害并消灭了 {count}{unit}。',
         retaliationNoLoss: '敌人反击造成 {damage} 点伤害，但你的{unit}坚守阵线。',
         noRetaliation: '敌人无法反击。',

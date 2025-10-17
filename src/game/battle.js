@@ -1,12 +1,20 @@
 import { getCombinedDmg, getUnitCount, removeUnits } from "./army.js";
 import { getUnitEffectiveHp } from "./unitHelpers.js";
 import { EnemyHero } from "./enemy.js";
-import { addHeroSoul, resources } from "./resources.js";
-import { UnitTypes } from "./config.js";
+import { addGold, addHeroSoul, resources } from "./resources.js";
+import { EnemyRewards, UnitTypes } from "./config.js";
 import { getHeroSoulMultiplier } from "./artifact.js";
 
 let currentEnemy = null;
 let killCount = 0;
+
+function getGoldRewardForEnemy(level) {
+  const baseGold = EnemyRewards.baseGold ?? 0;
+  const perLevel = EnemyRewards.goldPerLevel ?? 0;
+  const reward = baseGold + perLevel * Math.max(0, level - 1);
+  const roundedReward = Math.floor(reward);
+  return Math.max(0, Number.isFinite(roundedReward) ? roundedReward : 0);
+}
 
 export function startNewBattle() {
   const nextLevel = killCount + 1;
@@ -47,13 +55,18 @@ export function attack() {
     killCount += 1;
     resources.lifetimeEnemiesSlain += 1;
     const soulsGained = getHeroSoulMultiplier(enemy.getLevel());
+    const goldGained = getGoldRewardForEnemy(enemy.getLevel());
     addHeroSoul(soulsGained);
+    if (goldGained > 0) {
+      addGold(goldGained);
+    }
 
     currentEnemy = null;
     return {
       killed: true,
       newEnemyLevel: killCount + 1,
       storedSoulsGained: soulsGained,
+      goldGained,
       enemyHpBeforeAttack,
       enemyHpAfterAttack: 0,
       heroDamage: heroDamageDealt,

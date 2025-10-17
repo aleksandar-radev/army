@@ -46,6 +46,11 @@ export const EnemyConfig = {
   dmgGrowth: 1.04,
 };
 
+export const EnemyRewards = {
+  baseGold: 10,
+  goldPerLevel: 2,
+};
+
 export const ArtifactConfig = {
   GoldMineBoost: {
     baseCost: 10,

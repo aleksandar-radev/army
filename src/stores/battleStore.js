@@ -100,6 +100,7 @@ export const useBattleStore = defineStore('battle', () => {
       const levelLabel = entry.enemyLevel ? formatNumber(entry.enemyLevel) : '-';
       const before = formatFloat(entry.enemyHpBefore, 1);
       const retaliationLines = [];
+      const goldReward = Number.isFinite(entry.gold) ? entry.gold : 0;
 
       if (entry.retaliation) {
         const retaliation = entry.retaliation;
@@ -138,6 +139,7 @@ export const useBattleStore = defineStore('battle', () => {
         t('battle.log.heroVictory', {
           level: levelLabel,
           souls: formatFloat(entry.souls, 1),
+          gold: formatNumber(goldReward),
         }),
       ];
 
@@ -243,6 +245,7 @@ export const useBattleStore = defineStore('battle', () => {
       setLogEntry({
         type: 'defeat',
         souls: result.storedSoulsGained,
+        gold: result.goldGained,
         heroDamage: result.heroDamage,
         enemyHpBefore: result.enemyHpBeforeAttack,
         enemyHpAfter: result.enemyHpAfterAttack,
