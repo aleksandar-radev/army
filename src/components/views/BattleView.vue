@@ -38,21 +38,40 @@
     </header>
 
     <div class="card__body">
-      <button
-        class="attack-button"
-        type="button"
-        :class="{ 'attack-button--active': isAttacking }"
-        @mousedown.prevent="beginAttack"
-        @touchstart.prevent="beginAttack"
-        @mouseup.prevent="stopAttack"
-        @mouseleave="stopAttack"
-        @touchend.prevent="stopAttack"
-        @touchcancel.prevent="stopAttack"
-      >
-        {{ t('battle.attackButton') }}
-      </button>
-      <pre class="log">{{ battleLog }}</pre>
+      <div class="controls">
+        <button
+          class="attack-button"
+          type="button"
+          :class="{ 'attack-button--active': isAttacking }"
+          :disabled="isAttacking"
+          @click="beginAttack"
+        >
+          {{ t('battle.attackButton') }}
+        </button>
+        <button
+          class="stop-button"
+          type="button"
+          :disabled="!isAttacking"
+          @click="stopAttack"
+        >
+          {{ t('battle.stopButton') }}
+        </button>
+      </div>
     </div>
+  </section>
+  <section class="log-card">
+    <h3 class="log-card__title">
+      {{ t('battle.logTitle') }}
+    </h3>
+    <ul class="log-list">
+      <li
+        v-for="(entry, index) in battleLog"
+        :key="index"
+        class="log-list__entry"
+      >
+        <pre>{{ entry }}</pre>
+      </li>
+    </ul>
   </section>
 </template>
 
@@ -87,7 +106,7 @@ const beginAttack = () => {
   if (isAttacking.value) return;
   isAttacking.value = true;
   attack();
-  attackInterval = setInterval(attack, 100);
+  attackInterval = setInterval(attack, 1000);
 };
 
 const stopAttack = () => {
@@ -100,17 +119,11 @@ const stopAttack = () => {
 };
 
 onMounted(() => {
-  window.addEventListener('mouseup', stopAttack);
-  window.addEventListener('touchend', stopAttack);
-  window.addEventListener('touchcancel', stopAttack);
   battle.refreshEnemy();
 });
 
 onBeforeUnmount(() => {
   stopAttack();
-  window.removeEventListener('mouseup', stopAttack);
-  window.removeEventListener('touchend', stopAttack);
-  window.removeEventListener('touchcancel', stopAttack);
 });
 </script>
 
@@ -170,10 +183,14 @@ onBeforeUnmount(() => {
 }
 
 .card__body {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 24px;
-  align-items: stretch;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.controls {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .attack-button {
@@ -198,20 +215,76 @@ onBeforeUnmount(() => {
   transform: translateY(-1px);
 }
 
-.log {
-  margin: 0;
+.attack-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+  transform: none;
+}
+
+.stop-button {
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 18px;
+  padding: 20px;
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(248, 113, 113, 0.9), rgba(220, 38, 38, 0.85));
+  color: #fff;
+  box-shadow: 0 18px 40px rgba(248, 113, 113, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stop-button:hover {
+  transform: translateY(-1px);
+}
+
+.stop-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+.log-card {
+  margin-top: 24px;
   background: rgba(15, 23, 42, 0.55);
   border-radius: 18px;
   padding: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.log-card__title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.log-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.log-list__entry pre {
+  margin: 0;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 14px;
+  padding: 16px;
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   white-space: pre-wrap;
-  border: 1px solid rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.12);
   color: rgba(226, 232, 240, 0.9);
 }
 
 @media (max-width: 900px) {
   .card__body {
-    grid-template-columns: 1fr;
+    justify-content: center;
   }
 }
 </style>

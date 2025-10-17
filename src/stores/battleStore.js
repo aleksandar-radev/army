@@ -17,7 +17,7 @@ const formatEnemy = (enemy) => {
 
 const createRetaliationState = (retaliation) => {
   if (!retaliation.type) {
-    return { kind: 'none' };
+    return { kind: 'none', damage: 0 };
   }
 
   if (retaliation.unitsLost > 0) {
@@ -25,53 +25,82 @@ const createRetaliationState = (retaliation) => {
       kind: 'killed',
       unit: retaliation.type,
       count: retaliation.unitsLost,
+      damage: retaliation.damageDealt,
     };
   }
 
   return {
     kind: 'noLoss',
     unit: retaliation.type,
+    damage: retaliation.damageDealt,
   };
 };
 
 export const useBattleStore = defineStore('battle', () => {
   const enemy = ref(formatEnemy(getCurrentEnemy()));
   const killCount = ref(getKillCount());
-  const logEntry = ref({ type: 'instructions' });
+  const logEntries = ref([{ type: 'instructions' }]);
 
   const i18n = useI18nStore();
   const t = i18n.t;
 
   const currentEnemy = computed(() => enemy.value);
 
-  const battleLog = computed(() => {
-    const entry = logEntry.value;
+  const formatLogEntry = (entry) => {
     if (!entry) return '';
 
     if (entry.type === 'instructions') {
-      return t('battle.log.holdToAttack');
+      return t('battle.log.instructions');
     }
 
     if (entry.type === 'defeat') {
-      return t('battle.log.enemyDefeated', { souls: formatFloat(entry.souls, 1) });
+      const levelLabel = entry.enemyLevel ? formatNumber(entry.enemyLevel) : '-';
+      const before = formatFloat(entry.enemyHpBefore, 1);
+      const lines = [
+        t('battle.log.heroAttack', {
+          level: levelLabel,
+          damage: formatFloat(entry.heroDamage, 1),
+          before,
+          after: formatFloat(entry.enemyHpAfter ?? 0, 1),
+        }),
+        t('battle.log.heroVictory', {
+          level: levelLabel,
+          souls: formatFloat(entry.souls, 1),
+        }),
+      ];
+      return lines.join('\n');
     }
 
-    if (entry.type === 'damage') {
-      const lines = [t('battle.log.damageReport', { hp: formatFloat(entry.hp, 1) })];
-      const retaliation = entry.retaliation || { kind: 'none' };
+    if (entry.type === 'exchange') {
+      const levelLabel = entry.enemyLevel ? formatNumber(entry.enemyLevel) : '-';
+      const lines = [
+        t('battle.log.heroAttack', {
+          level: levelLabel,
+          damage: formatFloat(entry.heroDamage, 1),
+          before: formatFloat(entry.enemyHpBefore, 1),
+          after: formatFloat(entry.enemyHpAfter, 1),
+        }),
+      ];
+      const retaliation = entry.retaliation || { kind: 'none', damage: 0 };
       if (retaliation.kind === 'killed') {
         const unitLabel = retaliation.count === 1
           ? t(`units.${retaliation.unit}.name`)
           : t(`units.${retaliation.unit}.plural`);
         lines.push(
           t('battle.log.retaliationKilled', {
+            damage: formatFloat(retaliation.damage, 1),
             count: formatNumber(retaliation.count),
             unit: unitLabel,
           }),
         );
       } else if (retaliation.kind === 'noLoss') {
         const unitLabel = t(`units.${retaliation.unit}.plural`);
-        lines.push(t('battle.log.retaliationNone', { unit: unitLabel }));
+        lines.push(
+          t('battle.log.retaliationNoLoss', {
+            damage: formatFloat(retaliation.damage, 1),
+            unit: unitLabel,
+          }),
+        );
       } else {
         lines.push(t('battle.log.noRetaliation'));
       }
@@ -83,10 +112,28 @@ export const useBattleStore = defineStore('battle', () => {
     }
 
     return '';
+  };
+
+  const battleLog = computed(() => {
+    if (!logEntries.value.length) {
+      return [formatLogEntry({ type: 'instructions' })];
+    }
+
+    return logEntries.value.map((entry) => formatLogEntry(entry));
   });
 
   const setLogEntry = (entry) => {
-    logEntry.value = entry;
+    if (entry.type === 'instructions') {
+      logEntries.value = [entry];
+      return;
+    }
+
+    if (logEntries.value.length === 1 && logEntries.value[0].type === 'instructions') {
+      logEntries.value = [entry];
+      return;
+    }
+
+    logEntries.value = [entry, ...logEntries.value].slice(0, 500);
   };
 
   const setEnemy = (value) => {
@@ -103,18 +150,29 @@ export const useBattleStore = defineStore('battle', () => {
 
   const attackEnemy = () => {
     const economy = useEconomyStore();
+    const current = enemy.value;
     const result = attack();
 
     if (result.killed) {
-      setLogEntry({ type: 'defeat', souls: result.storedSoulsGained });
+      setLogEntry({
+        type: 'defeat',
+        souls: result.storedSoulsGained,
+        heroDamage: result.heroDamage,
+        enemyHpBefore: result.enemyHpBeforeAttack,
+        enemyHpAfter: result.enemyHpAfterAttack,
+        enemyLevel: current?.level ?? null,
+      });
       const nextEnemy = startNewBattle();
       setEnemy(nextEnemy);
     } else {
       const retaliationState = createRetaliationState(result.retaliation);
       setLogEntry({
-        type: 'damage',
-        hp: result.enemyHpAfterAttack,
+        type: 'exchange',
+        heroDamage: result.heroDamage,
+        enemyHpBefore: result.enemyHpBeforeAttack,
+        enemyHpAfter: result.enemyHpAfterAttack,
         retaliation: retaliationState,
+        enemyLevel: current?.level ?? null,
       });
     }
 

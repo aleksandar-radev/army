@@ -36,9 +36,12 @@ export function attack() {
 
   const enemy = currentEnemy;
   const combinedDmg = getCombinedDmg();
+  const enemyHpBeforeAttack = enemy.getCurrentHp();
+  const heroDamageDealt = Math.min(combinedDmg, enemyHpBeforeAttack);
 
-  if (combinedDmg >= enemy.getCurrentHp()) {
-    enemy.takeDamage(combinedDmg);
+  enemy.takeDamage(combinedDmg);
+
+  if (!enemy.isAlive()) {
     killCount += 1;
     resources.lifetimeEnemiesSlain += 1;
     const soulsGained = getHeroSoulMultiplier(enemy.getLevel());
@@ -49,15 +52,20 @@ export function attack() {
       killed: true,
       newEnemyLevel: killCount + 1,
       storedSoulsGained: soulsGained,
+      enemyHpBeforeAttack,
+      enemyHpAfterAttack: 0,
+      heroDamage: heroDamageDealt,
+      retaliation: { type: null, unitsLost: 0, damageDealt: 0 },
     };
   }
 
-  enemy.takeDamage(combinedDmg);
   const retaliation = _enemyRetaliate(enemy.getDmg());
 
   return {
     killed: false,
+    enemyHpBeforeAttack,
     enemyHpAfterAttack: enemy.getCurrentHp(),
+    heroDamage: heroDamageDealt,
     retaliation,
   };
 }
@@ -81,16 +89,18 @@ function _chooseRandomUnitType() {
 
 function _enemyRetaliate(enemyDmg) {
   const type = _chooseRandomUnitType();
-  if (!type) return { type: null, unitsLost: 0 };
+  if (!type) return { type: null, unitsLost: 0, damageDealt: 0 };
 
   const count = getUnitCount(type);
   const perUnitHp = getUnitEffectiveHp(type);
   let unitsToKill = Math.floor(enemyDmg / perUnitHp);
-  if (unitsToKill <= 0) return { type, unitsLost: 0 };
+  if (unitsToKill <= 0) return { type, unitsLost: 0, damageDealt: 0 };
   if (unitsToKill > count) unitsToKill = count;
 
+  const damageDealt = unitsToKill * perUnitHp;
+
   removeUnits(type, unitsToKill);
-  return { type, unitsLost: unitsToKill };
+  return { type, unitsLost: unitsToKill, damageDealt };
 }
 
 export function resetBattle() {
