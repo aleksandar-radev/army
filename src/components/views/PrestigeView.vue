@@ -178,17 +178,11 @@ const ascend = () => {
 }
 
 .prestige {
-  display: grid;
-  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 28px;
-  align-items: start;
+  align-items: stretch;
   width: 100%;
-}
-
-@media (max-width: 960px) {
-  .prestige {
-    grid-template-columns: 1fr;
-  }
 }
 
 .prestige__summary {
