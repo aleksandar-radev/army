@@ -20,7 +20,13 @@
           class="building"
         >
           <div class="building__header">
-            <span class="building__icon">{{ building.icon }}</span>
+            <span class="building__icon">
+              <img
+                :src="building.iconSrc"
+                :alt="building.name"
+                class="icon-image"
+              />
+            </span>
             <div>
               <h3 class="building__title">
                 {{ building.name }}
@@ -51,7 +57,12 @@
                 :aria-describedby="`${building.key}-details`"
                 :aria-label="t('town.tooltipMoreDetails', { name: building.name })"
               >
-                ℹ️
+                <img
+                  :src="INFO_ICON_SRC"
+                  alt=""
+                  aria-hidden="true"
+                  class="icon-image"
+                />
               </button>
               <div
                 :id="`${building.key}-details`"
@@ -83,11 +94,14 @@ import { storeToRefs } from 'pinia';
 import { useEconomyStore } from '@/stores/economyStore.js';
 import { formatNumber } from '@/utils/formatters.js';
 import { useI18nStore } from '@/stores/i18nStore.js';
+import { uiIconSources } from '@/constants/iconSources.js';
 
 const economy = useEconomyStore();
 const { townBuildings } = storeToRefs(economy);
 const i18n = useI18nStore();
 const t = i18n.t;
+
+const INFO_ICON_SRC = uiIconSources.info;
 
 const upgrade = (key) => {
   economy.upgradeTownBuilding(key);
@@ -159,6 +173,9 @@ const upgrade = (key) => {
 
 .building__icon {
   font-size: 2.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .building__title {

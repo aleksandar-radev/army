@@ -55,7 +55,19 @@
             v-if="ascendMessage"
             class="ascend-message"
           >
-            {{ ascendMessage }}
+            <img
+              :src="CELEBRATION_ICON_SRC"
+              alt=""
+              aria-hidden="true"
+              class="icon-image"
+            />
+            <span>{{ ascendMessage }}</span>
+            <img
+              :src="CELEBRATION_ICON_SRC"
+              alt=""
+              aria-hidden="true"
+              class="icon-image"
+            />
           </p>
         </div>
 
@@ -70,7 +82,14 @@
               class="relic"
             >
               <header class="relic__header">
-                <span class="relic__icon">{{ relic.icon }}</span>
+                <span class="relic__icon">
+                  <img
+                    :src="relic.iconSrc"
+                    alt=""
+                    aria-hidden="true"
+                    class="icon-image"
+                  />
+                </span>
                 <h4 class="relic__title">
                   {{ relic.name }}
                 </h4>
@@ -115,11 +134,14 @@ import { useEconomyStore } from '@/stores/economyStore.js';
 import { useProgressionStore } from '@/stores/progressionStore.js';
 import { formatNumber } from '@/utils/formatters.js';
 import { useI18nStore } from '@/stores/i18nStore.js';
+import { uiIconSources } from '@/constants/iconSources.js';
 
 const economy = useEconomyStore();
 const progression = useProgressionStore();
 const i18n = useI18nStore();
 const t = i18n.t;
+
+const CELEBRATION_ICON_SRC = uiIconSources.celebration;
 
 const { resourceSummary, relics } = storeToRefs(economy);
 const { prestigeInfo, canPrestigeNow, ascendMessage, ascendVisible, ascendDisabled } =
@@ -256,6 +278,14 @@ const ascend = () => {
   font-size: 0.95rem;
   color: #fbbf24;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.ascend-message .icon-image {
+  flex-shrink: 0;
 }
 
 .relics {
@@ -293,6 +323,9 @@ const ascend = () => {
 
 .relic__icon {
   font-size: 1.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .relic__title {

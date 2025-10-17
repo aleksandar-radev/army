@@ -24,7 +24,7 @@ All game data is saved and restored:
 - Preserves exact game state including current enemy level
 
 ### 4. **Manual Save Button**
-- Added a manual save button (💾 SAVE) for immediate saving
+- Added a manual save button (<img src="../src/assets/icons/ui/save.png" alt="Save icon" style="width:1em;height:1em;vertical-align:middle;" /> SAVE) for immediate saving
 - Provides visual feedback when save completes
 
 ### 5. **Enhanced Reset Function**
@@ -85,7 +85,7 @@ To test the save/load functionality:
 1. **Play the game** - attack enemies, upgrade buildings, buy artifacts
 2. **Watch the save indicator** - it will flash "Saved!" every second
 3. **Refresh the page** - all progress should be exactly preserved
-4. **Use manual save** - click the 💾 SAVE button to save immediately
+4. **Use manual save** - click the <img src="../src/assets/icons/ui/save.png" alt="Save icon" style="width:1em;height:1em;vertical-align:middle;" /> SAVE button to save immediately
 5. **Reset the game** - use RESET button to clear all data and start over
 
 The system is robust and handles all edge cases, including:

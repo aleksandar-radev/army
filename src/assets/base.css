@@ -33,3 +33,11 @@ body {
 button {
   font-family: inherit;
 }
+
+.icon-image {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  object-fit: contain;
+}

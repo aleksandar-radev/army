@@ -29,7 +29,14 @@
         type="button"
         @click="setActiveTab(item.key)"
       >
-        <span class="nav__icon">{{ item.icon }}</span>
+        <span class="nav__icon">
+          <img
+            :src="item.iconSrc"
+            alt=""
+            aria-hidden="true"
+            class="icon-image"
+          />
+        </span>
         <span>{{ item.label }}</span>
       </button>
     </nav>
@@ -53,6 +60,7 @@ import { useEconomyStore } from '@/stores/economyStore.js';
 import { useUiStore } from '@/stores/uiStore.js';
 import { formatNumber } from '@/utils/formatters.js';
 import { useI18nStore } from '@/stores/i18nStore.js';
+import { defaultNavIconSrc, navIconSources } from '@/constants/iconSources.js';
 
 const economy = useEconomyStore();
 const ui = useUiStore();
@@ -61,14 +69,20 @@ const t = i18n.t;
 const { activeTab } = storeToRefs(ui);
 const { resourceSummary } = storeToRefs(economy);
 
-const navItems = computed(() => [
-  { key: 'battle', label: t('sidebar.nav.battle'), icon: '⚔️' },
-  { key: 'army', label: t('sidebar.nav.army'), icon: '🛡️' },
-  { key: 'town', label: t('sidebar.nav.town'), icon: '🏙️' },
-  { key: 'prestige', label: t('sidebar.nav.prestige'), icon: '🌟' },
-  { key: 'achievements', label: t('sidebar.nav.achievements'), icon: '🏆' },
-  { key: 'options', label: t('sidebar.nav.options'), icon: '⚙️' },
-]);
+const navItems = computed(() =>
+  Object.entries({
+    battle: 'sidebar.nav.battle',
+    army: 'sidebar.nav.army',
+    town: 'sidebar.nav.town',
+    prestige: 'sidebar.nav.prestige',
+    achievements: 'sidebar.nav.achievements',
+    options: 'sidebar.nav.options',
+  }).map(([key, translationKey]) => ({
+    key,
+    label: t(translationKey),
+    iconSrc: navIconSources[key] || defaultNavIconSrc,
+  })),
+);
 
 const summaryItems = computed(() => [
   { key: 'gold', label: t('sidebar.summary.gold'), value: formatNumber(resourceSummary.value.gold) },
@@ -182,6 +196,9 @@ const openResetModal = ui.openResetModal;
 
 .nav__icon {
   font-size: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .footer {

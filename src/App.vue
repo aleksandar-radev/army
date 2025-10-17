@@ -18,10 +18,14 @@
       class="mobile-menu-button"
       type="button"
       :aria-pressed="mobileMenuOpen"
+      :aria-label="mobileMenuOpen ? 'Close menu' : 'Open menu'"
       @click="toggleMobileMenu"
     >
-      <span v-if="mobileMenuOpen">✕</span>
-      <span v-else>☰</span>
+      <img
+        :src="mobileMenuOpen ? closeIconSrc : menuIconSrc"
+        :alt="mobileMenuOpen ? 'Close menu' : 'Open menu'"
+        class="icon-image"
+      />
     </button>
     <div
       v-if="mobileMenuOpen"
@@ -46,6 +50,10 @@ import ResetModal from '@/components/modals/ResetModal.vue';
 import { useProgressionStore } from '@/stores/progressionStore.js';
 import { useUiStore } from '@/stores/uiStore.js';
 import { trackEvent } from '@/utils/analytics.js';
+import { uiIconSources } from '@/constants/iconSources.js';
+
+const menuIconSrc = uiIconSources.menu;
+const closeIconSrc = uiIconSources.close;
 
 const progression = useProgressionStore();
 const ui = useUiStore();

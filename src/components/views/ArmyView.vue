@@ -20,7 +20,14 @@
           class="unit-card"
         >
           <header class="unit-card__header">
-            <span class="unit-card__icon">{{ card.icon }}</span>
+            <span class="unit-card__icon">
+              <img
+                :src="card.iconSrc"
+                alt=""
+                aria-hidden="true"
+                class="icon-image"
+              />
+            </span>
             <div class="unit-card__heading">
               <h3 class="unit-card__title">
                 {{ card.name }}
@@ -149,6 +156,9 @@ const t = i18n.t;
 
 .unit-card__icon {
   font-size: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .unit-card__title {

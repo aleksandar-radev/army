@@ -93,7 +93,7 @@ export const messages = {
         ascend: 'Ascend',
       },
       ascendMessage: {
-        complete: '🎉 Congratulations, you completed the game! 🎉',
+        complete: 'Congratulations, you completed the game!',
         requirement: 'You need {souls} hero souls to ascend!',
       },
       relicsTitle: 'Relics',
@@ -330,7 +330,7 @@ export const messages = {
         ascend: 'Ascender',
       },
       ascendMessage: {
-        complete: '🎉 ¡Felicidades, completaste el juego! 🎉',
+        complete: '¡Felicidades, completaste el juego!',
         requirement: '¡Necesitas {souls} almas de héroe para ascender!',
       },
       relicsTitle: 'Reliquias',
@@ -567,7 +567,7 @@ export const messages = {
         ascend: '飞升',
       },
       ascendMessage: {
-        complete: '🎉 恭喜，你已通关游戏！🎉',
+        complete: '恭喜，你已通关游戏！',
         requirement: '你需要 {souls} 点英灵才能飞升！',
       },
       relicsTitle: '圣物',

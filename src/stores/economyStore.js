@@ -9,38 +9,14 @@ import { getUpgradeCost, upgradeBuilding } from '@/game/town.js';
 import { getUnitEffectiveDmg, getUnitEffectiveHp } from '@/game/unitHelpers.js';
 import { formatFloat, formatNumber } from '@/utils/formatters.js';
 import { useI18nStore } from '@/stores/i18nStore.js';
-
-const unitIcons = {
-  Goblin: '👺',
-  Orc: '🪓',
-  Troll: '🧌',
-  Ogre: '🏯',
-  Dragon: '🐉',
-};
-
-const buildingIcons = {
-  GoldMine: '⛏️',
-  GoblinHut: '👺',
-  OrcCamp: '🪓',
-  TrollDen: '🧌',
-  OgreTower: '🏯',
-  DragonRoost: '🐉',
-};
-
-const relicIcons = {
-  GoldMineBoost: '⛏️',
-  HeroSoulBooster: '🔥',
-  GoblinPower: '👺',
-  OrcPower: '🪓',
-  TrollPower: '🧌',
-  OgrePower: '🏯',
-  DragonPower: '🐉',
-  hutBoost: '🏚️',
-  CampBoost: '⛺',
-  DenBoost: '🏠',
-  TowerBoost: '🗼',
-  RoostBoost: '🦅',
-};
+import {
+  buildingIconSources,
+  defaultBuildingIconSrc,
+  defaultRelicIconSrc,
+  defaultUnitIconSrc,
+  relicIconSources,
+  unitIconSources,
+} from '@/constants/iconSources.js';
 
 const relicBuildingTargets = {
   hutBoost: 'GoblinHut',
@@ -210,7 +186,7 @@ export const useEconomyStore = defineStore('economy', () => {
         return {
           type,
           name: getUnitLabel(type),
-          icon: unitIcons[type] || '🛡️',
+          iconSrc: unitIconSources[type] || defaultUnitIconSrc,
           count,
           perHp,
           perDmg,
@@ -230,7 +206,7 @@ export const useEconomyStore = defineStore('economy', () => {
       return {
         key,
         name: getBuildingName(key),
-        icon: buildingIcons[key] || '🏗️',
+        iconSrc: buildingIconSources[key] || defaultBuildingIconSrc,
         level,
         cost,
         canAfford: gold >= cost,
@@ -247,7 +223,7 @@ export const useEconomyStore = defineStore('economy', () => {
       return {
         key,
         name: getArtifactName(key),
-        icon: relicIcons[key] || '🔮',
+        iconSrc: relicIconSources[key] || defaultRelicIconSrc,
         tier,
         cost,
         maxed: !Number.isFinite(cost),
