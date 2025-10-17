@@ -8,6 +8,7 @@ import { getHeroSoulsTotal, getGold } from '@/game/resources.js';
 import { getUpgradeCost, upgradeBuilding } from '@/game/town.js';
 import { getUnitEffectiveDmg, getUnitEffectiveHp } from '@/game/unitHelpers.js';
 import { formatFloat, formatNumber } from '@/utils/formatters.js';
+import { useI18nStore } from '@/stores/i18nStore.js';
 
 const unitIcons = {
   Goblin: '👺',
@@ -26,51 +27,6 @@ const buildingIcons = {
   DragonRoost: '🐉',
 };
 
-const buildingNameFromKey = (key) =>
-  key
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/^\s+/, '')
-    .trim();
-
-const removeBuildingSuffix = (key) =>
-  key.replace(/(Hut|Camp|Den|Tower|Roost)$/u, '');
-
-const pluralize = (word, amount) => (amount === 1 ? word : `${word}s`);
-
-const formatRate = (value) =>
-  Number.isInteger(value)
-    ? formatNumber(value)
-    : formatFloat(value, value < 1 ? 2 : 1);
-
-const buildDescription = (key, level) => {
-  const config = BuildingConfig[key];
-  if (!config) return { summary: '', detail: '' };
-
-  if (config.goldPerSecond) {
-    const perLevel = config.goldPerSecond;
-    const current = perLevel * level;
-    const summary = `Generates ${formatRate(perLevel)} gold per second per level.`;
-    const detail = level
-      ? `Currently ${formatRate(current)} gold per second.`
-      : 'Upgrade to begin generating gold.';
-    return { summary, detail };
-  }
-
-  if (config.spawnPerMinute) {
-    const perLevel = config.spawnPerMinute;
-    const current = perLevel * level;
-    const unitName = removeBuildingSuffix(key);
-    const humanName = buildingNameFromKey(unitName);
-    const summary = `Summons ${formatRate(perLevel)} ${pluralize(humanName, perLevel)} per minute per level.`;
-    const detail = level
-      ? `Currently ${formatRate(current)} ${pluralize(humanName, current)} per minute.`
-      : `Upgrade to begin summoning ${pluralize(humanName, 2)}.`;
-    return { summary, detail };
-  }
-
-  return { summary: '', detail: '' };
-};
-
 const relicIcons = {
   GoldMineBoost: '⛏️',
   HeroSoulBooster: '🔥',
@@ -86,11 +42,93 @@ const relicIcons = {
   RoostBoost: '🦅',
 };
 
+const humanizeKey = (key) =>
+  key
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^\s+/, '')
+    .trim();
+
+const removeBuildingSuffix = (key) => key.replace(/(Hut|Camp|Den|Tower|Roost)$/u, '');
+
+const formatRate = (value) =>
+  Number.isInteger(value)
+    ? formatNumber(value)
+    : formatFloat(value, value < 1 ? 2 : 1);
+
 export const useEconomyStore = defineStore('economy', () => {
   const resourcesView = resourceState;
   const armies = armyState;
   const buildings = buildingState;
   const relicState = artifactState;
+  const i18n = useI18nStore();
+  const t = i18n.t;
+
+  const getUnitLabel = (unitKey, plural = false) => {
+    const translationKey = `units.${unitKey}.${plural ? 'plural' : 'name'}`;
+    const translated = t(translationKey);
+    if (translated === translationKey) {
+      const base = humanizeKey(unitKey);
+      return plural ? `${base}s` : base;
+    }
+    return translated;
+  };
+
+  const getBuildingName = (key) => {
+    const translationKey = `buildings.${key}.name`;
+    const translated = t(translationKey);
+    if (translated === translationKey) {
+      return humanizeKey(key);
+    }
+    return translated;
+  };
+
+  const getArtifactName = (key) => {
+    const translationKey = `artifacts.${key}.name`;
+    const translated = t(translationKey);
+    if (translated === translationKey) {
+      return humanizeKey(key);
+    }
+    return translated;
+  };
+
+  const buildDescription = (key, level) => {
+    const config = BuildingConfig[key];
+    if (!config) return { summary: '', detail: '' };
+
+    if (config.goldPerSecond) {
+      const perLevel = config.goldPerSecond;
+      const current = perLevel * level;
+      return {
+        summary: t('town.descriptions.gold.summary', { rate: formatRate(perLevel) }),
+        detail: level
+          ? t('town.descriptions.gold.detailActive', { current: formatRate(current) })
+          : t('town.descriptions.gold.detailInactive'),
+      };
+    }
+
+    if (config.spawnPerMinute) {
+      const perLevel = config.spawnPerMinute;
+      const current = perLevel * level;
+      const unitKey = removeBuildingSuffix(key);
+      const unitPlural = getUnitLabel(unitKey, true);
+      return {
+        summary: t('town.descriptions.spawn.summary', {
+          rate: formatRate(perLevel),
+          unitPlural,
+        }),
+        detail: level
+          ? t('town.descriptions.spawn.detailActive', {
+              current: formatRate(current),
+              unitPlural,
+            })
+          : t('town.descriptions.spawn.detailInactive', {
+              unitPlural,
+            }),
+      };
+    }
+
+    return { summary: '', detail: '' };
+  };
 
   const resourceSummary = computed(() => ({
     gold: Math.floor(resourcesView.gold || 0),
@@ -108,6 +146,7 @@ export const useEconomyStore = defineStore('economy', () => {
         const perDmg = getUnitEffectiveDmg(type);
         return {
           type,
+          name: getUnitLabel(type),
           icon: unitIcons[type] || '🛡️',
           count,
           perHp,
@@ -125,7 +164,7 @@ export const useEconomyStore = defineStore('economy', () => {
       const cost = getUpgradeCost(key);
       return {
         key,
-        name: buildingNameFromKey(key),
+        name: getBuildingName(key),
         icon: buildingIcons[key] || '🏗️',
         level,
         cost,
@@ -141,6 +180,7 @@ export const useEconomyStore = defineStore('economy', () => {
       const cost = getArtifactUpgradeCost(key);
       return {
         key,
+        name: getArtifactName(key),
         icon: relicIcons[key] || '🔮',
         tier,
         cost,
@@ -149,6 +189,22 @@ export const useEconomyStore = defineStore('economy', () => {
       };
     }),
   );
+
+  const prepareAchievementParams = (params = {}) => {
+    const result = { ...params };
+    if (result.rank !== undefined) {
+      result.rank = formatNumber(result.rank);
+    }
+    if (result.amount !== undefined) {
+      result.amount = formatNumber(result.amount);
+    }
+    if (result.unitKey) {
+      result.unitName = getUnitLabel(result.unitKey, false);
+      result.unitPlural = getUnitLabel(result.unitKey, true);
+      delete result.unitKey;
+    }
+    return result;
+  };
 
   const achievements = computed(() => {
     let unlockedCount = 0;
@@ -168,8 +224,16 @@ export const useEconomyStore = defineStore('economy', () => {
       if (unlocked) unlockedCount += 1;
       const percent = Math.min(100, (progress / achievement.value) * 100);
 
+      const name = t(achievement.nameKey, prepareAchievementParams(achievement.nameParams));
+      const description = t(
+        achievement.descKey,
+        prepareAchievementParams(achievement.descParams),
+      );
+
       return {
         ...achievement,
+        name,
+        description,
         progress: Math.floor(Math.min(progress, achievement.value)),
         percent,
         unlocked,

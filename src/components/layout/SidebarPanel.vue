@@ -2,17 +2,17 @@
   <aside class="panel">
     <header class="panel__header">
       <h1 class="title">
-        Idle Army Builder
+        {{ t('sidebar.title') }}
       </h1>
       <p class="subtitle">
-        Commanders Dashboard
+        {{ t('sidebar.subtitle') }}
       </p>
     </header>
 
     <section class="summary">
       <div
         v-for="item in summaryItems"
-        :key="item.label"
+        :key="item.key"
         class="summary__item"
       >
         <p class="summary__label">
@@ -43,7 +43,7 @@
         type="button"
         @click="openResetModal"
       >
-        Reset Progress
+        {{ t('sidebar.reset') }}
       </button>
     </footer>
   </aside>
@@ -55,25 +55,41 @@ import { storeToRefs } from 'pinia';
 import { useEconomyStore } from '@/stores/economyStore.js';
 import { useUiStore } from '@/stores/uiStore.js';
 import { formatNumber } from '@/utils/formatters.js';
-
-const navItems = [
-  { key: 'battle', label: 'Battle', icon: '⚔️' },
-  { key: 'army', label: 'Army', icon: '🛡️' },
-  { key: 'town', label: 'Town', icon: '🏙️' },
-  { key: 'prestige', label: 'Prestige', icon: '🌟' },
-  { key: 'achievements', label: 'Achievements', icon: '🏆' },
-];
+import { useI18nStore } from '@/stores/i18nStore.js';
 
 const economy = useEconomyStore();
 const ui = useUiStore();
+const i18n = useI18nStore();
+const t = i18n.t;
 const { activeTab } = storeToRefs(ui);
 const { resourceSummary } = storeToRefs(economy);
 
+const navItems = computed(() => [
+  { key: 'battle', label: t('sidebar.nav.battle'), icon: '⚔️' },
+  { key: 'army', label: t('sidebar.nav.army'), icon: '🛡️' },
+  { key: 'town', label: t('sidebar.nav.town'), icon: '🏙️' },
+  { key: 'prestige', label: t('sidebar.nav.prestige'), icon: '🌟' },
+  { key: 'achievements', label: t('sidebar.nav.achievements'), icon: '🏆' },
+  { key: 'options', label: t('sidebar.nav.options'), icon: '⚙️' },
+]);
+
 const summaryItems = computed(() => [
-  { label: 'Gold', value: formatNumber(resourceSummary.value.gold) },
-  { label: 'Stored Souls', value: formatNumber(resourceSummary.value.heroSoulsStored) },
-  { label: 'Total Souls', value: formatNumber(resourceSummary.value.heroSoulsTotal) },
-  { label: 'Prestiges', value: formatNumber(resourceSummary.value.prestigeCount) },
+  { key: 'gold', label: t('sidebar.summary.gold'), value: formatNumber(resourceSummary.value.gold) },
+  {
+    key: 'storedSouls',
+    label: t('sidebar.summary.storedSouls'),
+    value: formatNumber(resourceSummary.value.heroSoulsStored),
+  },
+  {
+    key: 'totalSouls',
+    label: t('sidebar.summary.totalSouls'),
+    value: formatNumber(resourceSummary.value.heroSoulsTotal),
+  },
+  {
+    key: 'prestiges',
+    label: t('sidebar.summary.prestiges'),
+    value: formatNumber(resourceSummary.value.prestigeCount),
+  },
 ]);
 
 const setActiveTab = ui.setActiveTab;

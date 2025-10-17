@@ -5,8 +5,8 @@
   >
     <div class="modal">
       <header class="modal__header">
-        <h3>Reset Progress</h3>
-        <p>Are you sure you want to wipe your save? This action cannot be undone.</p>
+        <h3>{{ t('resetModal.title') }}</h3>
+        <p>{{ t('resetModal.description') }}</p>
       </header>
       <div class="modal__actions">
         <button
@@ -14,14 +14,14 @@
           class="cancel"
           @click="close"
         >
-          Cancel
+          {{ t('resetModal.cancel') }}
         </button>
         <button
           type="button"
           class="confirm"
           @click="confirm"
         >
-          Reset Game
+          {{ t('resetModal.confirm') }}
         </button>
       </div>
     </div>
@@ -31,9 +31,12 @@
 <script setup>
 import { useProgressionStore } from '@/stores/progressionStore.js';
 import { useUiStore } from '@/stores/uiStore.js';
+import { useI18nStore } from '@/stores/i18nStore.js';
 
 const progression = useProgressionStore();
 const ui = useUiStore();
+const i18n = useI18nStore();
+const t = i18n.t;
 
 const close = () => {
   ui.closeResetModal();

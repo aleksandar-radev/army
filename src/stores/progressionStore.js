@@ -9,6 +9,8 @@ import { resetEngineState, resourceState } from '@/stores/gameState.js';
 import { useBattleStore } from '@/stores/battleStore.js';
 import { useEconomyStore } from '@/stores/economyStore.js';
 import { useUiStore } from '@/stores/uiStore.js';
+import { useI18nStore } from '@/stores/i18nStore.js';
+import { formatNumber } from '@/utils/formatters.js';
 
 const ASCEND_TARGET = 1_000_000;
 let tickHandle = null;
@@ -18,8 +20,11 @@ export const useProgressionStore = defineStore('progression', () => {
   const economy = useEconomyStore();
   const battle = useBattleStore();
   const ui = useUiStore();
+  const i18n = useI18nStore();
+  const t = i18n.t;
 
-  const ascendMessage = ref('');
+  const ascendMessageKey = ref(null);
+  const ascendMessageParams = ref({});
   const ascendDisabled = ref(false);
 
   const ascendVisible = computed(
@@ -33,6 +38,10 @@ export const useProgressionStore = defineStore('progression', () => {
     currentKills: battle.killCount.value,
   }));
 
+  const ascendMessage = computed(() =>
+    ascendMessageKey.value ? t(ascendMessageKey.value, ascendMessageParams.value) : '',
+  );
+
   const performPrestige = () => {
     if (!canPrestige()) return false;
     doPrestige();
@@ -40,7 +49,7 @@ export const useProgressionStore = defineStore('progression', () => {
     battle.setEnemy(nextEnemy);
     battle.refreshKillCount();
     economy.sync();
-    battle.battleLog.value = 'Prestige complete! Fresh challenges await.';
+    battle.setLogEntry({ type: 'status', key: 'battle.log.prestigeComplete' });
     return true;
   };
 
@@ -50,12 +59,13 @@ export const useProgressionStore = defineStore('progression', () => {
     battle.setEnemy(nextEnemy);
     battle.refreshKillCount();
     economy.sync();
-    battle.battleLog.value = 'Game reset. Rebuild your army from scratch!';
+    battle.setLogEntry({ type: 'status', key: 'battle.log.gameReset' });
     if (ascendTimeout) {
       clearTimeout(ascendTimeout);
       ascendTimeout = null;
     }
-    ascendMessage.value = '';
+    ascendMessageKey.value = null;
+    ascendMessageParams.value = {};
     ascendDisabled.value = false;
     ui.closeResetModal();
   };
@@ -67,12 +77,15 @@ export const useProgressionStore = defineStore('progression', () => {
     }
 
     if ((economy.resourcesView.heroSoulsTotal || 0) >= ASCEND_TARGET) {
-      ascendMessage.value = '🎉 Congratulations, you completed the game! 🎉';
+      ascendMessageKey.value = 'prestige.ascendMessage.complete';
+      ascendMessageParams.value = {};
       ascendDisabled.value = true;
     } else {
-      ascendMessage.value = 'You need 1,000,000 hero souls to ascend!';
+      ascendMessageKey.value = 'prestige.ascendMessage.requirement';
+      ascendMessageParams.value = { souls: formatNumber(ASCEND_TARGET) };
       ascendTimeout = setTimeout(() => {
-        ascendMessage.value = '';
+        ascendMessageKey.value = null;
+        ascendMessageParams.value = {};
       }, 2000);
     }
   };

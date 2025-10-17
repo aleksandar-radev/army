@@ -1,92 +1,104 @@
+const summonUnits = [
+  {
+    key: 'Goblin',
+    values: [
+      5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000, 5000000,
+    ],
+  },
+  {
+    key: 'Orc',
+    values: [
+      2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000,
+    ],
+  },
+  {
+    key: 'Troll',
+    values: [
+      1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000,
+    ],
+  },
+  {
+    key: 'Ogre',
+    values: [
+      500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000,
+    ],
+  },
+  {
+    key: 'Dragon',
+    values: [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000],
+  },
+];
+
 export const ACHIEVEMENTS = [
   ...[
     10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000, 5000000,
     10000000, 25000000, 50000000, 100000000, 250000000, 500000000, 750000000,
     1000000000, 2500000000, 5000000000, 10000000000,
-  ].map((value, i) => ({
-    id: `gold_${i + 1}`,
-    name: `Gold Collector ${i + 1}`,
-    desc: `Gather ${value.toLocaleString()} gold.`,
-    type: "gold",
+  ].map((value, index) => ({
+    id: `gold_${index + 1}`,
+    type: 'gold',
     value,
+    nameKey: 'achievements.goldCollector.name',
+    nameParams: { rank: index + 1 },
+    descKey: 'achievements.goldCollector.desc',
+    descParams: { amount: value },
   })),
 
-  ...[
-    {
-      name: "Goblin",
-      values: [
-        5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000, 2500000,
-        5000000,
-      ],
-    },
-    {
-      name: "Orc",
-      values: [
-        2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000,
-        2500000,
-      ],
-    },
-    {
-      name: "Troll",
-      values: [
-        1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000,
-      ],
-    },
-    {
-      name: "Ogre",
-      values: [
-        500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000,
-      ],
-    },
-    {
-      name: "Dragon",
-      values: [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000],
-    },
-  ].flatMap((unit) =>
-    unit.values.map((value, i) => ({
-      id: `${unit.name.toLowerCase()}_${i + 1}`,
-      name: `${unit.name} Summoner ${i + 1}`,
-      desc: `Summon ${value.toLocaleString()} ${unit.name}s.`,
-      type: `summon_${unit.name}`,
+  ...summonUnits.flatMap((unit) =>
+    unit.values.map((value, index) => ({
+      id: `${unit.key.toLowerCase()}_${index + 1}`,
+      type: `summon_${unit.key}`,
       value,
-    }))
+      nameKey: 'achievements.summoner.name',
+      nameParams: { rank: index + 1, unitKey: unit.key },
+      descKey: 'achievements.summoner.desc',
+      descParams: { amount: value, unitKey: unit.key },
+    })),
   ),
 
   ...[
     10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000,
     250000, 500000, 750000, 1000000, 2500000, 5000000, 10000000,
-  ].map((value, i) => ({
-    id: `soul_${i + 1}`,
-    name: `Soul Gatherer ${i + 1}`,
-    desc: `Collect ${value.toLocaleString()} hero souls.`,
-    type: "soul",
+  ].map((value, index) => ({
+    id: `soul_${index + 1}`,
+    type: 'soul',
     value,
+    nameKey: 'achievements.soulGatherer.name',
+    nameParams: { rank: index + 1 },
+    descKey: 'achievements.soulGatherer.desc',
+    descParams: { amount: value },
   })),
 
   ...[
-    10, 25, 50, 100, 250, 500, 750, 1000, 1500, 3000, 5000, 7500, 10000, 25000, 50000,
-    100000, 250000, 500000, 750000, 1000000,
-  ].map((value, i) => ({
-    id: `slain_${i + 1}`,
-    name: `Slayer ${i + 1}`,
-    desc: `Slay ${value.toLocaleString()} enemies.`,
-    type: "slain",
+    10, 25, 50, 100, 250, 500, 750, 1000, 1500, 3000, 5000, 7500, 10000, 25000,
+    50000, 100000, 250000, 500000, 750000, 1000000,
+  ].map((value, index) => ({
+    id: `slain_${index + 1}`,
+    type: 'slain',
     value,
+    nameKey: 'achievements.enemySlayer.name',
+    nameParams: { rank: index + 1 },
+    descKey: 'achievements.enemySlayer.desc',
+    descParams: { amount: value },
   })),
 
-  ...[5, 10, 25, 50, 75, 100, 250, 500, 750, 1000].map((value, i) => ({
-    id: `herolevel_${i + 1}`,
-    name: `Heroic Challenger ${i + 1}`,
-    desc: `Reach enemy level ${value.toLocaleString()}.`,
-    type: "herolevel",
+  ...[5, 10, 25, 50, 75, 100, 250, 500, 750, 1000].map((value, index) => ({
+    id: `herolevel_${index + 1}`,
+    type: 'herolevel',
     value,
+    nameKey: 'achievements.heroLevel.name',
+    nameParams: { rank: index + 1 },
+    descKey: 'achievements.heroLevel.desc',
+    descParams: { amount: value },
   })),
 
-  ...[10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000].map((value, i) => ({
-    id: `prestige_${i + 1}`,
-    name: `Prestige Master ${i + 1}`,
-    desc: `Prestige ${value.toLocaleString()} times.`,
-    type: "prestige",
+  ...[10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000].map((value, index) => ({
+    id: `prestige_${index + 1}`,
+    type: 'prestige',
     value,
+    nameKey: 'achievements.prestigeMaster.name',
+    nameParams: { rank: index + 1 },
+    descKey: 'achievements.prestigeMaster.desc',
+    descParams: { amount: value },
   })),
 ];

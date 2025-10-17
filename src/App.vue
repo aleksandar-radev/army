@@ -6,7 +6,8 @@
       <ArmyView v-else-if="activeTab === 'army'" />
       <TownView v-else-if="activeTab === 'town'" />
       <PrestigeView v-else-if="activeTab === 'prestige'" />
-      <AchievementsView v-else />
+      <AchievementsView v-else-if="activeTab === 'achievements'" />
+      <OptionsView v-else />
     </main>
     <ResetModal v-if="resetModalOpen" />
   </div>
@@ -21,6 +22,7 @@ import ArmyView from '@/components/views/ArmyView.vue';
 import TownView from '@/components/views/TownView.vue';
 import PrestigeView from '@/components/views/PrestigeView.vue';
 import AchievementsView from '@/components/views/AchievementsView.vue';
+import OptionsView from '@/components/views/OptionsView.vue';
 import ResetModal from '@/components/modals/ResetModal.vue';
 import { useProgressionStore } from '@/stores/progressionStore.js';
 import { useUiStore } from '@/stores/uiStore.js';

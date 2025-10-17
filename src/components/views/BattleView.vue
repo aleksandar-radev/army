@@ -3,16 +3,16 @@
     <header class="card__header">
       <div>
         <p class="card__eyebrow">
-          Current Enemy
+          {{ t('battle.currentEnemy') }}
         </p>
         <h2 class="card__title">
-          Level {{ enemyDetails?.level ?? '-' }}
+          {{ enemyLevelLabel }}
         </h2>
       </div>
       <div class="stats">
         <div class="stat">
           <p class="stat__label">
-            Health
+            {{ t('battle.stats.health') }}
           </p>
           <p class="stat__value">
             {{ formatFloat(enemyDetails?.currentHp) }} / {{ formatFloat(enemyDetails?.maxHp) }}
@@ -20,7 +20,7 @@
         </div>
         <div class="stat">
           <p class="stat__label">
-            Damage
+            {{ t('battle.stats.damage') }}
           </p>
           <p class="stat__value">
             {{ formatFloat(enemyDetails?.dmg) }}
@@ -28,7 +28,7 @@
         </div>
         <div class="stat">
           <p class="stat__label">
-            Kills
+            {{ t('battle.stats.kills') }}
           </p>
           <p class="stat__value">
             {{ formatNumber(killCount) }}
@@ -49,7 +49,7 @@
         @touchend.prevent="stopAttack"
         @touchcancel.prevent="stopAttack"
       >
-        Hold to Attack
+        {{ t('battle.attackButton') }}
       </button>
       <pre class="log">{{ battleLog }}</pre>
     </div>
@@ -60,12 +60,22 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useBattleStore } from '@/stores/battleStore.js';
+import { useI18nStore } from '@/stores/i18nStore.js';
 import { formatFloat, formatNumber } from '@/utils/formatters.js';
 
 const battle = useBattleStore();
+const i18n = useI18nStore();
+const t = i18n.t;
 const { currentEnemy, killCount, battleLog } = storeToRefs(battle);
 
 const enemyDetails = computed(() => currentEnemy.value);
+const enemyLevelLabel = computed(() => {
+  const level = enemyDetails.value?.level;
+  if (!level) {
+    return t('common.level', { value: '-' });
+  }
+  return t('common.level', { value: formatNumber(level) });
+});
 const isAttacking = ref(false);
 let attackInterval = null;
 

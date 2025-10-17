@@ -2,10 +2,10 @@
   <section class="card">
     <header class="card__header">
       <h2 class="card__title">
-        Town Development
+        {{ t('town.title') }}
       </h2>
       <p class="card__subtitle">
-        Upgrade buildings to unlock faster progression and recruitment.
+        {{ t('town.subtitle') }}
       </p>
     </header>
 
@@ -22,7 +22,7 @@
               {{ building.name }}
             </h3>
             <p class="building__level">
-              Level {{ formatNumber(building.level) }}
+              {{ t('town.level', { value: formatNumber(building.level) }) }}
             </p>
           </div>
         </div>
@@ -45,7 +45,7 @@
               class="tooltip__trigger"
               type="button"
               :aria-describedby="`${building.key}-details`"
-              :aria-label="`More details about ${building.name}`"
+              :aria-label="t('town.tooltipMoreDetails', { name: building.name })"
             >
               ℹ️
             </button>
@@ -62,11 +62,11 @@
           class="upgrade"
           type="button"
           :disabled="!building.canAfford"
-          :aria-label="`Upgrade ${building.name} for ${formatNumber(building.cost)} gold`"
+          :aria-label="t('town.upgradeAria', { name: building.name, cost: formatNumber(building.cost) })"
           :aria-describedby="building.description.summary ? `${building.key}-summary` : null"
           @click="upgrade(building.key)"
         >
-          Upgrade • {{ formatNumber(building.cost) }} gold
+          {{ t('town.upgradeButton', { cost: formatNumber(building.cost) }) }}
         </button>
       </article>
     </div>
@@ -77,9 +77,12 @@
 import { storeToRefs } from 'pinia';
 import { useEconomyStore } from '@/stores/economyStore.js';
 import { formatNumber } from '@/utils/formatters.js';
+import { useI18nStore } from '@/stores/i18nStore.js';
 
 const economy = useEconomyStore();
 const { townBuildings } = storeToRefs(economy);
+const i18n = useI18nStore();
+const t = i18n.t;
 
 const upgrade = (key) => {
   economy.upgradeTownBuilding(key);

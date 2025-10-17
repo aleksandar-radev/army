@@ -2,33 +2,33 @@
   <section class="card">
     <header class="card__header">
       <h2 class="card__title">
-        Prestige & Relics
+        {{ t('prestige.title') }}
       </h2>
       <p class="card__subtitle">
-        Sacrifice progress for powerful relics and long-term boosts.
+        {{ t('prestige.subtitle') }}
       </p>
     </header>
 
     <div class="prestige">
       <div class="prestige__summary">
         <div class="summary-row">
-          <span>Stored Souls</span>
+          <span>{{ t('prestige.summary.storedSouls') }}</span>
           <strong>{{ formatNumber(resourceSummary.heroSoulsStored) }}</strong>
         </div>
         <div class="summary-row">
-          <span>Total Souls</span>
+          <span>{{ t('prestige.summary.totalSouls') }}</span>
           <strong>{{ formatNumber(resourceSummary.heroSoulsTotal) }}</strong>
         </div>
         <div class="summary-row">
-          <span>Prestige Count</span>
+          <span>{{ t('prestige.summary.prestigeCount') }}</span>
           <strong>{{ formatNumber(resourceSummary.prestigeCount) }}</strong>
         </div>
         <div class="summary-row">
-          <span>Kills this run</span>
+          <span>{{ t('prestige.summary.killsThisRun') }}</span>
           <strong>{{ formatNumber(prestigeInfo.currentKills) }}</strong>
         </div>
         <div class="summary-row">
-          <span>Kills required</span>
+          <span>{{ t('prestige.summary.killsRequired') }}</span>
           <strong>{{ formatNumber(prestigeInfo.requiredKills) }}</strong>
         </div>
         <div class="actions">
@@ -38,7 +38,7 @@
             :disabled="!canPrestigeNow"
             @click="performPrestige"
           >
-            Prestige Now
+            {{ t('prestige.actions.prestigeNow') }}
           </button>
           <button
             v-if="ascendVisible"
@@ -47,7 +47,7 @@
             :disabled="ascendDisabled"
             @click="ascend"
           >
-            Ascend
+            {{ t('prestige.actions.ascend') }}
           </button>
         </div>
         <p
@@ -60,7 +60,7 @@
 
       <div class="relics">
         <h3 class="relics__title">
-          Relics
+          {{ t('prestige.relicsTitle') }}
         </h3>
         <div class="relics__grid">
           <article
@@ -71,11 +71,11 @@
             <header class="relic__header">
               <span class="relic__icon">{{ relic.icon }}</span>
               <h4 class="relic__title">
-                {{ relic.key }}
+                {{ relic.name }}
               </h4>
             </header>
             <p class="relic__tier">
-              Tier {{ relic.tier }}
+              {{ t('prestige.tier', { value: formatNumber(relic.tier) }) }}
             </p>
             <button
               class="relic__upgrade"
@@ -83,7 +83,10 @@
               :disabled="relic.maxed || !relic.affordable"
               @click="upgradeRelic(relic.key)"
             >
-              {{ relic.maxed ? 'Maxed' : `Upgrade • ${formatNumber(relic.cost)} souls` }}
+              {{ relic.maxed
+                ? t('prestige.relicUpgrade.maxed')
+                : t('prestige.relicUpgrade.cost', { cost: formatNumber(relic.cost) })
+              }}
             </button>
           </article>
         </div>
@@ -97,9 +100,12 @@ import { storeToRefs } from 'pinia';
 import { useEconomyStore } from '@/stores/economyStore.js';
 import { useProgressionStore } from '@/stores/progressionStore.js';
 import { formatNumber } from '@/utils/formatters.js';
+import { useI18nStore } from '@/stores/i18nStore.js';
 
 const economy = useEconomyStore();
 const progression = useProgressionStore();
+const i18n = useI18nStore();
+const t = i18n.t;
 
 const { resourceSummary, relics } = storeToRefs(economy);
 const { prestigeInfo, canPrestigeNow, ascendMessage, ascendVisible, ascendDisabled } =

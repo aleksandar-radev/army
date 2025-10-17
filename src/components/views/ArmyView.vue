@@ -2,10 +2,10 @@
   <section class="card">
     <header class="card__header">
       <h2 class="card__title">
-        Army Composition
+        {{ t('army.title') }}
       </h2>
       <p class="card__subtitle">
-        Detailed breakdown of your units and their power.
+        {{ t('army.subtitle') }}
       </p>
     </header>
 
@@ -21,28 +21,28 @@
         <header class="unit-card__header">
           <span class="unit-card__icon">{{ card.icon }}</span>
           <h3 class="unit-card__title">
-            {{ card.type }}
+            {{ card.name }}
           </h3>
         </header>
         <dl class="unit-card__stats">
           <div>
-            <dt>Total Units</dt>
+            <dt>{{ t('army.stats.totalUnits') }}</dt>
             <dd>{{ formatNumber(card.count) }}</dd>
           </div>
           <div>
-            <dt>Health / unit</dt>
+            <dt>{{ t('army.stats.healthPerUnit') }}</dt>
             <dd>{{ formatFloat(card.perHp) }}</dd>
           </div>
           <div>
-            <dt>Damage / unit</dt>
+            <dt>{{ t('army.stats.damagePerUnit') }}</dt>
             <dd>{{ formatFloat(card.perDmg) }}</dd>
           </div>
           <div>
-            <dt>Total Health</dt>
+            <dt>{{ t('army.stats.totalHealth') }}</dt>
             <dd>{{ formatNumber(card.totalHp) }}</dd>
           </div>
           <div>
-            <dt>Total Damage</dt>
+            <dt>{{ t('army.stats.totalDamage') }}</dt>
             <dd>{{ formatNumber(card.totalDmg) }}</dd>
           </div>
         </dl>
@@ -52,7 +52,7 @@
       v-else
       class="empty"
     >
-      Recruit units in battle to populate your army.
+      {{ t('army.empty') }}
     </p>
   </section>
 </template>
@@ -61,9 +61,12 @@
 import { storeToRefs } from 'pinia';
 import { useEconomyStore } from '@/stores/economyStore.js';
 import { formatFloat, formatNumber } from '@/utils/formatters.js';
+import { useI18nStore } from '@/stores/i18nStore.js';
 
 const economy = useEconomyStore();
 const { armyCards } = storeToRefs(economy);
+const i18n = useI18nStore();
+const t = i18n.t;
 </script>
 
 <style scoped>

@@ -2,6 +2,8 @@ import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 import { attack, getCurrentEnemy, getKillCount, startNewBattle } from '@/game/battle.js';
 import { useEconomyStore } from '@/stores/economyStore.js';
+import { useI18nStore } from '@/stores/i18nStore.js';
+import { formatFloat, formatNumber } from '@/utils/formatters.js';
 
 const formatEnemy = (enemy) => {
   if (!enemy) return null;
@@ -13,12 +15,79 @@ const formatEnemy = (enemy) => {
   };
 };
 
+const createRetaliationState = (retaliation) => {
+  if (!retaliation.type) {
+    return { kind: 'none' };
+  }
+
+  if (retaliation.unitsLost > 0) {
+    return {
+      kind: 'killed',
+      unit: retaliation.type,
+      count: retaliation.unitsLost,
+    };
+  }
+
+  return {
+    kind: 'noLoss',
+    unit: retaliation.type,
+  };
+};
+
 export const useBattleStore = defineStore('battle', () => {
   const enemy = ref(formatEnemy(getCurrentEnemy()));
   const killCount = ref(getKillCount());
-  const battleLog = ref('Tap and hold Attack to fight the enemy.');
+  const logEntry = ref({ type: 'instructions' });
+
+  const i18n = useI18nStore();
+  const t = i18n.t;
 
   const currentEnemy = computed(() => enemy.value);
+
+  const battleLog = computed(() => {
+    const entry = logEntry.value;
+    if (!entry) return '';
+
+    if (entry.type === 'instructions') {
+      return t('battle.log.holdToAttack');
+    }
+
+    if (entry.type === 'defeat') {
+      return t('battle.log.enemyDefeated', { souls: formatFloat(entry.souls, 1) });
+    }
+
+    if (entry.type === 'damage') {
+      const lines = [t('battle.log.damageReport', { hp: formatFloat(entry.hp, 1) })];
+      const retaliation = entry.retaliation || { kind: 'none' };
+      if (retaliation.kind === 'killed') {
+        const unitLabel = retaliation.count === 1
+          ? t(`units.${retaliation.unit}.name`)
+          : t(`units.${retaliation.unit}.plural`);
+        lines.push(
+          t('battle.log.retaliationKilled', {
+            count: formatNumber(retaliation.count),
+            unit: unitLabel,
+          }),
+        );
+      } else if (retaliation.kind === 'noLoss') {
+        const unitLabel = t(`units.${retaliation.unit}.plural`);
+        lines.push(t('battle.log.retaliationNone', { unit: unitLabel }));
+      } else {
+        lines.push(t('battle.log.noRetaliation'));
+      }
+      return lines.join('\n');
+    }
+
+    if (entry.type === 'status') {
+      return t(entry.key, entry.params || {});
+    }
+
+    return '';
+  });
+
+  const setLogEntry = (entry) => {
+    logEntry.value = entry;
+  };
 
   const setEnemy = (value) => {
     enemy.value = formatEnemy(value);
@@ -37,24 +106,16 @@ export const useBattleStore = defineStore('battle', () => {
     const result = attack();
 
     if (result.killed) {
-      battleLog.value = `Enemy defeated! You gained ${result.storedSoulsGained.toFixed(1)} hero souls.`;
+      setLogEntry({ type: 'defeat', souls: result.storedSoulsGained });
       const nextEnemy = startNewBattle();
       setEnemy(nextEnemy);
     } else {
-      const { enemyHpAfterAttack, retaliation } = result;
-      let log = `You dealt damage. Enemy HP is now ${enemyHpAfterAttack.toFixed(1)}.\n`;
-      if (retaliation.type) {
-        if (retaliation.unitsLost > 0) {
-          log += `Enemy retaliated and killed ${retaliation.unitsLost} ${retaliation.type}${
-            retaliation.unitsLost > 1 ? 's' : ''
-          }.`;
-        } else {
-          log += `Enemy retaliated but did not kill any ${retaliation.type}.`;
-        }
-      } else {
-        log += 'Enemy could not retaliate (no units).';
-      }
-      battleLog.value = log;
+      const retaliationState = createRetaliationState(result.retaliation);
+      setLogEntry({
+        type: 'damage',
+        hp: result.enemyHpAfterAttack,
+        retaliation: retaliationState,
+      });
     }
 
     refreshKillCount();
@@ -70,5 +131,6 @@ export const useBattleStore = defineStore('battle', () => {
     setEnemy,
     refreshEnemy,
     refreshKillCount,
+    setLogEntry,
   };
 });

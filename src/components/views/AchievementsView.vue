@@ -2,17 +2,17 @@
   <section class="card">
     <header class="card__header">
       <h2 class="card__title">
-        Achievements
+        {{ t('achievements.title') }}
       </h2>
       <p class="card__subtitle">
-        {{ achievementsSummary.unlockedCount }} / {{ achievementsSummary.total }} milestones unlocked.
+        {{ summarySubtitle }}
       </p>
     </header>
 
     <div class="grid">
       <article
         v-for="achievement in achievementsSummary.list"
-        :key="achievement.name"
+        :key="achievement.id"
         class="achievement"
       >
         <header class="achievement__header">
@@ -23,7 +23,7 @@
             class="achievement__status"
             :class="{ 'achievement__status--complete': achievement.unlocked }"
           >
-            {{ achievement.unlocked ? 'Unlocked' : 'Locked' }}
+            {{ achievement.unlocked ? t('achievements.status.unlocked') : t('achievements.status.locked') }}
           </span>
         </header>
         <p class="achievement__description">
@@ -37,7 +37,7 @@
         </div>
         <footer class="achievement__footer">
           <span>{{ formatNumber(achievement.progress) }} / {{ formatNumber(achievement.value) }}</span>
-          <span>{{ achievement.percent.toFixed(1) }}%</span>
+          <span>{{ formatFloat(achievement.percent, 1) }}%</span>
         </footer>
       </article>
     </div>
@@ -45,14 +45,25 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useEconomyStore } from '@/stores/economyStore.js';
-import { formatNumber } from '@/utils/formatters.js';
+import { formatFloat, formatNumber } from '@/utils/formatters.js';
+import { useI18nStore } from '@/stores/i18nStore.js';
 
 const economy = useEconomyStore();
 const { achievements } = storeToRefs(economy);
+const i18n = useI18nStore();
+const t = i18n.t;
 
 const achievementsSummary = achievements;
+
+const summarySubtitle = computed(() =>
+  t('achievements.subtitle', {
+    unlocked: formatNumber(achievementsSummary.value.unlockedCount),
+    total: formatNumber(achievementsSummary.value.total),
+  }),
+);
 </script>
 
 <style scoped>
