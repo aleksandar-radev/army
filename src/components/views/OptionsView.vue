@@ -35,6 +35,25 @@
         </select>
       </div>
 
+      <div class="field field--community">
+        <div class="field__text">
+          <p class="field__label">
+            {{ t('options.communityLabel') }}
+          </p>
+          <p class="field__description">
+            {{ t('options.communityDescription') }}
+          </p>
+        </div>
+        <a
+          class="field__button"
+          href="https://discord.gg/8rgwg2zzqc"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ t('options.discordButton') }}
+        </a>
+      </div>
+
       <div class="field field--reset">
         <div class="field__text">
           <p class="field__label">
@@ -114,7 +133,7 @@ const openResetModal = ui.openResetModal;
   gap: 24px;
 }
 
-.field {
+.field { 
   background: rgba(15, 23, 42, 0.6);
   border-radius: 20px;
   padding: 20px;
@@ -122,6 +141,10 @@ const openResetModal = ui.openResetModal;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.field--community {
+  gap: 16px;
 }
 
 .field--reset {
@@ -173,6 +196,9 @@ const openResetModal = ui.openResetModal;
   font-weight: 600;
   letter-spacing: 0.02em;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .field__button:hover {
