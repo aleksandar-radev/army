@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import { attack, getCurrentEnemy, getKillCount, startNewBattle } from '@/game/battle.js';
 import { useEconomyStore } from '@/stores/economyStore.js';
@@ -39,7 +39,50 @@ const createRetaliationState = (retaliation) => {
 export const useBattleStore = defineStore('battle', () => {
   const enemy = ref(formatEnemy(getCurrentEnemy()));
   const killCount = ref(getKillCount());
-  const logEntries = ref([{ type: 'instructions' }]);
+
+  const LOG_STORAGE_KEY = 'battleLogEntries';
+  const isBrowser = typeof window !== 'undefined';
+
+  const sanitizeLogEntries = (entries) => {
+    if (!Array.isArray(entries)) return null;
+
+    const sanitized = entries
+      .filter((entry) => entry && typeof entry === 'object' && typeof entry.type === 'string')
+      .map((entry) => ({ ...entry }));
+
+    if (!sanitized.length) {
+      return null;
+    }
+
+    return sanitized;
+  };
+
+  const loadLogEntries = () => {
+    if (!isBrowser) return null;
+
+    try {
+      const storedValue = window.localStorage.getItem(LOG_STORAGE_KEY);
+      if (!storedValue) return null;
+
+      const parsed = JSON.parse(storedValue);
+      return sanitizeLogEntries(parsed);
+    } catch (error) {
+      console.warn('Failed to parse stored battle log entries', error);
+      return null;
+    }
+  };
+
+  const saveLogEntries = (entries) => {
+    if (!isBrowser) return;
+    try {
+      window.localStorage.setItem(LOG_STORAGE_KEY, JSON.stringify(entries));
+    } catch (error) {
+      console.warn('Failed to persist battle log entries', error);
+    }
+  };
+
+  const defaultLogEntries = [{ type: 'instructions' }];
+  const logEntries = ref(loadLogEntries() ?? defaultLogEntries);
 
   const i18n = useI18nStore();
   const t = i18n.t;
@@ -136,6 +179,10 @@ export const useBattleStore = defineStore('battle', () => {
     logEntries.value = [entry, ...logEntries.value].slice(0, 500);
   };
 
+  const clearBattleLog = () => {
+    logEntries.value = [{ type: 'instructions' }];
+  };
+
   const setEnemy = (value) => {
     enemy.value = formatEnemy(value);
   };
@@ -147,6 +194,14 @@ export const useBattleStore = defineStore('battle', () => {
   const refreshKillCount = () => {
     killCount.value = getKillCount();
   };
+
+  watch(
+    logEntries,
+    (entries) => {
+      saveLogEntries(entries);
+    },
+    { deep: true }
+  );
 
   const attackEnemy = () => {
     const economy = useEconomyStore();
@@ -190,5 +245,6 @@ export const useBattleStore = defineStore('battle', () => {
     refreshEnemy,
     refreshKillCount,
     setLogEntry,
+    clearBattleLog,
   };
 });

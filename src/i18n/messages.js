@@ -34,6 +34,7 @@ export const messages = {
       attackButton: 'Attack',
       stopButton: 'Stop',
       logTitle: 'Battle Log',
+      logClearButton: 'Clear Log',
       log: {
         instructions: 'Press Attack to engage the enemy. Use Stop to pause the assault.',
         heroAttack: 'Your army struck Enemy Level {level} for {damage} damage. Enemy HP: {before} → {after}.',
@@ -214,6 +215,7 @@ export const messages = {
       attackButton: 'Atacar',
       stopButton: 'Detener',
       logTitle: 'Registro de batalla',
+      logClearButton: 'Limpiar registro',
       log: {
         instructions: 'Presiona Atacar para enfrentarte al enemigo. Usa Detener para pausar el asalto.',
         heroAttack: 'Tu ejército golpeó al enemigo de nivel {level} e infligió {damage} de daño. Salud del enemigo: {before} → {after}.',
@@ -394,6 +396,7 @@ export const messages = {
       attackButton: '攻击',
       stopButton: '停止',
       logTitle: '战斗日志',
+      logClearButton: '清空日志',
       log: {
         instructions: '点击“攻击”来与敌人战斗。使用“停止”以暂停进攻。',
         heroAttack: '你的军队攻击了{level}级敌人，造成 {damage} 点伤害。敌人生命值：{before} → {after}。',

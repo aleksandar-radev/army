@@ -60,9 +60,18 @@
     </div>
   </section>
   <section class="log-card">
-    <h3 class="log-card__title">
-      {{ t('battle.logTitle') }}
-    </h3>
+    <div class="log-card__header">
+      <h3 class="log-card__title">
+        {{ t('battle.logTitle') }}
+      </h3>
+      <button
+        class="log-card__clear"
+        type="button"
+        @click="clearBattleLog"
+      >
+        {{ t('battle.logClearButton') }}
+      </button>
+    </div>
     <ul class="log-list">
       <li
         v-for="(entry, index) in battleLog"
@@ -86,6 +95,7 @@ const battle = useBattleStore();
 const i18n = useI18nStore();
 const t = i18n.t;
 const { currentEnemy, killCount, battleLog } = storeToRefs(battle);
+const { clearBattleLog } = battle;
 
 const enemyDetails = computed(() => currentEnemy.value);
 const enemyLevelLabel = computed(() => {
@@ -256,10 +266,42 @@ onBeforeUnmount(() => {
   gap: 16px;
 }
 
+.log-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .log-card__title {
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
+}
+
+.log-card__clear {
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: transparent;
+  color: rgba(148, 163, 184, 0.9);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.log-card__clear:hover,
+.log-card__clear:focus-visible {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.6);
+  color: #fff;
+  background: rgba(59, 130, 246, 0.2);
+}
+
+.log-card__clear:active {
+  background: rgba(59, 130, 246, 0.35);
 }
 
 .log-list {
