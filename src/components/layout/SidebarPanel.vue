@@ -35,7 +35,7 @@
             alt=""
             aria-hidden="true"
             class="icon-image"
-          />
+          >
         </span>
         <span>{{ item.label }}</span>
       </button>

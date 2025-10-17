@@ -26,7 +26,7 @@
                 alt=""
                 aria-hidden="true"
                 class="icon-image"
-              />
+              >
             </span>
             <div class="unit-card__heading">
               <h3 class="unit-card__title">

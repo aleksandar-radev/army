@@ -25,7 +25,7 @@
                 :src="building.iconSrc"
                 :alt="building.name"
                 class="icon-image"
-              />
+              >
             </span>
             <div>
               <h3 class="building__title">
@@ -62,7 +62,7 @@
                   alt=""
                   aria-hidden="true"
                   class="icon-image"
-                />
+                >
               </button>
               <div
                 :id="`${building.key}-details`"

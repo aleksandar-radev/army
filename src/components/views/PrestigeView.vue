@@ -60,14 +60,14 @@
               alt=""
               aria-hidden="true"
               class="icon-image"
-            />
+            >
             <span>{{ ascendMessage }}</span>
             <img
               :src="CELEBRATION_ICON_SRC"
               alt=""
               aria-hidden="true"
               class="icon-image"
-            />
+            >
           </p>
         </div>
 
@@ -88,7 +88,7 @@
                     alt=""
                     aria-hidden="true"
                     class="icon-image"
-                  />
+                  >
                 </span>
                 <h4 class="relic__title">
                   {{ relic.name }}

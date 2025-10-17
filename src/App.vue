@@ -25,7 +25,7 @@
         :src="mobileMenuOpen ? closeIconSrc : menuIconSrc"
         :alt="mobileMenuOpen ? 'Close menu' : 'Open menu'"
         class="icon-image"
-      />
+      >
     </button>
     <div
       v-if="mobileMenuOpen"

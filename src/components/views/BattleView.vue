@@ -72,7 +72,7 @@
             :src="unit.icon"
             :alt="unit.name"
             loading="lazy"
-          />
+          >
           <span class="army-summary__count">
             {{ formatNumber(unit.count) }}
           </span>
