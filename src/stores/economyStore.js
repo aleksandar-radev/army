@@ -3,10 +3,11 @@ import { defineStore } from 'pinia';
 import { ACHIEVEMENTS } from '@/game/achievements.js';
 import { artifactState, armyState, buildingState, resourceState, syncGameState } from '@/stores/gameState.js';
 import { getArtifactUpgradeCost, getAllArtifactKeys, upgradeArtifact } from '@/game/artifact.js';
-import { UnitTypes } from '@/game/config.js';
+import { BuildingConfig, UnitTypes } from '@/game/config.js';
 import { getHeroSoulsTotal, getGold } from '@/game/resources.js';
 import { getUpgradeCost, upgradeBuilding } from '@/game/town.js';
 import { getUnitEffectiveDmg, getUnitEffectiveHp } from '@/game/unitHelpers.js';
+import { formatFloat, formatNumber } from '@/utils/formatters.js';
 
 const unitIcons = {
   Goblin: '👺',
@@ -23,6 +24,51 @@ const buildingIcons = {
   TrollDen: '🧌',
   OgreTower: '🏯',
   DragonRoost: '🐉',
+};
+
+const buildingNameFromKey = (key) =>
+  key
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^\s+/, '')
+    .trim();
+
+const removeBuildingSuffix = (key) =>
+  key.replace(/(Hut|Camp|Den|Tower|Roost)$/u, '');
+
+const pluralize = (word, amount) => (amount === 1 ? word : `${word}s`);
+
+const formatRate = (value) =>
+  Number.isInteger(value)
+    ? formatNumber(value)
+    : formatFloat(value, value < 1 ? 2 : 1);
+
+const buildDescription = (key, level) => {
+  const config = BuildingConfig[key];
+  if (!config) return { summary: '', detail: '' };
+
+  if (config.goldPerSecond) {
+    const perLevel = config.goldPerSecond;
+    const current = perLevel * level;
+    const summary = `Generates ${formatRate(perLevel)} gold per second per level.`;
+    const detail = level
+      ? `Currently ${formatRate(current)} gold per second.`
+      : 'Upgrade to begin generating gold.';
+    return { summary, detail };
+  }
+
+  if (config.spawnPerMinute) {
+    const perLevel = config.spawnPerMinute;
+    const current = perLevel * level;
+    const unitName = removeBuildingSuffix(key);
+    const humanName = buildingNameFromKey(unitName);
+    const summary = `Summons ${formatRate(perLevel)} ${pluralize(humanName, perLevel)} per minute per level.`;
+    const detail = level
+      ? `Currently ${formatRate(current)} ${pluralize(humanName, current)} per minute.`
+      : `Upgrade to begin summoning ${pluralize(humanName, 2)}.`;
+    return { summary, detail };
+  }
+
+  return { summary: '', detail: '' };
 };
 
 const relicIcons = {
@@ -79,10 +125,12 @@ export const useEconomyStore = defineStore('economy', () => {
       const cost = getUpgradeCost(key);
       return {
         key,
+        name: buildingNameFromKey(key),
         icon: buildingIcons[key] || '🏗️',
         level,
         cost,
         canAfford: getGold() >= cost,
+        description: buildDescription(key, level),
       };
     }),
   );

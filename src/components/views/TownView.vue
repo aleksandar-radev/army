@@ -19,17 +19,51 @@
           <span class="building__icon">{{ building.icon }}</span>
           <div>
             <h3 class="building__title">
-              {{ building.key }}
+              {{ building.name }}
             </h3>
             <p class="building__level">
               Level {{ formatNumber(building.level) }}
             </p>
           </div>
         </div>
+        <div
+          v-if="building.description.summary || building.description.detail"
+          class="building__description"
+        >
+          <p
+            v-if="building.description.summary"
+            :id="`${building.key}-summary`"
+            class="building__summary"
+          >
+            {{ building.description.summary }}
+          </p>
+          <div
+            v-if="building.description.detail"
+            class="tooltip"
+          >
+            <button
+              class="tooltip__trigger"
+              type="button"
+              :aria-describedby="`${building.key}-details`"
+              :aria-label="`More details about ${building.name}`"
+            >
+              ℹ️
+            </button>
+            <div
+              :id="`${building.key}-details`"
+              class="tooltip__bubble"
+              role="tooltip"
+            >
+              {{ building.description.detail }}
+            </div>
+          </div>
+        </div>
         <button
           class="upgrade"
           type="button"
           :disabled="!building.canAfford"
+          :aria-label="`Upgrade ${building.name} for ${formatNumber(building.cost)} gold`"
+          :aria-describedby="building.description.summary ? `${building.key}-summary` : null"
           @click="upgrade(building.key)"
         >
           Upgrade • {{ formatNumber(building.cost) }} gold
@@ -110,6 +144,80 @@ const upgrade = (key) => {
 .building__level {
   margin: 4px 0 0;
   color: rgba(148, 163, 184, 0.8);
+}
+
+.building__description {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: rgba(226, 232, 240, 0.95);
+}
+
+.building__summary {
+  flex: 1;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tooltip__trigger {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: none;
+  background: rgba(59, 130, 246, 0.18);
+  color: #bfdbfe;
+  cursor: help;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tooltip__trigger:focus-visible,
+.tooltip__trigger:hover {
+  background: rgba(59, 130, 246, 0.3);
+  color: #fff;
+}
+
+.tooltip__bubble {
+  position: absolute;
+  inset: auto auto 100% 50%;
+  transform: translate(-50%, -8px);
+  min-width: 220px;
+  max-width: 260px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.96);
+  color: #e2e8f0;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 2;
+}
+
+.tooltip__bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(15, 23, 42, 0.96) transparent transparent transparent;
+}
+
+.tooltip__trigger:focus + .tooltip__bubble,
+.tooltip__trigger:focus-visible + .tooltip__bubble,
+.tooltip__trigger:hover + .tooltip__bubble {
+  opacity: 1;
+  transform: translate(-50%, -14px);
 }
 
 .upgrade {
