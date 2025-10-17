@@ -1,6 +1,12 @@
 import { resources } from "./resources.js";
 import { armyCounts } from "./army.js";
-import { buildingStates } from "./town.js";
+import {
+  buildingSpawnProgress,
+  buildingStates,
+  applyOfflineSummoning,
+  applyOfflineGold,
+  setSpawnProgress,
+} from "./town.js";
 import { artifactStates } from "./artifact.js";
 import { GameMeta } from "./config.js";
 
@@ -13,6 +19,7 @@ export function createGameState() {
     resources: { ...resources },
     armyCounts: { ...armyCounts },
     buildingStates: { ...buildingStates },
+    spawnProgress: { ...buildingSpawnProgress },
     artifactStates: { ...artifactStates },
     killCount: 0,
   };
@@ -39,6 +46,7 @@ export async function loadGame() {
     Object.assign(armyCounts, gameState.armyCounts);
 
     Object.assign(buildingStates, gameState.buildingStates);
+    setSpawnProgress(gameState.spawnProgress || {});
 
     Object.assign(artifactStates, gameState.artifactStates);
 
@@ -46,6 +54,36 @@ export async function loadGame() {
       const { setKillCount, startNewBattle } = await import("./battle.js");
       setKillCount(gameState.killCount);
       startNewBattle();
+    }
+
+    const lastTimestamp = Number(gameState.timestamp) || 0;
+    if (lastTimestamp > 0) {
+      const elapsedMs = Date.now() - lastTimestamp;
+      if (elapsedMs > 0) {
+        const elapsedSeconds = elapsedMs / 1000;
+        const summonedUnits = applyOfflineSummoning(elapsedSeconds);
+        const entries = Object.entries(summonedUnits).filter(([, count]) => count > 0);
+        if (entries.length > 0) {
+          const summary = entries
+            .map(([unit, count]) => `${count} ${unit}${count === 1 ? "" : "s"}`)
+            .join(", ");
+          console.log(
+            `Offline summoning produced ${summary} after ${Math.floor(elapsedSeconds)}s away.`,
+          );
+        }
+
+        const offlineGold = applyOfflineGold(elapsedSeconds);
+        if (offlineGold > 0) {
+          const roundedGold = Math.round(offlineGold * 100) / 100;
+          const formattedGold =
+            typeof roundedGold.toLocaleString === "function"
+              ? roundedGold.toLocaleString()
+              : `${roundedGold}`;
+          console.log(
+            `Offline production generated ${formattedGold} gold after ${Math.floor(elapsedSeconds)}s away.`,
+          );
+        }
+      }
     }
 
     console.log("Game loaded successfully");
