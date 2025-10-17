@@ -20,15 +20,20 @@
       >
         <header class="unit-card__header">
           <span class="unit-card__icon">{{ card.icon }}</span>
-          <h3 class="unit-card__title">
-            {{ card.name }}
-          </h3>
+          <div class="unit-card__heading">
+            <h3 class="unit-card__title">
+              {{ card.name }}
+            </h3>
+            <span
+              class="unit-card__count"
+              :aria-label="`${t('army.stats.totalUnits')}: ${formatNumber(card.count)}`"
+            >
+              <span class="unit-card__count-label">{{ t('army.stats.totalUnits') }}</span>
+              <span class="unit-card__count-value">{{ formatNumber(card.count) }}</span>
+            </span>
+          </div>
         </header>
         <dl class="unit-card__stats">
-          <div>
-            <dt>{{ t('army.stats.totalUnits') }}</dt>
-            <dd>{{ formatNumber(card.count) }}</dd>
-          </div>
           <div>
             <dt>{{ t('army.stats.healthPerUnit') }}</dt>
             <dd>{{ formatFloat(card.perHp) }}</dd>
@@ -116,6 +121,13 @@ const t = i18n.t;
   gap: 12px;
 }
 
+.unit-card__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+}
+
 .unit-card__icon {
   font-size: 2rem;
 }
@@ -123,6 +135,26 @@ const t = i18n.t;
 .unit-card__title {
   margin: 0;
   font-size: 1.3rem;
+}
+
+.unit-card__count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.unit-card__count-label {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+}
+
+.unit-card__count-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
 }
 
 .unit-card__stats {
