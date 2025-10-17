@@ -229,6 +229,7 @@ export const useBattleStore = defineStore('battle', () => {
         retaliation: retaliationState,
         enemyLevel: current?.level ?? null,
       });
+      refreshEnemy();
     }
 
     refreshKillCount();
