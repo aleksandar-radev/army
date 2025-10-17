@@ -67,12 +67,12 @@
           :key="unit.type"
           class="army-summary__item"
         >
-          <span
+          <img
             class="army-summary__icon"
-            :aria-label="unit.name"
-          >
-            {{ unit.icon }}
-          </span>
+            :src="unit.icon"
+            :alt="unit.name"
+            loading="lazy"
+          />
           <span class="army-summary__count">
             {{ formatNumber(unit.count) }}
           </span>
@@ -111,6 +111,12 @@ import { useI18nStore } from '@/stores/i18nStore.js';
 import { formatFloat, formatNumber } from '@/utils/formatters.js';
 import { UnitTypes } from '@/game/config.js';
 import { armyState } from '@/stores/gameState.js';
+import defaultUnitIcon from '@/assets/icons/units/default.jpg';
+import dragonIcon from '@/assets/icons/units/dragon.jpg';
+import goblinIcon from '@/assets/icons/units/goblin.jpg';
+import ogreIcon from '@/assets/icons/units/ogre.jpg';
+import orcIcon from '@/assets/icons/units/orc.jpg';
+import trollIcon from '@/assets/icons/units/troll.jpg';
 
 const battle = useBattleStore();
 const i18n = useI18nStore();
@@ -119,19 +125,20 @@ const { currentEnemy, killCount, battleLog } = storeToRefs(battle);
 const { clearBattleLog } = battle;
 
 const enemyDetails = computed(() => currentEnemy.value);
+
 const unitIcons = {
-  Goblin: '👺',
-  Orc: '🪓',
-  Troll: '🧌',
-  Ogre: '🏯',
-  Dragon: '🐉',
+  Goblin: goblinIcon,
+  Orc: orcIcon,
+  Troll: trollIcon,
+  Ogre: ogreIcon,
+  Dragon: dragonIcon,
 };
 
 const armySummary = computed(() =>
   Object.keys(UnitTypes).map((type) => ({
     type,
     name: t(`units.${type}.plural`),
-    icon: unitIcons[type] || '🛡️',
+    icon: unitIcons[type] || defaultUnitIcon,
     count: armyState[type] || 0,
   })),
 );
@@ -406,7 +413,11 @@ onBeforeUnmount(() => {
 }
 
 .army-summary__icon {
-  font-size: 1.4rem;
+  display: block;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: cover;
 }
 
 .army-summary__count {
