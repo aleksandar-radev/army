@@ -71,20 +71,16 @@ export function attack() {
 }
 
 function _chooseRandomUnitType() {
-  const types = Object.keys(UnitTypes);
-  let totalUnits = 0;
-  for (const type of types) {
-    totalUnits += getUnitCount(type);
-  }
-  if (totalUnits === 0) return null;
+  const availableTypes = Object.keys(UnitTypes).filter(
+    (type) => getUnitCount(type) > 0,
+  );
 
-  const rand = Math.floor(Math.random() * totalUnits);
-  let cumulative = 0;
-  for (const type of types) {
-    cumulative += getUnitCount(type);
-    if (rand < cumulative) return type;
+  if (availableTypes.length === 0) {
+    return null;
   }
-  return null;
+
+  const randomIndex = Math.floor(Math.random() * availableTypes.length);
+  return availableTypes[randomIndex] || null;
 }
 
 function _enemyRetaliate(enemyDmg) {
