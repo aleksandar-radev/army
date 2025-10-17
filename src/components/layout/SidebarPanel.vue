@@ -1,14 +1,26 @@
 <template>
   <aside class="panel">
     <header class="panel__header">
-      <h1 class="title">Idle Army Builder</h1>
-      <p class="subtitle">Commanders Dashboard</p>
+      <h1 class="title">
+        Idle Army Builder
+      </h1>
+      <p class="subtitle">
+        Commanders Dashboard
+      </p>
     </header>
 
     <section class="summary">
-      <div class="summary__item" v-for="item in summaryItems" :key="item.label">
-        <p class="summary__label">{{ item.label }}</p>
-        <p class="summary__value">{{ item.value }}</p>
+      <div
+        v-for="item in summaryItems"
+        :key="item.label"
+        class="summary__item"
+      >
+        <p class="summary__label">
+          {{ item.label }}
+        </p>
+        <p class="summary__value">
+          {{ item.value }}
+        </p>
       </div>
     </section>
 
@@ -26,7 +38,11 @@
     </nav>
 
     <footer class="footer">
-      <button class="reset-button" type="button" @click="openResetModal">
+      <button
+        class="reset-button"
+        type="button"
+        @click="openResetModal"
+      >
         Reset Progress
       </button>
     </footer>

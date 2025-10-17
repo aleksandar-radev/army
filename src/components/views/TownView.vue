@@ -1,17 +1,29 @@
 <template>
   <section class="card">
     <header class="card__header">
-      <h2 class="card__title">Town Development</h2>
-      <p class="card__subtitle">Upgrade buildings to unlock faster progression and recruitment.</p>
+      <h2 class="card__title">
+        Town Development
+      </h2>
+      <p class="card__subtitle">
+        Upgrade buildings to unlock faster progression and recruitment.
+      </p>
     </header>
 
     <div class="grid">
-      <article class="building" v-for="building in townBuildings" :key="building.key">
+      <article
+        v-for="building in townBuildings"
+        :key="building.key"
+        class="building"
+      >
         <div class="building__header">
           <span class="building__icon">{{ building.icon }}</span>
           <div>
-            <h3 class="building__title">{{ building.key }}</h3>
-            <p class="building__level">Level {{ formatNumber(building.level) }}</p>
+            <h3 class="building__title">
+              {{ building.key }}
+            </h3>
+            <p class="building__level">
+              Level {{ formatNumber(building.level) }}
+            </p>
           </div>
         </div>
         <button

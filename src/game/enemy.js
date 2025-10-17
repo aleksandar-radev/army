@@ -1,5 +1,4 @@
 import { EnemyConfig } from "./config.js";
-import { getArtifactEffectBonus } from "./artifact.js";
 
 export class EnemyHero {
   constructor(level) {

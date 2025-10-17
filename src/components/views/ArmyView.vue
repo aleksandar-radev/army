@@ -1,15 +1,28 @@
 <template>
   <section class="card">
     <header class="card__header">
-      <h2 class="card__title">Army Composition</h2>
-      <p class="card__subtitle">Detailed breakdown of your units and their power.</p>
+      <h2 class="card__title">
+        Army Composition
+      </h2>
+      <p class="card__subtitle">
+        Detailed breakdown of your units and their power.
+      </p>
     </header>
 
-    <div class="grid" v-if="armyCards.length">
-      <article class="unit-card" v-for="card in armyCards" :key="card.type">
+    <div
+      v-if="armyCards.length"
+      class="grid"
+    >
+      <article
+        v-for="card in armyCards"
+        :key="card.type"
+        class="unit-card"
+      >
         <header class="unit-card__header">
           <span class="unit-card__icon">{{ card.icon }}</span>
-          <h3 class="unit-card__title">{{ card.type }}</h3>
+          <h3 class="unit-card__title">
+            {{ card.type }}
+          </h3>
         </header>
         <dl class="unit-card__stats">
           <div>
@@ -35,7 +48,12 @@
         </dl>
       </article>
     </div>
-    <p v-else class="empty">Recruit units in battle to populate your army.</p>
+    <p
+      v-else
+      class="empty"
+    >
+      Recruit units in battle to populate your army.
+    </p>
   </section>
 </template>
 

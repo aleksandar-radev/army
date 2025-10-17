@@ -1,13 +1,28 @@
 <template>
-  <div class="backdrop" @click.self="close">
+  <div
+    class="backdrop"
+    @click.self="close"
+  >
     <div class="modal">
       <header class="modal__header">
         <h3>Reset Progress</h3>
         <p>Are you sure you want to wipe your save? This action cannot be undone.</p>
       </header>
       <div class="modal__actions">
-        <button type="button" class="cancel" @click="close">Cancel</button>
-        <button type="button" class="confirm" @click="confirm">Reset Game</button>
+        <button
+          type="button"
+          class="cancel"
+          @click="close"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="confirm"
+          @click="confirm"
+        >
+          Reset Game
+        </button>
       </div>
     </div>
   </div>

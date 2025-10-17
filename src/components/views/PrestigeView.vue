@@ -1,8 +1,12 @@
 <template>
   <section class="card">
     <header class="card__header">
-      <h2 class="card__title">Prestige & Relics</h2>
-      <p class="card__subtitle">Sacrifice progress for powerful relics and long-term boosts.</p>
+      <h2 class="card__title">
+        Prestige & Relics
+      </h2>
+      <p class="card__subtitle">
+        Sacrifice progress for powerful relics and long-term boosts.
+      </p>
     </header>
 
     <div class="prestige">
@@ -28,7 +32,12 @@
           <strong>{{ formatNumber(prestigeInfo.requiredKills) }}</strong>
         </div>
         <div class="actions">
-          <button type="button" class="prestige-btn" :disabled="!canPrestigeNow" @click="performPrestige">
+          <button
+            type="button"
+            class="prestige-btn"
+            :disabled="!canPrestigeNow"
+            @click="performPrestige"
+          >
             Prestige Now
           </button>
           <button
@@ -41,18 +50,33 @@
             Ascend
           </button>
         </div>
-        <p v-if="ascendMessage" class="ascend-message">{{ ascendMessage }}</p>
+        <p
+          v-if="ascendMessage"
+          class="ascend-message"
+        >
+          {{ ascendMessage }}
+        </p>
       </div>
 
       <div class="relics">
-        <h3 class="relics__title">Relics</h3>
+        <h3 class="relics__title">
+          Relics
+        </h3>
         <div class="relics__grid">
-          <article class="relic" v-for="relic in relics" :key="relic.key">
+          <article
+            v-for="relic in relics"
+            :key="relic.key"
+            class="relic"
+          >
             <header class="relic__header">
               <span class="relic__icon">{{ relic.icon }}</span>
-              <h4 class="relic__title">{{ relic.key }}</h4>
+              <h4 class="relic__title">
+                {{ relic.key }}
+              </h4>
             </header>
-            <p class="relic__tier">Tier {{ relic.tier }}</p>
+            <p class="relic__tier">
+              Tier {{ relic.tier }}
+            </p>
             <button
               class="relic__upgrade"
               type="button"

@@ -1,23 +1,39 @@
 <template>
   <section class="card">
     <header class="card__header">
-      <h2 class="card__title">Achievements</h2>
+      <h2 class="card__title">
+        Achievements
+      </h2>
       <p class="card__subtitle">
         {{ achievementsSummary.unlockedCount }} / {{ achievementsSummary.total }} milestones unlocked.
       </p>
     </header>
 
     <div class="grid">
-      <article class="achievement" v-for="achievement in achievementsSummary.list" :key="achievement.name">
+      <article
+        v-for="achievement in achievementsSummary.list"
+        :key="achievement.name"
+        class="achievement"
+      >
         <header class="achievement__header">
-          <h3 class="achievement__title">{{ achievement.name }}</h3>
-          <span class="achievement__status" :class="{ 'achievement__status--complete': achievement.unlocked }">
+          <h3 class="achievement__title">
+            {{ achievement.name }}
+          </h3>
+          <span
+            class="achievement__status"
+            :class="{ 'achievement__status--complete': achievement.unlocked }"
+          >
             {{ achievement.unlocked ? 'Unlocked' : 'Locked' }}
           </span>
         </header>
-        <p class="achievement__description">{{ achievement.description }}</p>
+        <p class="achievement__description">
+          {{ achievement.description }}
+        </p>
         <div class="progress">
-          <div class="progress__bar" :style="{ width: `${achievement.percent}%` }"></div>
+          <div
+            class="progress__bar"
+            :style="{ width: `${achievement.percent}%` }"
+          />
         </div>
         <footer class="achievement__footer">
           <span>{{ formatNumber(achievement.progress) }} / {{ formatNumber(achievement.value) }}</span>

@@ -2,23 +2,37 @@
   <section class="card">
     <header class="card__header">
       <div>
-        <p class="card__eyebrow">Current Enemy</p>
-        <h2 class="card__title">Level {{ enemyDetails?.level ?? '-' }}</h2>
+        <p class="card__eyebrow">
+          Current Enemy
+        </p>
+        <h2 class="card__title">
+          Level {{ enemyDetails?.level ?? '-' }}
+        </h2>
       </div>
       <div class="stats">
         <div class="stat">
-          <p class="stat__label">Health</p>
+          <p class="stat__label">
+            Health
+          </p>
           <p class="stat__value">
             {{ formatFloat(enemyDetails?.currentHp) }} / {{ formatFloat(enemyDetails?.maxHp) }}
           </p>
         </div>
         <div class="stat">
-          <p class="stat__label">Damage</p>
-          <p class="stat__value">{{ formatFloat(enemyDetails?.dmg) }}</p>
+          <p class="stat__label">
+            Damage
+          </p>
+          <p class="stat__value">
+            {{ formatFloat(enemyDetails?.dmg) }}
+          </p>
         </div>
         <div class="stat">
-          <p class="stat__label">Kills</p>
-          <p class="stat__value">{{ formatNumber(killCount) }}</p>
+          <p class="stat__label">
+            Kills
+          </p>
+          <p class="stat__value">
+            {{ formatNumber(killCount) }}
+          </p>
         </div>
       </div>
     </header>
