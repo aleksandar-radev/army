@@ -13,6 +13,7 @@ export const resources = {
     Ogre: 0,
     Dragon: 0,
   },
+  highestEnemyLevel: 1,
 };
 
 export function addGold(amount) {

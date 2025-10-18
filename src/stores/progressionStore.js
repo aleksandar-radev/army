@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue';
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { TickConfig } from '@/game/config.js';
-import { doPrestige } from '@/game/prestige.js';
+import { doPrestige, PRESTIGE_REQUIRED_LEVEL } from '@/game/prestige.js';
 import { clearSave, loadGame, startAutoSave, stopAutoSave } from '@/game/saveLoad.js';
 import { getCurrentEnemy, startNewBattle } from '@/game/battle.js';
 import { tickTown } from '@/game/town.js';
@@ -19,6 +19,7 @@ let ascendTimeout = null;
 export const useProgressionStore = defineStore('progression', () => {
   const economy = useEconomyStore();
   const battle = useBattleStore();
+  const { killCount } = storeToRefs(battle);
   const ui = useUiStore();
   const i18n = useI18nStore();
   const t = i18n.t;
@@ -31,7 +32,11 @@ export const useProgressionStore = defineStore('progression', () => {
     () => ascendDisabled.value || (economy.resourcesView.heroSoulsTotal || 0) >= ASCEND_TARGET,
   );
 
-  const canPrestigeNow = computed(() => true);
+  const canPrestigeNow = computed(() => {
+    const defeatedEnemies = Number(killCount.value ?? 0);
+    const currentLevel = defeatedEnemies + 1;
+    return currentLevel >= PRESTIGE_REQUIRED_LEVEL;
+  });
 
   const ascendMessage = computed(() =>
     ascendMessageKey.value ? t(ascendMessageKey.value, ascendMessageParams.value) : '',
@@ -39,7 +44,7 @@ export const useProgressionStore = defineStore('progression', () => {
 
   const performPrestige = () => {
     if (!canPrestigeNow.value) return false;
-    doPrestige();
+    if (!doPrestige()) return false;
     const nextEnemy = startNewBattle();
     battle.setEnemy(nextEnemy);
     battle.refreshKillCount();
