@@ -91,6 +91,7 @@ export const messages = {
         storedSouls: 'Stored Souls',
         totalSouls: 'Your Souls',
         prestigeCount: 'Prestige Count',
+        requirement: 'Reach level {level} to prestige.',
       },
       actions: {
         prestigeNow: 'Prestige now for {souls} souls',

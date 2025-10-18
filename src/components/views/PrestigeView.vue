@@ -20,6 +20,9 @@
             <span>{{ t('prestige.summary.prestigeCount') }}</span>
             <strong>{{ formatNumber(resourceSummary.prestigeCount) }}</strong>
           </div>
+          <p class="prestige__requirement">
+            {{ prestigeRequirementMessage }}
+          </p>
           <div class="actions">
             <button
               type="button"
@@ -117,12 +120,14 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useEconomyStore } from '@/stores/economyStore.js';
 import { useProgressionStore } from '@/stores/progressionStore.js';
 import { formatNumber } from '@/utils/formatters.js';
 import { useI18nStore } from '@/stores/i18nStore.js';
 import { uiIconSources } from '@/constants/iconSources.js';
+import { PRESTIGE_REQUIRED_LEVEL } from '@/game/prestige.js';
 
 const economy = useEconomyStore();
 const progression = useProgressionStore();
@@ -133,6 +138,9 @@ const CELEBRATION_ICON_SRC = uiIconSources.celebration;
 
 const { resourceSummary, relics } = storeToRefs(economy);
 const { canPrestigeNow, ascendMessage, ascendVisible, ascendDisabled } = storeToRefs(progression);
+const prestigeRequirementMessage = computed(() =>
+  t('prestige.summary.requirement', { level: formatNumber(PRESTIGE_REQUIRED_LEVEL) }),
+);
 
 const performPrestige = () => {
   progression.performPrestige();
@@ -215,6 +223,12 @@ const ascend = () => {
 .summary-row strong {
   font-weight: 600;
   font-size: 1rem;
+}
+
+.prestige__requirement {
+  margin: -4px 0 0;
+  font-size: 0.85rem;
+  color: rgba(148, 163, 184, 0.8);
 }
 
 .actions {
