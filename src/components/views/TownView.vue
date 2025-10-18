@@ -327,6 +327,7 @@ const upgrade = (key) => {
 }
 
 .upgrade {
+  margin-top: auto;
   padding: 14px 16px;
   border-radius: 14px;
   border: none;
