@@ -39,6 +39,8 @@ const createRetaliationState = (retaliation) => {
 export const useBattleStore = defineStore('battle', () => {
   const enemy = ref(formatEnemy(getCurrentEnemy()));
   const killCount = ref(getKillCount());
+  const isAttacking = ref(false);
+  let attackInterval = null;
 
   const LOG_STORAGE_KEY = 'battleLogEntries';
   const isBrowser = typeof window !== 'undefined';
@@ -235,6 +237,14 @@ export const useBattleStore = defineStore('battle', () => {
     { deep: true }
   );
 
+  const stopAutoAttack = () => {
+    isAttacking.value = false;
+    if (attackInterval) {
+      clearInterval(attackInterval);
+      attackInterval = null;
+    }
+  };
+
   const attackEnemy = () => {
     const economy = useEconomyStore();
     const current = enemy.value;
@@ -269,13 +279,27 @@ export const useBattleStore = defineStore('battle', () => {
 
     refreshKillCount();
     economy.sync();
+
     return result;
+  };
+
+  const startAutoAttack = () => {
+    if (isAttacking.value) return;
+
+    isAttacking.value = true;
+    attackEnemy();
+    attackInterval = setInterval(() => {
+      attackEnemy();
+    }, 1000);
   };
 
   return {
     currentEnemy,
     killCount,
     battleLog,
+    isAttacking,
+    startAutoAttack,
+    stopAutoAttack,
     attackEnemy,
     setEnemy,
     refreshEnemy,

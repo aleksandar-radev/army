@@ -104,7 +104,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useBattleStore } from '@/stores/battleStore.js';
 import { useI18nStore } from '@/stores/i18nStore.js';
@@ -121,8 +121,8 @@ import trollIcon from '@/assets/icons/units/troll.jpg';
 const battle = useBattleStore();
 const i18n = useI18nStore();
 const t = i18n.t;
-const { currentEnemy, killCount, battleLog } = storeToRefs(battle);
-const { clearBattleLog } = battle;
+const { currentEnemy, killCount, battleLog, isAttacking } = storeToRefs(battle);
+const { clearBattleLog, startAutoAttack, stopAutoAttack } = battle;
 
 const enemyDetails = computed(() => currentEnemy.value);
 
@@ -150,35 +150,16 @@ const enemyLevelLabel = computed(() => {
   }
   return t('common.level', { value: formatNumber(level) });
 });
-const isAttacking = ref(false);
-let attackInterval = null;
-
-const attack = () => {
-  battle.attackEnemy();
-};
-
 const beginAttack = () => {
-  if (isAttacking.value) return;
-  isAttacking.value = true;
-  attack();
-  attackInterval = setInterval(attack, 1000);
+  startAutoAttack();
 };
 
 const stopAttack = () => {
-  if (!isAttacking.value) return;
-  isAttacking.value = false;
-  if (attackInterval) {
-    clearInterval(attackInterval);
-    attackInterval = null;
-  }
+  stopAutoAttack();
 };
 
 onMounted(() => {
   battle.refreshEnemy();
-});
-
-onBeforeUnmount(() => {
-  stopAttack();
 });
 </script>
 
