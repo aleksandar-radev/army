@@ -11,7 +11,7 @@ export const messages = {
       summary: {
         gold: 'Gold',
         storedSouls: 'Stored Souls',
-        totalSouls: 'Total Souls',
+        totalSouls: 'Your Souls',
         prestiges: 'Prestiges',
       },
       nav: {
@@ -89,11 +89,11 @@ export const messages = {
       subtitle: 'Sacrifice progress for powerful relics and long-term boosts.',
       summary: {
         storedSouls: 'Stored Souls',
-        totalSouls: 'Total Souls',
+        totalSouls: 'Your Souls',
         prestigeCount: 'Prestige Count',
       },
       actions: {
-        prestigeNow: 'Prestige Now',
+        prestigeNow: 'Prestige now for {souls} souls',
         ascend: 'Ascend',
       },
       ascendMessage: {

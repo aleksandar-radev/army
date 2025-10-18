@@ -77,21 +77,6 @@ const navItems = computed(() =>
 
 const summaryItems = computed(() => [
   { key: 'gold', label: t('sidebar.summary.gold'), value: formatNumber(resourceSummary.value.gold) },
-  {
-    key: 'storedSouls',
-    label: t('sidebar.summary.storedSouls'),
-    value: formatNumber(resourceSummary.value.heroSoulsStored),
-  },
-  {
-    key: 'totalSouls',
-    label: t('sidebar.summary.totalSouls'),
-    value: formatNumber(resourceSummary.value.heroSoulsTotal),
-  },
-  {
-    key: 'prestiges',
-    label: t('sidebar.summary.prestiges'),
-    value: formatNumber(resourceSummary.value.prestigeCount),
-  },
 ]);
 
 const setActiveTab = ui.setActiveTab;

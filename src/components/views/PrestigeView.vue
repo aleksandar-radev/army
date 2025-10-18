@@ -13,10 +13,6 @@
       <div class="prestige">
         <div class="prestige__summary">
           <div class="summary-row">
-            <span>{{ t('prestige.summary.storedSouls') }}</span>
-            <strong>{{ formatNumber(resourceSummary.heroSoulsStored) }}</strong>
-          </div>
-          <div class="summary-row">
             <span>{{ t('prestige.summary.totalSouls') }}</span>
             <strong>{{ formatNumber(resourceSummary.heroSoulsTotal) }}</strong>
           </div>
@@ -31,7 +27,7 @@
               :disabled="!canPrestigeNow"
               @click="performPrestige"
             >
-              {{ t('prestige.actions.prestigeNow') }}
+              {{ t('prestige.actions.prestigeNow', { souls: formatNumber(resourceSummary.heroSoulsStored) }) }}
             </button>
             <button
               v-if="ascendVisible"
