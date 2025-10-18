@@ -11,7 +11,7 @@ import {
 } from '@/stores/gameState.js';
 import { getArtifactUpgradeCost, getAllArtifactKeys, upgradeArtifact } from '@/game/artifact.js';
 import { ArtifactConfig, BuildingConfig, UnitTypes } from '@/game/config.js';
-import { getHeroSoulsTotal, getGold } from '@/game/resources.js';
+import { getGold } from '@/game/resources.js';
 import { getUpgradeCost, upgradeBuilding } from '@/game/town.js';
 import { getUnitEffectiveDmg, getUnitEffectiveHp } from '@/game/unitHelpers.js';
 import { formatDuration, formatFloat, formatNumber } from '@/utils/formatters.js';
@@ -271,8 +271,10 @@ export const useEconomyStore = defineStore('economy', () => {
     });
   });
 
-  const relics = computed(() =>
-    getAllArtifactKeys().map((key) => {
+  const relics = computed(() => {
+    const heroSoulsTotal = resourcesView.heroSoulsTotal ?? 0;
+
+    return getAllArtifactKeys().map((key) => {
       const tier = relicState[key] || 0;
       const cost = getArtifactUpgradeCost(key);
       const description = getArtifactDescription(key, tier);
@@ -283,11 +285,11 @@ export const useEconomyStore = defineStore('economy', () => {
         tier,
         cost,
         maxed: !Number.isFinite(cost),
-        affordable: Number.isFinite(cost) && getHeroSoulsTotal() >= cost,
+        affordable: Number.isFinite(cost) && heroSoulsTotal >= cost,
         description,
       };
-    }),
-  );
+    });
+  });
 
   const prepareAchievementParams = (params = {}) => {
     const result = { ...params };
