@@ -59,6 +59,13 @@ export const ArtifactConfig = {
     effectValue: 0.1,
     maxTier: 99999999999,
   },
+  GoldGainBoost: {
+    baseCost: 15,
+    costGrowth: 1.1,
+    effect: "goldGain%",
+    effectValue: 0.1,
+    maxTier: 99999999999,
+  },
   HeroSoulBooster: {
     baseCost: 20,
     costGrowth: 1.4,

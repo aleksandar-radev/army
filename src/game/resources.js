@@ -1,3 +1,5 @@
+import { getArtifactEffectBonus } from "./artifact.js";
+
 export const resources = {
   gold: 0,
   heroSoulsStored: 0,
@@ -17,8 +19,18 @@ export const resources = {
 };
 
 export function addGold(amount) {
-  resources.gold += amount;
-  resources.lifetimeGold += amount;
+  if (!Number.isFinite(amount) || amount === 0) {
+    return 0;
+  }
+
+  const bonus = getArtifactEffectBonus("goldGain%");
+  const multiplier = 1 + bonus;
+  const finalAmount = amount * multiplier;
+
+  resources.gold += finalAmount;
+  resources.lifetimeGold += finalAmount;
+
+  return finalAmount;
 }
 
 export function spendGold(amount) {

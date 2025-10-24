@@ -83,6 +83,7 @@ export const defaultBuildingIconSrc = defaultBuilding;
 
 export const relicIconSources = {
   GoldMineBoost: goldMineBoostRelic,
+  GoldGainBoost: goldMineBoostRelic,
   HeroSoulBooster: heroSoulBoosterRelic,
   GoblinPower: goblinPowerRelic,
   OrcPower: orcPowerRelic,

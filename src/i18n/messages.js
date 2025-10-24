@@ -112,6 +112,10 @@ export const messages = {
           summary: 'Boosts {buildingName} gold production by +{value}% per tier.',
           detail: 'Current bonus: +{current}% gold from the mine.',
         },
+        GoldGainBoost: {
+          summary: 'Boosts all gold gained by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% gold from every source.',
+        },
         HeroSoulBooster: {
           summary: 'Boosts hero souls earned by +{value}% per tier.',
           detail: 'Current bonus: +{current}% to hero souls earned.',
@@ -231,6 +235,7 @@ export const messages = {
     },
     artifacts: {
       GoldMineBoost: { name: 'Gold Mine Boost' },
+      GoldGainBoost: { name: 'Gold Gain Boost' },
       HeroSoulBooster: { name: 'Hero Soul Booster' },
       GoblinPower: { name: 'Goblin Power' },
       OrcPower: { name: 'Orc Power' },
@@ -359,6 +364,10 @@ export const messages = {
           summary: 'Aumenta la producción de oro de {buildingName} en +{value}% por nivel.',
           detail: 'Bonificación actual: +{current}% de oro adicional.',
         },
+        GoldGainBoost: {
+          summary: 'Aumenta todo el oro obtenido en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% de oro de todas las fuentes.',
+        },
         HeroSoulBooster: {
           summary: 'Aumenta las almas de héroe ganadas en +{value}% por nivel.',
           detail: 'Bonificación actual: +{current}% a las almas de héroe ganadas.',
@@ -478,6 +487,7 @@ export const messages = {
     },
     artifacts: {
       GoldMineBoost: { name: 'Impulso de la Mina de Oro' },
+      GoldGainBoost: { name: 'Impulso de Ganancias de Oro' },
       HeroSoulBooster: { name: 'Potenciador de Almas de Héroe' },
       GoblinPower: { name: 'Poder de Duende' },
       OrcPower: { name: 'Poder de Orco' },
@@ -606,6 +616,10 @@ export const messages = {
           summary: '{buildingName}的金币产量每级提升 +{value}%。',
           detail: '当前加成：金币产量 +{current}%。',
         },
+        GoldGainBoost: {
+          summary: '所有金币获取每级提升 +{value}%。',
+          detail: '当前加成：所有来源金币 +{current}%。',
+        },
         HeroSoulBooster: {
           summary: '英灵获取量每级提升 +{value}%。',
           detail: '当前加成：英灵获取量 +{current}%。',
@@ -725,6 +739,7 @@ export const messages = {
     },
     artifacts: {
       GoldMineBoost: { name: '金矿增幅' },
+      GoldGainBoost: { name: '金币收益增幅' },
       HeroSoulBooster: { name: '英灵增幅器' },
       GoblinPower: { name: '地精之力' },
       OrcPower: { name: '兽人之力' },
