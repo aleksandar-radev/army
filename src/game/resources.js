@@ -51,6 +51,15 @@ export function convertHeroSoulsToTotal() {
   resources.heroSoulsStored = 0;
 }
 
+export function addHeroSoulsToTotal(count = 1) {
+  if (!Number.isFinite(count) || count === 0) {
+    return;
+  }
+
+  resources.heroSoulsTotal += count;
+  resources.lifetimeSouls += count;
+}
+
 export function spendHeroSouls(amount) {
   if (resources.heroSoulsTotal >= amount) {
     resources.heroSoulsTotal -= amount;

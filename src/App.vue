@@ -12,6 +12,7 @@
       <TownView v-else-if="activeTab === 'town'" />
       <PrestigeView v-else-if="activeTab === 'prestige'" />
       <AchievementsView v-else-if="activeTab === 'achievements'" />
+      <DeveloperView v-else-if="activeTab === 'edev'" />
       <OptionsView v-else />
     </main>
     <button
@@ -46,6 +47,7 @@ import TownView from '@/components/views/TownView.vue';
 import PrestigeView from '@/components/views/PrestigeView.vue';
 import AchievementsView from '@/components/views/AchievementsView.vue';
 import OptionsView from '@/components/views/OptionsView.vue';
+import DeveloperView from '@/components/views/DeveloperView.vue';
 import ResetModal from '@/components/modals/ResetModal.vue';
 import { useProgressionStore } from '@/stores/progressionStore.js';
 import { useUiStore } from '@/stores/uiStore.js';
@@ -58,16 +60,31 @@ const closeIconSrc = uiIconSources.close;
 const progression = useProgressionStore();
 const ui = useUiStore();
 const { activeTab, resetModalOpen, mobileMenuOpen } = storeToRefs(ui);
-const { toggleMobileMenu, closeMobileMenu } = ui;
+const { toggleMobileMenu, closeMobileMenu, unlockDevTools } = ui;
+
+const secretCode = 'edev';
+let inputBuffer = '';
+
+const handleKeydown = (event) => {
+  const key = event.key?.toLowerCase();
+  if (!key || key.length !== 1 || !/[a-z]/u.test(key)) return;
+
+  inputBuffer = (inputBuffer + key).slice(-secretCode.length);
+  if (inputBuffer === secretCode) {
+    unlockDevTools();
+  }
+};
 
 onMounted(() => {
   progression.initialize();
   trackEvent('game_loaded');
   trackEvent('tab_view', { tab: activeTab.value });
+  window.addEventListener('keydown', handleKeydown);
 });
 
 onBeforeUnmount(() => {
   progression.dispose();
+  window.removeEventListener('keydown', handleKeydown);
 });
 
 watch(activeTab, (newTab, oldTab) => {

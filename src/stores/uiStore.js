@@ -5,10 +5,17 @@ export const useUiStore = defineStore('ui', () => {
   const activeTab = ref('battle');
   const resetModalOpen = ref(false);
   const mobileMenuOpen = ref(false);
+  const devToolsVisible = ref(false);
 
   const setActiveTab = (tab) => {
     activeTab.value = tab;
     mobileMenuOpen.value = false;
+  };
+
+  const unlockDevTools = () => {
+    if (devToolsVisible.value) return;
+    devToolsVisible.value = true;
+    setActiveTab('edev');
   };
 
   const openResetModal = () => {
@@ -31,7 +38,9 @@ export const useUiStore = defineStore('ui', () => {
     activeTab,
     resetModalOpen,
     mobileMenuOpen,
+    devToolsVisible,
     setActiveTab,
+    unlockDevTools,
     openResetModal,
     closeResetModal,
     toggleMobileMenu,

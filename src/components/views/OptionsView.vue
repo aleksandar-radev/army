@@ -133,7 +133,7 @@ const openResetModal = ui.openResetModal;
   gap: 24px;
 }
 
-.field { 
+.field {
   background: rgba(15, 23, 42, 0.6);
   border-radius: 20px;
   padding: 20px;

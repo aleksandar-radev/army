@@ -20,6 +20,7 @@ export const messages = {
         town: 'Town',
         prestige: 'Prestige',
         achievements: 'Achievements',
+        devtools: 'Dev Tools',
         options: 'Options',
       },
     },
@@ -218,6 +219,30 @@ export const messages = {
       resetDescription: 'Resetting will clear your current progress. This cannot be undone.',
       resetButton: 'Reset Game',
     },
+    devtools: {
+      title: 'Developer Tools',
+      subtitle: 'Fine-tune your run by adjusting key resources.',
+      current: {
+        gold: 'Current gold',
+        storedSouls: 'Stored hero souls',
+        totalSouls: 'Total hero souls',
+      },
+      gold: {
+        title: 'Add gold',
+        description: 'Grant yourself an instant gold boost.',
+        button: 'Add gold',
+      },
+      storedSouls: {
+        title: 'Add stored souls',
+        description: 'Increase the souls waiting to be converted on prestige.',
+        button: 'Add stored souls',
+      },
+      totalSouls: {
+        title: 'Add total souls',
+        description: 'Increase the permanent soul total immediately.',
+        button: 'Add total souls',
+      },
+    },
     units: {
       Goblin: { name: 'Goblin', plural: 'Goblins' },
       Orc: { name: 'Orc', plural: 'Orcs' },
@@ -273,6 +298,7 @@ export const messages = {
         town: 'Ciudad',
         prestige: 'Prestigio',
         achievements: 'Logros',
+        devtools: 'Herramientas dev',
         options: 'Opciones',
       },
     },
@@ -470,6 +496,30 @@ export const messages = {
       resetDescription: 'Restablecer borrará tu progreso actual. Esta acción no se puede deshacer.',
       resetButton: 'Restablecer juego',
     },
+    devtools: {
+      title: 'Herramientas de desarrollo',
+      subtitle: 'Ajusta tu partida modificando recursos clave.',
+      current: {
+        gold: 'Oro actual',
+        storedSouls: 'Almas almacenadas',
+        totalSouls: 'Almas totales',
+      },
+      gold: {
+        title: 'Añadir oro',
+        description: 'Concédete un impulso instantáneo de oro.',
+        button: 'Añadir oro',
+      },
+      storedSouls: {
+        title: 'Añadir almas almacenadas',
+        description: 'Aumenta las almas listas para convertir al prestigiar.',
+        button: 'Añadir almas almacenadas',
+      },
+      totalSouls: {
+        title: 'Añadir almas totales',
+        description: 'Incrementa de inmediato tus almas permanentes.',
+        button: 'Añadir almas totales',
+      },
+    },
     units: {
       Goblin: { name: 'Duende', plural: 'Duendes' },
       Orc: { name: 'Orco', plural: 'Orcos' },
@@ -525,6 +575,7 @@ export const messages = {
         town: '城镇',
         prestige: '转生',
         achievements: '成就',
+        devtools: '开发者工具',
         options: '选项',
       },
     },
@@ -721,6 +772,30 @@ export const messages = {
       resetLabel: '重置进度',
       resetDescription: '重置将清除你当前的进度，此操作无法撤销。',
       resetButton: '重置游戏',
+    },
+    devtools: {
+      title: '开发者工具',
+      subtitle: '通过调整关键资源微调你的进度。',
+      current: {
+        gold: '当前金币',
+        storedSouls: '当前储存的英灵',
+        totalSouls: '当前总英灵',
+      },
+      gold: {
+        title: '增加金币',
+        description: '立即为自己增加一笔金币。',
+        button: '增加金币',
+      },
+      storedSouls: {
+        title: '增加储存的英灵',
+        description: '提升转生时可以转换的英灵数量。',
+        button: '增加储存的英灵',
+      },
+      totalSouls: {
+        title: '增加总英灵',
+        description: '立刻提高永久英灵总量。',
+        button: '增加总英灵',
+      },
     },
     units: {
       Goblin: { name: '地精', plural: '地精' },

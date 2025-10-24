@@ -40,7 +40,6 @@
         <span>{{ item.label }}</span>
       </button>
     </nav>
-
   </aside>
 </template>
 
@@ -57,23 +56,30 @@ const economy = useEconomyStore();
 const ui = useUiStore();
 const i18n = useI18nStore();
 const t = i18n.t;
-const { activeTab } = storeToRefs(ui);
+const { activeTab, devToolsVisible } = storeToRefs(ui);
 const { resourceSummary } = storeToRefs(economy);
 
-const navItems = computed(() =>
-  Object.entries({
-    battle: 'sidebar.nav.battle',
-    army: 'sidebar.nav.army',
-    town: 'sidebar.nav.town',
-    prestige: 'sidebar.nav.prestige',
-    achievements: 'sidebar.nav.achievements',
-    options: 'sidebar.nav.options',
-  }).map(([key, translationKey]) => ({
+const navItems = computed(() => {
+  const items = [
+    { key: 'battle', translationKey: 'sidebar.nav.battle' },
+    { key: 'army', translationKey: 'sidebar.nav.army' },
+    { key: 'town', translationKey: 'sidebar.nav.town' },
+    { key: 'prestige', translationKey: 'sidebar.nav.prestige' },
+    { key: 'achievements', translationKey: 'sidebar.nav.achievements' },
+  ];
+
+  if (devToolsVisible.value) {
+    items.push({ key: 'edev', translationKey: 'sidebar.nav.devtools' });
+  }
+
+  items.push({ key: 'options', translationKey: 'sidebar.nav.options' });
+
+  return items.map(({ key, translationKey }) => ({
     key,
     label: t(translationKey),
     iconSrc: navIconSources[key] || defaultNavIconSrc,
-  })),
-);
+  }));
+});
 
 const summaryItems = computed(() => [
   { key: 'gold', label: t('sidebar.summary.gold'), value: formatNumber(resourceSummary.value.gold) },
