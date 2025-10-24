@@ -113,8 +113,8 @@ export const messages = {
           detail: 'Current bonus: +{current}% gold from the mine.',
         },
         HeroSoulBooster: {
-          summary: 'Awards +{value} hero souls per tier whenever you prestige.',
-          detail: 'Current bonus: +{current} hero souls on prestige.',
+          summary: 'Boosts hero souls earned by +{value}% per tier.',
+          detail: 'Current bonus: +{current}% to hero souls earned.',
         },
         GoblinPower: {
           summary: 'Increases {unitName} power by +{value}% per tier.',
@@ -360,8 +360,8 @@ export const messages = {
           detail: 'Bonificación actual: +{current}% de oro adicional.',
         },
         HeroSoulBooster: {
-          summary: 'Otorga +{value} almas de héroe por nivel cada vez que prestigias.',
-          detail: 'Bonificación actual: +{current} almas de héroe al prestigiar.',
+          summary: 'Aumenta las almas de héroe ganadas en +{value}% por nivel.',
+          detail: 'Bonificación actual: +{current}% a las almas de héroe ganadas.',
         },
         GoblinPower: {
           summary: 'Incrementa el poder de {unitName} en +{value}% por nivel.',
@@ -607,8 +607,8 @@ export const messages = {
           detail: '当前加成：金币产量 +{current}%。',
         },
         HeroSoulBooster: {
-          summary: '每级在转生时额外获得 +{value} 点英灵。',
-          detail: '当前加成：转生额外 +{current} 点英灵。',
+          summary: '英灵获取量每级提升 +{value}%。',
+          detail: '当前加成：英灵获取量 +{current}%。',
         },
         GoblinPower: {
           summary: '使{unitName}的战斗力每级提升 +{value}%。',
