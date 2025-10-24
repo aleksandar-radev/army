@@ -10,8 +10,9 @@ let killCount = 0;
 
 function getGoldRewardForEnemy(level) {
   const baseGold = EnemyRewards.baseGold ?? 0;
-  const perLevel = EnemyRewards.goldPerLevel ?? 0;
-  const reward = baseGold + perLevel * Math.max(0, level - 1);
+  const growthRate = EnemyRewards.goldPerLevel ?? 0;
+  const reward =
+    baseGold * Math.pow(1 + growthRate, Math.max(0, level - 1));
   const roundedReward = Math.floor(reward);
   return Math.max(0, Number.isFinite(roundedReward) ? roundedReward : 0);
 }

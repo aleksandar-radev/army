@@ -48,7 +48,7 @@ export const EnemyConfig = {
 
 export const EnemyRewards = {
   baseGold: 10,
-  goldPerLevel: 2,
+  goldPerLevel: 0.02,
 };
 
 export const ArtifactConfig = {
