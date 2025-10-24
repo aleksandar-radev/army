@@ -1,6 +1,9 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
+const environment = (import.meta.env.VITE_ENV || '').toLowerCase();
+const devToolsAllowed = environment !== 'prod' && environment !== 'production';
+
 export const useUiStore = defineStore('ui', () => {
   const activeTab = ref('battle');
   const resetModalOpen = ref(false);
@@ -13,7 +16,7 @@ export const useUiStore = defineStore('ui', () => {
   };
 
   const unlockDevTools = () => {
-    if (devToolsVisible.value) return;
+    if (!devToolsAllowed || devToolsVisible.value) return;
     devToolsVisible.value = true;
     setActiveTab('edev');
   };
@@ -39,6 +42,7 @@ export const useUiStore = defineStore('ui', () => {
     resetModalOpen,
     mobileMenuOpen,
     devToolsVisible,
+    devToolsAllowed,
     setActiveTab,
     unlockDevTools,
     openResetModal,

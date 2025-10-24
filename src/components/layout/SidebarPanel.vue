@@ -57,6 +57,7 @@ const ui = useUiStore();
 const i18n = useI18nStore();
 const t = i18n.t;
 const { activeTab, devToolsVisible } = storeToRefs(ui);
+const devToolsAllowed = ui.devToolsAllowed;
 const { resourceSummary } = storeToRefs(economy);
 
 const navItems = computed(() => {
@@ -68,7 +69,7 @@ const navItems = computed(() => {
     { key: 'achievements', translationKey: 'sidebar.nav.achievements' },
   ];
 
-  if (devToolsVisible.value) {
+  if (devToolsAllowed && devToolsVisible.value) {
     items.push({ key: 'edev', translationKey: 'sidebar.nav.devtools' });
   }
 

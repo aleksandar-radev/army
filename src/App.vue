@@ -12,7 +12,7 @@
       <TownView v-else-if="activeTab === 'town'" />
       <PrestigeView v-else-if="activeTab === 'prestige'" />
       <AchievementsView v-else-if="activeTab === 'achievements'" />
-      <DeveloperView v-else-if="activeTab === 'edev'" />
+      <DeveloperView v-else-if="devToolsAllowed && activeTab === 'edev'" />
       <OptionsView v-else />
     </main>
     <button
@@ -61,11 +61,14 @@ const progression = useProgressionStore();
 const ui = useUiStore();
 const { activeTab, resetModalOpen, mobileMenuOpen } = storeToRefs(ui);
 const { toggleMobileMenu, closeMobileMenu, unlockDevTools } = ui;
+const devToolsAllowed = ui.devToolsAllowed;
 
 const secretCode = 'edev';
 let inputBuffer = '';
 
 const handleKeydown = (event) => {
+  if (!devToolsAllowed) return;
+
   const key = event.key?.toLowerCase();
   if (!key || key.length !== 1 || !/[a-z]/u.test(key)) return;
 
@@ -79,12 +82,16 @@ onMounted(() => {
   progression.initialize();
   trackEvent('game_loaded');
   trackEvent('tab_view', { tab: activeTab.value });
-  window.addEventListener('keydown', handleKeydown);
+  if (devToolsAllowed) {
+    window.addEventListener('keydown', handleKeydown);
+  }
 });
 
 onBeforeUnmount(() => {
   progression.dispose();
-  window.removeEventListener('keydown', handleKeydown);
+  if (devToolsAllowed) {
+    window.removeEventListener('keydown', handleKeydown);
+  }
 });
 
 watch(activeTab, (newTab, oldTab) => {
